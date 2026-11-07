@@ -8,6 +8,7 @@ export default defineConfig({
   },
   format: ['cjs', 'esm'],
   dts: true,
+  tsconfig: 'tsconfig.build.json',
   clean: true,
   external: ['react', 'react-dom', 'next', 'framer-motion', 'lucide-react'],
   sourcemap: true,
