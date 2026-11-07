@@ -1,0 +1,183 @@
+{
+  "$schema": "https://design-tokens.github.io/community-group/format/",
+  "name": "Accént · Pipes Sovereign Design Tokens",
+  "version": "3.0.0",
+  "description": "Single DTCG source of truth for Accént (web Next.js + desktop Tauri/Rust): Warm Sandstone & Slate Ink canvas, Dual Sovereign Accents (Brand Pink + Crystalline Sky Blue), 49-point WCAG AAA Pastel × Tonal Dark matrix, 8-point spacing grid, and Fraunces/Inter/JetBrains Mono typography.",
+  "color": {
+    "canvas": {
+      "light": {
+        "default": { "$value": "#E8E2D5", "$type": "color", "$description": "Layer 0 Warm Sandstone Papyrus Canvas" },
+        "paper": { "$value": "#FAF8F5", "$type": "color", "$description": "Creamy Archival Alabaster (Inner Wells & Inputs)" },
+        "card": { "$value": "#F3EFE9", "$type": "color", "$description": "Layer 1 Raised Archival Linen Surface" },
+        "ink": { "$value": "#111827", "$type": "color", "$description": "Primary Deep Slate Ink (13.74:1 AAA on Sandstone)" },
+        "inkMuted": { "$value": "#4B5563", "$type": "color", "$description": "Muted Slate Ink (5.86:1 AA+ on Sandstone)" },
+        "border": { "$value": "#11182726", "$type": "color", "$description": "15% Hairline Ink Rule" }
+      },
+      "dark": {
+        "default": { "$value": "#111827", "$type": "color", "$description": "Layer 0 Slate Charcoal Canvas" },
+        "surface": { "$value": "#1A2233", "$type": "color", "$description": "Layer 1 Elevated Slate Surface" },
+        "card": { "$value": "#151D2E", "$type": "color", "$description": "Elevated Dark Card Surface" },
+        "ink": { "$value": "#F3EFE9", "$type": "color", "$description": "Warm Archival Linen Text (15.90:1 AAA)" },
+        "inkMuted": { "$value": "#C9C2B6", "$type": "color", "$description": "Muted Warm Stone Text (10.03:1 AAA)" },
+        "border": { "$value": "#F3EFE924", "$type": "color", "$description": "14% Warm Linen Hairline Rule" }
+      }
+    },
+    "accent": {
+      "primary": {
+        "light": {
+          "mark": { "$value": "#D44983", "$type": "color", "$description": "Brand Pink Acute Mark & 2px–3px Active Indicators" },
+          "fill": { "$value": "#B8326D", "$type": "color", "$description": "Primary CTA Button Fill (5.65:1 AA with #FFFFFF)" },
+          "fillHover": { "$value": "#A3285C", "$type": "color", "$description": "Primary CTA Button Hover Fill (6.96:1 AA+ with #FFFFFF)" },
+          "fillForeground": { "$value": "#FFFFFF", "$type": "color", "$description": "Primary CTA Foreground on #B8326D" },
+          "text": { "$value": "#A3285C", "$type": "color", "$description": "Inline Accent Text & Links on Sandstone (5.40:1 AA)" }
+        },
+        "dark": {
+          "mark": { "$value": "#EE8AB4", "$type": "color", "$description": "Dark-Mode Rose Acute Mark & 2px–3px Indicators" },
+          "fill": { "$value": "#EE8AB4", "$type": "color", "$description": "Dark-Mode Primary CTA Fill (7.54:1 AAA with #111827)" },
+          "fillHover": { "$value": "#F4B4CF", "$type": "color", "$description": "Dark-Mode Primary CTA Hover Fill" },
+          "fillForeground": { "$value": "#111827", "$type": "color", "$description": "Dark-Mode Primary CTA Ink Foreground" },
+          "text": { "$value": "#F4B4CF", "$type": "color", "$description": "Dark-Mode Inline Accent Text (9.35:1 AAA on #111827)" }
+        }
+      },
+      "sky": {
+        "light": {
+          "surface": { "$value": "#D4EBF5", "$type": "color", "$description": "Crystalline Ice Sky Surface Tint (13.48:1 AAA with #02212F)" },
+          "surfaceForeground": { "$value": "#02212F", "$type": "color", "$description": "Deep Ocean Marine Abyss Ink on Ice Sky" },
+          "fill": { "$value": "#01A9F4", "$type": "color", "$description": "Electric Sky Interactive Fill (6.74:1 AA+ with #111827)" },
+          "fillForeground": { "$value": "#111827", "$type": "color", "$description": "Slate Ink Foreground on Electric Sky" },
+          "deepFill": { "$value": "#0369A1", "$type": "color", "$description": "Deep Cerulean Button Fill (5.93:1 AA+ with #FFFFFF)" },
+          "deepFillForeground": { "$value": "#FFFFFF", "$type": "color", "$description": "White Foreground on Deep Cerulean" },
+          "text": { "$value": "#0369A1", "$type": "color", "$description": "Deep Cerulean Text on Sandstone (4.60:1 AA)" }
+        },
+        "dark": {
+          "surface": { "$value": "#091822", "$type": "color", "$description": "Dark Marine Surface Tint (12.80:1 AAA with #D4EBF5)" },
+          "surfaceForeground": { "$value": "#D4EBF5", "$type": "color", "$description": "Crystalline Ice Sky Text on Dark Marine" },
+          "fill": { "$value": "#01A9F4", "$type": "color", "$description": "Electric Sky Interactive Fill (6.74:1 AA+ with #111827)" },
+          "fillForeground": { "$value": "#111827", "$type": "color", "$description": "Slate Ink Foreground on Electric Sky" },
+          "deepFill": { "$value": "#38BDF8", "$type": "color", "$description": "Luminous Sky Fill on Dark (8.28:1 AAA with #111827)" },
+          "deepFillForeground": { "$value": "#111827", "$type": "color", "$description": "Slate Ink Foreground on Luminous Sky" },
+          "text": { "$value": "#38BDF8", "$type": "color", "$description": "Luminous Sky Text on Slate Ink (8.28:1 AAA)" }
+        }
+      }
+    },
+    "pastels": {
+      "blush": { "$value": "#F1DBDA", "$type": "color", "$description": "Red Band: Tactile Blush Pink" },
+      "peach": { "$value": "#F0D4B5", "$type": "color", "$description": "Orange Band: Apricot Warm Sand" },
+      "butter": { "$value": "#FFF5C9", "$type": "color", "$description": "Yellow Band: Pale Butter Cream" },
+      "sage": { "$value": "#DBECC8", "$type": "color", "$description": "Green Band: Pistachio / Sage Mint" },
+      "ice": { "$value": "#D4EBF5", "$type": "color", "$description": "Blue Band: Crystalline Ice Sky" },
+      "periwinkle": { "$value": "#E8E7FA", "$type": "color", "$description": "Indigo Band: Soft Lavender Periwinkle" },
+      "lilac": { "$value": "#ECD9FD", "$type": "color", "$description": "Violet Band: Electric Lilac Mist" }
+    },
+    "tonalDarks": {
+      "oxblood": { "$value": "#390502", "$type": "color", "$description": "Deep Crimson Oxblood" },
+      "leather": { "$value": "#402406", "$type": "color", "$description": "Antique Saddle Leather" },
+      "bronze": { "$value": "#3F3300", "$type": "color", "$description": "Dark Bronze Gold" },
+      "forest": { "$value": "#192E01", "$type": "color", "$description": "Deep Forest Pine" },
+      "abyss": { "$value": "#02212F", "$type": "color", "$description": "Deep Ocean Marine Abyss" },
+      "midnight": { "$value": "#040045", "$type": "color", "$description": "Celestial Midnight Royal" },
+      "plum": { "$value": "#18002E", "$type": "color", "$description": "Deep Aubergine Plum" }
+    },
+    "curatedCrossChromaticPairings": [
+      {
+        "name": "The Venetian",
+        "description": "Crystalline Ice Sky on Deep Crimson Oxblood",
+        "foreground": "#D4EBF5",
+        "background": "#390502",
+        "contrast": "14.21:1",
+        "wcag": "AAA Pass"
+      },
+      {
+        "name": "The Celestial",
+        "description": "Luminous Butter Cream on Celestial Midnight Royal",
+        "foreground": "#FFF5C9",
+        "background": "#040045",
+        "contrast": "17.56:1",
+        "wcag": "AAA Pass"
+      },
+      {
+        "name": "The Botanical Press",
+        "description": "Tactile Blush Pink on Deep Forest Pine",
+        "foreground": "#F1DBDA",
+        "background": "#192E01",
+        "contrast": "11.09:1",
+        "wcag": "AAA Pass"
+      },
+      {
+        "name": "The Alchemist",
+        "description": "Herbal Sage Mint on Deep Aubergine Plum",
+        "foreground": "#DBECC8",
+        "background": "#18002E",
+        "contrast": "15.62:1",
+        "wcag": "AAA Pass"
+      },
+      {
+        "name": "The Marine Coral",
+        "description": "Warm Apricot Peach on Deep Ocean Marine Abyss",
+        "foreground": "#F0D4B5",
+        "background": "#02212F",
+        "contrast": "11.73:1",
+        "wcag": "AAA Pass"
+      },
+      {
+        "name": "The Antiquarian",
+        "description": "Soft Periwinkle Lavender on Antique Saddle Leather",
+        "foreground": "#E8E7FA",
+        "background": "#402406",
+        "contrast": "11.71:1",
+        "wcag": "AAA Pass"
+      },
+      {
+        "name": "The Socratic",
+        "description": "Electric Lilac Mist on Deep Ocean Marine Abyss",
+        "foreground": "#ECD9FD",
+        "background": "#02212F",
+        "contrast": "12.62:1",
+        "wcag": "AAA Pass"
+      }
+    ]
+  },
+  "spacing": {
+    "0": "0px",
+    "1": "4px",
+    "2": "8px",
+    "3": "12px",
+    "4": "16px",
+    "6": "24px",
+    "8": "32px",
+    "12": "48px",
+    "16": "64px",
+    "24": "96px"
+  },
+  "radius": {
+    "none": "0px",
+    "sm": "4px",
+    "md": "6px",
+    "lg": "8px",
+    "full": "9999px"
+  },
+  "zIndex": {
+    "base": 0,
+    "raised": 10,
+    "sticky": 30,
+    "header": 40,
+    "modal": 50,
+    "toast": 60
+  },
+  "elevation": {
+    "editorial": "none",
+    "commercialLight": "4px 4px 0px #111827",
+    "commercialDark": "4px 4px 0px #EE8AB4"
+  },
+  "typography": {
+    "minimumFloorPx": 13,
+    "scales": {
+      "display": { "family": "Fraunces, Georgia, serif", "weight": "600", "tracking": "-0.025em", "lineHeight": "1.06" },
+      "heading": { "family": "Fraunces, Georgia, serif", "weight": "600", "tracking": "-0.015em", "lineHeight": "1.18" },
+      "subheading": { "family": "Inter, system-ui, sans-serif", "weight": "600", "tracking": "0.12em" },
+      "body": { "family": "Inter, system-ui, sans-serif", "weight": "400", "lineHeight": "1.65" },
+      "editorialProse": { "family": "Fraunces, Georgia, serif", "weight": "400", "lineHeight": "1.75" },
+      "metadata": { "family": "JetBrains Mono, ui-monospace, monospace", "weight": "600", "tracking": "0.08em" }
+    }
+  }
+}

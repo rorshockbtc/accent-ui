@@ -1,0 +1,418 @@
+@import "tailwindcss";
+
+
+
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-sans), system-ui, -apple-system, sans-serif;
+  --font-mono: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  --font-serif: var(--font-serif), Georgia, Cambria, "Times New Roman", serif;
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+
+  /* Accént Dual-Accent Semantic Tokens (Pink + Sovereign Sky Blue) */
+  --color-accent-mark: var(--a-accent);
+  --color-accent-fill: var(--a-accent-fill);
+  --color-accent-text: var(--a-accent-text);
+  --color-sky-fill: var(--a-sky);
+  --color-sky-deep: var(--a-sky-deep);
+  --color-sky-surface: var(--a-sky-surface);
+  --color-sky-ink: var(--a-sky-ink);
+  --color-sky-text: var(--a-sky-text);
+
+  /* Sovereign Sandstone Tiers */
+  --color-sandstone-light: #FAF8F5;
+  --color-sandstone: #E8E2D5;
+  --color-sandstone-muted: #D8D2C5;
+  --color-sandstone-dark: #C4BCAC;
+
+  /* Sovereign Pastels (Tactile Light-Mode Accents) */
+  --color-pastel-blush: #F1DBDA;
+  --color-pastel-peach: #F0D4B5;
+  --color-pastel-butter: #FFF5C9;
+  --color-pastel-sage: #DBECC8;
+  --color-pastel-ice: #D4EBF5;
+  --color-pastel-periwinkle: #E8E7FA;
+  --color-pastel-lilac: #ECD9FD;
+
+  /* Sovereign Tonal Darks (High-Contrast Section Backdrops) */
+  --color-dark-default: #222222;
+  --color-dark-surface: #1A1A1A;
+  --color-dark-card: #262626;
+  --color-dark-oxblood: #390502;
+  --color-dark-leather: #402406;
+  --color-dark-bronze: #3F3300;
+  --color-dark-forest: #192E01;
+  --color-dark-abyss: #02212F;
+  --color-dark-midnight: #040045;
+  --color-dark-plum: #18002E;
+}
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root,
+.accent-root[data-accent-theme='light'] {
+  /* MoMA/Met Inspired Classical Sandstone Aesthetic (Light Mode) */
+  --background: #E8E2D5; /* Warm Sandstone Papyrus Canvas */
+  --foreground: #111827; /* Text Primary (13.74:1 AAA) */
+  --card: #F3EFE9;       /* Soft Archival Card Surface */
+  --card-foreground: #111827;
+  
+  --primary: #B8326D; /* Accessible Brand Pink Fill (5.65:1 AA with white) */
+  --primary-foreground: #FFFFFF;
+  
+  --muted: #E2DBD0; /* Sandstone Muted */
+  --muted-foreground: #4B5563; /* 5.86:1 AA+ on Sandstone */
+  
+  --accent: #111827;
+  --accent-foreground: #F9FAFB;
+  
+  --border: #11182726; /* 15% Hairline Ink Border */
+  --input: #FAF8F5;
+  --ring: #D44983;
+  
+  --radius: 6px;
+
+  /* Canonical Accént Semantic Variables (Light Mode) */
+  --a-bg: #E8E2D5;
+  --a-surface: #F3EFE9;
+  --a-card: #F3EFE9;
+  --a-well: #FAF8F5;
+  --a-ink: #111827;
+  --a-muted: #4B5563;
+  --a-rule: rgba(17, 24, 39, 0.14);
+  --a-accent: #D44983;
+  --a-accent-fill: #B8326D;
+  --a-accent-fill-hover: #A3285C;
+  --a-accent-fg: #FFFFFF;
+  --a-accent-text: #A3285C;
+  --a-sky: #01A9F4;
+  --a-sky-fg: #111827;
+  --a-sky-deep: #0369A1;
+  --a-sky-deep-fg: #FFFFFF;
+  --a-sky-surface: #D4EBF5;
+  --a-sky-ink: #02212F;
+  --a-sky-text: #0369A1;
+  --a-link: #111827;
+  --a-emerald: #15803D;
+
+  /* Accént Motion 1.0 Canonical Duration & Easing Tokens */
+  --duration-fast: 120ms;
+  --duration-base: 200ms;
+  --duration-slow: 320ms;
+  --ease-accent: cubic-bezier(0.16, 1, 0.3, 1);
+
+  color-scheme: light;
+}
+
+.dark,
+.accent-root[data-accent-theme='dark'] {
+  /* Sovereign Slate Charcoal Aesthetic (Dark Mode) */
+  --background: #111827; /* Slate Charcoal Canvas */
+  --foreground: #F3EFE9; /* Warm Archival Linen (15.90:1 AAA) */
+  --card: #1A2233;       /* Elevated Slate Surface */
+  --card-foreground: #F3EFE9;
+  
+  --primary: #EE8AB4; /* Accessible Rose Fill (7.54:1 AAA with #111827) */
+  --primary-foreground: #111827;
+  
+  --muted: #1A2233;
+  --muted-foreground: #C9C2B6; /* 10.03:1 AAA on #111827 */
+  
+  --accent: #F3EFE9;
+  --accent-foreground: #111827;
+  
+  --border: rgba(243, 239, 233, 0.14);
+  --input: #1A2233;
+  --ring: #EE8AB4;
+  
+  --radius: 6px;
+
+  /* Canonical Accént Semantic Variables (Dark Mode) */
+  --a-bg: #111827;
+  --a-surface: #1A2233;
+  --a-card: #151D2E;
+  --a-well: #1A2233;
+  --a-ink: #F3EFE9;
+  --a-muted: #C9C2B6;
+  --a-rule: rgba(243, 239, 233, 0.14);
+  --a-accent: #EE8AB4;
+  --a-accent-fill: #EE8AB4;
+  --a-accent-fill-hover: #F4B4CF;
+  --a-accent-fg: #111827;
+  --a-accent-text: #F4B4CF;
+  --a-sky: #01A9F4;
+  --a-sky-fg: #111827;
+  --a-sky-deep: #38BDF8;
+  --a-sky-deep-fg: #111827;
+  --a-sky-surface: #091822;
+  --a-sky-ink: #D4EBF5;
+  --a-sky-text: #38BDF8;
+  --a-link: #F3EFE9;
+  --a-emerald: #34D399;
+  color-scheme: dark;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground antialiased font-sans;
+    font-size: 16px;
+    line-height: 1.6;
+  }
+  h1, h2, h3 {
+    @apply font-serif font-semibold tracking-tight;
+  }
+  h4, h5, h6 {
+    @apply font-sans font-semibold tracking-tight;
+  }
+}
+
+/* ==========================================================================
+   PERMANENT GLOBAL DESIGN SYSTEM: STRICT TYPOGRAPHY MINIMUM (NO SUB-12PX TEXT)
+   Top-level rules with !important guarantee immunity from Tailwind utility overrides.
+   ========================================================================== */
+html, body {
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
+  max-width: 100vw;
+  overflow-x: clip;
+}
+
+[class*="text-[8px]"],
+[class*="text-[9px]"],
+[class*="text-[9.5px]"],
+[class*="text-[10px]"],
+[class*="text-[10.5px]"],
+[class*="text-[11px]"] {
+  font-size: 13px !important;
+  line-height: 1.35rem !important;
+}
+
+.text-xs {
+  font-size: 0.8125rem !important; /* 13px */
+  line-height: 1.25rem !important;
+}
+
+small, caption, figcaption {
+  font-size: 13px !important;
+  line-height: 1.35rem !important;
+}
+
+@layer utilities {
+  /* Pseudo-element Elevation (No generic box-shadows) */
+  .elevated-card {
+    @apply relative border border-border bg-card text-card-foreground overflow-hidden transition-all duration-300;
+  }
+  .elevated-card::after {
+    content: '';
+    @apply absolute inset-0 border-[2px] border-primary/0 pointer-events-none transition-all duration-300;
+  }
+  .elevated-card:hover {
+    @apply translate-y-[-2px] bg-[var(--pipe-card-elevated,var(--card))];
+    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.08);
+  }
+  .elevated-card:hover::after {
+    @apply border-primary/20;
+  }
+
+  .pipe-badge {
+    @apply font-sans font-bold text-xs text-primary/80 uppercase tracking-wider bg-primary/5 px-2 py-1 rounded-sm border border-primary/10;
+  }
+
+  .editorial-text {
+    @apply font-serif italic text-muted-foreground text-lg;
+  }
+
+  /* Sanctioned Commercial Surface Mode (`mode="commercial"`) — High-Converting Tactile Press Physics */
+  .commercial-card {
+    @apply relative border border-[#111827] dark:border-[#EE8AB4]/60 bg-[var(--a-surface)] text-[var(--a-ink)] transition-transform duration-150;
+    box-shadow: 4px 4px 0px #111827;
+  }
+  .dark .commercial-card {
+    box-shadow: 4px 4px 0px #EE8AB4;
+  }
+  .commercial-cta {
+    @apply inline-flex items-center justify-center min-h-[44px] px-5 font-sans font-semibold text-xs sm:text-sm uppercase tracking-wider border border-[#111827] bg-[var(--a-accent-fill)] text-[var(--a-accent-fg)] hover:bg-[var(--a-accent-fill-hover)] active:translate-y-[1px] transition-all duration-150 cursor-pointer;
+    box-shadow: 3px 3px 0px #111827;
+  }
+  .dark .commercial-cta {
+    box-shadow: 3px 3px 0px #F3EFE9;
+  }
+  .sky-pill {
+    @apply inline-flex items-center gap-1.5 px-2.5 py-1 rounded-sm text-xs font-mono font-semibold bg-[var(--a-sky-surface)] text-[var(--a-sky-ink)] border border-[var(--a-sky)]/30;
+  }
+
+  /* Accént Motion 1.0 Utilities — GPU-safe transform/opacity & color crossfades */
+  .t-press {
+    transition-property: transform, opacity;
+    transition-duration: var(--duration-fast, 120ms);
+    transition-timing-function: var(--ease-accent, cubic-bezier(0.16, 1, 0.3, 1));
+  }
+  .t-color {
+    transition-property: color, background-color, border-color, text-decoration-color;
+    transition-duration: var(--duration-base, 200ms);
+    transition-timing-function: var(--ease-accent, cubic-bezier(0.16, 1, 0.3, 1));
+  }
+}
+
+/* ==========================================================================
+   ACCÉNT MOTION 1.0: NATIVE VIEW TRANSITIONS, THEME CROSSFADE & REDUCED MOTION
+   ========================================================================== */
+html.theme-fade,
+html.theme-fade *,
+html.theme-fade *::before,
+html.theme-fade *::after {
+  transition-property: background-color, color, border-color !important;
+  transition-duration: var(--duration-base, 200ms) !important;
+  transition-timing-function: var(--ease-accent, cubic-bezier(0.16, 1, 0.3, 1)) !important;
+}
+
+@view-transition {
+  navigation: auto;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: var(--duration-base, 200ms);
+  animation-timing-function: var(--ease-accent, cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}
+
+/* Secret-room motifs */
+.pipe-room-motif--grid {
+  background-image:
+    linear-gradient(to right, currentColor 1px, transparent 1px),
+    linear-gradient(to bottom, currentColor 1px, transparent 1px);
+  background-size: 28px 28px;
+  color: var(--room-ink, #111);
+}
+.pipe-room-motif--arc {
+  background-image: repeating-radial-gradient(circle at 0 100%, transparent 0, transparent 18px, currentColor 19px, transparent 20px);
+  color: var(--room-ink, #111);
+}
+.pipe-room-motif--ripple {
+  background-image: repeating-radial-gradient(circle at 80% 20%, transparent 0, transparent 14px, currentColor 15px, transparent 16px);
+  color: var(--room-ink, #111);
+}
+.pipe-room-motif--stack {
+  background-image: repeating-linear-gradient(
+    -12deg,
+    transparent,
+    transparent 10px,
+    currentColor 10px,
+    currentColor 11px
+  );
+  color: var(--room-ink, #111);
+}
+.pipe-room-motif--orbit {
+  background-image:
+    radial-gradient(circle at 20% 30%, currentColor 0 1px, transparent 2px),
+    radial-gradient(circle at 70% 60%, currentColor 0 1.5px, transparent 3px),
+    radial-gradient(circle at 40% 80%, currentColor 0 1px, transparent 2px);
+  background-size: 48px 48px, 64px 64px, 36px 36px;
+  color: var(--room-ink, #111);
+}
+
+.pipe-room--page .elevated-card {
+  background: var(--room-card, var(--card));
+  border-color: color-mix(in srgb, var(--room-border, var(--border)) 55%, transparent);
+}
+.pipe-room--page .pipe-badge {
+  color: color-mix(in srgb, var(--room-accent, var(--primary)) 85%, var(--room-ink));
+  border-color: color-mix(in srgb, var(--room-accent, var(--primary)) 25%, transparent);
+  background: color-mix(in srgb, var(--room-accent, var(--primary)) 10%, transparent);
+}
+
+
+/* Pipe home mobile-first */
+@media (max-width: 767px) {
+  .pipe-home {
+    /* tighter room on phones */
+  }
+  .pipe-home .pipe-bento {
+    gap: 0.75rem;
+  }
+  .pipe-home .pipe-bento > * {
+    min-height: 0 !important;
+  }
+  /* De-noise: collapse less-critical tiles on small screens when marked */
+  .pipe-home [data-mobile-priority="low"] {
+    display: none;
+  }
+  .pipe-explore-card {
+    border-radius: 0;
+  }
+  .pipe-explore-card__hero {
+    height: 8rem;
+  }
+}
+
+
+/* Room mood diversity — beyond light/dark */
+.pipe-home[data-mood="warm"] {
+  --pipe-wash-filter: sepia(0.08);
+}
+.pipe-home[data-mood="cool"] {
+  --pipe-wash-filter: hue-rotate(8deg) saturate(0.95);
+}
+.pipe-home[data-mood="earth"] {
+  --pipe-wash-filter: sepia(0.14) saturate(0.9);
+}
+.pipe-home[data-mood="ink"] {
+  --pipe-wash-filter: contrast(1.05);
+}
+.pipe-home[data-mood="neon"] {
+  --pipe-wash-filter: saturate(1.15);
+}
+.pipe-home[data-mood="paper"] {
+  --pipe-wash-filter: none;
+}
+.pipe-home[data-mood="warm"] .elevated-card,
+.pipe-home[data-mood="earth"] .elevated-card {
+  box-shadow: 0 1px 0 color-mix(in srgb, var(--pipe-accent) 18%, transparent);
+}
+.pipe-home[data-mood="ink"] .elevated-card,
+.pipe-home[data-mood="cool"] .elevated-card {
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--pipe-border) 40%, transparent);
+}
+.pipe-home[data-mood="neon"] [style*="accent"],
+.pipe-home[data-mood="neon"] .pipe-badge {
+  letter-spacing: 0.12em;
+}
+
+.accent-root .accent-prose code:not(pre code) {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.9em;
+  padding: 0.1em 0.35em;
+  border-radius: 4px;
+  background: var(--a-rule);
+}
