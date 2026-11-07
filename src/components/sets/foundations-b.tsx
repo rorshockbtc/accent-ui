@@ -1,9 +1,20 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Check, X, Play } from 'lucide-react';
+import { Check, X, Play, RotateCcw } from 'lucide-react';
 import { Stage, Seg, DoDont, DimH, DimV, HitBox, Tag, FocusMark } from '../primitives';
 import { CoastalLighthouseScene, SAMPLE_PHOTOS } from '../sample-media';
+import {
+  RiseLines,
+  FadeUp,
+  Hairline,
+  ScaryHeadline,
+  Smile,
+  HOME_SCARY_PAIRS,
+  DESIGN_SYSTEM_SCARY_PAIRS,
+} from '../editorial-motion/AccentBrandMotion';
+import { AccentRevealText } from '../editorial-motion/AccentRevealText';
+import { AccentKineticBadge } from '../editorial-motion/AccentKineticBadge';
 
 /* Foundations B: imagery, shape, layout, touch, motion. */
 
@@ -980,6 +991,80 @@ function MotionAx() {
   );
 }
 
+function MotionEditorialShowcase() {
+  const [k, setK] = useState(0);
+  const [copySet, setCopySet] = useState<'corporate' | 'design'>('corporate');
+  return (
+    <Stage
+      label="Tier 2 Editorial & Corporate Choreography (RiseLines, ScaryHeadline, Smile, Hairline)"
+      controls={
+        <>
+          <Seg
+            label="Preset"
+            value={copySet}
+            onChange={(v) => setCopySet(v as 'corporate' | 'design')}
+            options={[
+              { id: 'corporate', label: 'CHB Corporate' },
+              { id: 'design', label: 'Accént System' },
+            ]}
+          />
+          <button type="button" className={btn} onClick={() => setK((n) => n + 1)}>
+            <RotateCcw className="h-4 w-4" aria-hidden /> Replay all
+          </button>
+        </>
+      }
+      caption="Upstreamed from colonhyphenbracket.pink (feat/playful-principal). Uses cubic-bezier(0.22, 1, 0.36, 1) for masked line rises (RiseLines), a 3-phase strike-through + spring swap (ScaryHeadline), and a winking ASCII mark (Smile)."
+    >
+      <div key={k} className="grid gap-6 md:grid-cols-2">
+        <div className="rounded-md border border-[#111827]/15 bg-[#FAF8F5] p-5">
+          <AccentKineticBadge label="ScaryHeadline · 3-Phase Strike" />
+          <div className="mt-3 font-serif text-2xl sm:text-3xl font-semibold leading-tight text-[#111827]">
+            <ScaryHeadline
+              accent="#D44983"
+              inkColor="#111827"
+              struckColor="rgba(17,24,39,0.35)"
+              pairs={copySet === 'corporate' ? HOME_SCARY_PAIRS : DESIGN_SYSTEM_SCARY_PAIRS}
+            />
+          </div>
+          <Hairline className="mt-5 bg-[#111827]/15" delay={0.2} />
+          <p className="mt-2 mb-0 font-mono text-xs text-[#4B5563]">
+            Phase 1 (scary) → Phase 2 (strike bar) → Phase 3 (spring swap + Smile wink)
+          </p>
+        </div>
+
+        <div className="flex flex-col justify-between gap-4 rounded-md border border-[#111827]/15 bg-[#FAF8F5] p-5">
+          <div>
+            <span className="font-mono text-xs uppercase tracking-wider text-[#4B5563]">
+              RiseLines + AccentRevealText
+            </span>
+            <div className="mt-2 font-serif text-xl sm:text-2xl font-semibold text-[#111827]">
+              <RiseLines
+                immediate
+                lines={[
+                  'Masked line-by-line rise',
+                  'on cubic-bezier(0.22, 1, 0.36, 1).',
+                ]}
+              />
+            </div>
+            <div className="mt-3 text-sm text-[#4B5563]">
+              <AccentRevealText
+                immediate
+                delay={0.2}
+                text="Words settle gently without shifting surrounding layout."
+              />
+            </div>
+          </div>
+
+          <FadeUp immediate delay={0.3} className="pt-3 border-t border-[#111827]/15 flex items-center justify-between">
+            <span className="font-mono text-xs text-[#4B5563]">Hover or wait for wink:</span>
+            <Smile className="text-2xl font-bold" color="#D44983" winkEvery={2500} />
+          </FadeUp>
+        </div>
+      </div>
+    </Stage>
+  );
+}
+
 export const DEMOS: Record<string, React.ComponentType> = {
   'imagery-ratio-ladder': ImgRatioLadder,
   'imagery-cls-reserve': ImgCls,
@@ -1015,6 +1100,7 @@ export const DEMOS: Record<string, React.ComponentType> = {
   'touch-ax-focus': TouchAxFocus,
   'touch-user-valid': TouchUserValid,
   'motion-playground': MotionPlayground,
+  'motion-editorial-showcase': MotionEditorialShowcase,
   'motion-reduced-compare': MotionReduced,
   'motion-transform-only': MotionTransform,
   'motion-never': MotionNever,

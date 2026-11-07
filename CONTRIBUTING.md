@@ -25,7 +25,22 @@ Before submitting a Pull Request, verify that your changes comply with the follo
    - Every animation must honor `prefers-reduced-motion` via `MotionProvider`.
 
 4. **Zero Raw Hex in Components**:
-   - Component styles must reference semantic tokens (`--color-sandstone-light`, `--color-accent-mark`, etc.) rather than hardcoded hex values.
+   - Component styles must reference semantic tokens (`--a-bg`, `--a-surface`, `--a-ink`, `--a-accent`, etc.) rather than hardcoded hex values.
+
+---
+
+## ✦ Adding a New Brand Theme or Forking Accént
+
+If you are building a site with its own brand identity (such as `colonhyphenbracket.pink` vs. `pipes.pink`) or creating a community theme:
+
+1. **Fork the repository** (`https://github.com/rorshockbtc/accent-ui`) and create a feature branch (`git checkout -b feat/theme-your-brand`).
+2. **Register your brand profile in `src/styles/themes.ts`**:
+   - Add your `BrandProfileId` and provide both `light` and `dark` token maps (`--a-bg`, `--a-surface`, `--a-ink`, `--a-muted`, `--a-accent`, `--a-accent-fill`, `--a-sky`, `--a-radius-cta`).
+   - Verify that all text/background pairs pass WCAG AA (≥ 4.5:1) or AAA (≥ 7.0:1) using `getContrastRatio(fg, bg)` from `src/styles/design-tokens.ts`.
+3. **Test in the Live Theme Switcher**:
+   - Run `npm run dev` and toggle your theme in the top header bar and on the homepage `Multi-Brand Theme Engine` stage.
+4. **Open a Pull Request**:
+   - Upstream your theme or motion primitive back to `rorshockbtc/accent-ui` so all sites in the ecosystem stay unified.
 
 ---
 

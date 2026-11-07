@@ -85,33 +85,51 @@ export function HeaderAction() {
 }
 ```
 
-### 3. Using Two-Tier Motion Primitives
+### 3. Using Two-Tier & Corporate Motion Primitives
 
 ```tsx
-import { 
-  MotionProvider, 
-  AccentEditorialReveal, 
-  AccentRevealText 
+import {
+  MotionProvider,
+  RiseLines,
+  FadeUp,
+  Hairline,
+  ScaryHeadline,
+  Smile,
+  AccentRevealText,
+  HOME_SCARY_PAIRS,
 } from 'accent-ui';
 
 export default function EditorialHero() {
   return (
     <MotionProvider>
       <section className="py-24 max-w-4xl mx-auto">
-        <AccentRevealText 
-          text="Knowledge settlement at the speed of thought."
-          as="h1"
-          className="text-5xl font-serif font-bold text-stone-900"
-        />
-        <AccentEditorialReveal delay={0.2}>
-          <p className="mt-6 text-xl text-stone-600">
-            A restrained, tactile design system for human-in-the-loop applications.
+        <h1 className="text-5xl font-serif font-bold text-stone-900">
+          <ScaryHeadline pairs={HOME_SCARY_PAIRS} />
+        </h1>
+        <Hairline className="my-8" />
+        <FadeUp delay={0.2}>
+          <p className="text-xl text-stone-600">
+            A restrained, tactile design system for human-in-the-loop applications <Smile />
           </p>
-        </AccentEditorialReveal>
+        </FadeUp>
       </section>
     </MotionProvider>
   );
 }
+```
+
+### 4. Multi-Brand Theming & Custom Brand Forks
+
+Accént ships with three built-in brand presets in `src/styles/themes.ts`:
+- `editorial-sandstone` (**Pipes Editorial** — Fraunces + Inter, Warm Sandstone `#E8E2D5`, Sovereign Pink `#D44983`)
+- `playful-principal` (**CHB Corporate** — Bricolage Grotesque + Newsreader, Alabaster `#FAF8F5`, Hot Pink `#FE299E`, pill CTAs)
+- `albers-perspectives` (**Albers Sandstone** — Warm Sandstone `#EAE0D0`, Deep Espresso `#281B16`, Blueprint Cobalt `#0B5CAB`)
+
+```tsx
+import { getBrandThemeVars } from 'accent-ui';
+
+// Apply any brand preset's CSS custom properties to your root container:
+const themeVars = getBrandThemeVars('playful-principal', 'light');
 ```
 
 ---

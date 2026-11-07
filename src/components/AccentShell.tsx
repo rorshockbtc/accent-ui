@@ -3,9 +3,15 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Moon, Sun, X, List } from 'lucide-react';
+import { Moon, Sun, X, List, Palette } from 'lucide-react';
 import { AnimatePresence, m } from 'framer-motion';
 import { BACKDROP_FADE, SHEET_SLIDE_UP, SPRING_LAYOUT } from '@/lib/motion/tokens';
+import {
+  BRAND_PROFILES,
+  BRAND_PROFILE_LIST,
+  getBrandThemeVars,
+  type BrandProfileId,
+} from '@/styles/themes';
 import type { AccentNavItem } from '@/content/accent/registry';
 import type { AccentSectionId } from '@/content/accent/types';
 
@@ -87,12 +93,18 @@ function SidebarNav({
 
 export function AccentShell({ nav, children }: { nav: Nav; children: React.ReactNode }) {
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
+  const [brand, setBrand] = useState<BrandProfileId>('editorial-sandstone');
   const [sheet, setSheet] = useState(false);
 
   useEffect(() => {
     const saved = window.localStorage.getItem('accent-theme') || window.localStorage.getItem('pipes_theme_mode');
     if (saved === 'dark' || saved === 'light') setTheme(saved);
+    const savedBrand = window.localStorage.getItem('accent-brand') as BrandProfileId | null;
+    if (savedBrand && savedBrand in BRAND_PROFILES) {
+      setBrand(savedBrand);
+    }
   }, []);
+
   useEffect(() => {
     window.localStorage.setItem('accent-theme', theme);
     window.localStorage.setItem('pipes_theme_mode', theme);
@@ -101,6 +113,13 @@ export function AccentShell({ nav, children }: { nav: Nav; children: React.React
     document.documentElement.setAttribute('data-accent-theme', theme);
     document.documentElement.style.colorScheme = theme;
   }, [theme]);
+
+  useEffect(() => {
+    window.localStorage.setItem('accent-brand', brand);
+    document.documentElement.setAttribute('data-accent-brand', brand);
+    window.dispatchEvent(new CustomEvent('accent-brand-change', { detail: brand }));
+  }, [brand]);
+
   useEffect(() => {
     if (!sheet) return;
     const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setSheet(false);
@@ -108,13 +127,29 @@ export function AccentShell({ nav, children }: { nav: Nav; children: React.React
     return () => window.removeEventListener('keydown', onKey);
   }, [sheet]);
 
+  const brandVars = getBrandThemeVars(brand, theme);
+  const activeProfile = BRAND_PROFILES[brand];
+
+  const cycleBrand = () => {
+    document.documentElement.classList.add('theme-fade');
+    window.setTimeout(() => document.documentElement.classList.remove('theme-fade'), 220);
+    const idx = BRAND_PROFILE_LIST.findIndex((p) => p.id === brand);
+    const next = BRAND_PROFILE_LIST[(idx + 1) % BRAND_PROFILE_LIST.length];
+    setBrand(next.id);
+  };
+
   return (
-    <div data-accent-theme={theme} className="accent-root w-full max-w-[100vw] overflow-x-clip min-h-screen bg-[var(--a-bg)] text-[var(--a-ink)]">
+    <div
+      data-accent-theme={theme}
+      data-accent-brand={brand}
+      style={brandVars as React.CSSProperties}
+      className="accent-root w-full max-w-[100vw] overflow-x-clip min-h-screen bg-[var(--a-bg)] text-[var(--a-ink)]"
+    >
       <a href="#accent-main" className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:bg-[var(--a-ink)] focus:text-[var(--a-bg)] focus:px-4 focus:py-2 focus:rounded-md">
         Skip to content
       </a>
       <header className="sticky top-0 z-40 h-16 border-b border-[var(--a-rule)] bg-[var(--a-bg)]/95 backdrop-blur">
-        <div className="mx-auto max-w-[1440px] h-full px-4 sm:px-6 flex items-center gap-4">
+        <div className="mx-auto max-w-[1440px] h-full px-4 sm:px-6 flex items-center gap-3 sm:gap-4">
           <button
             type="button"
             onClick={() => setSheet(true)}
@@ -125,10 +160,28 @@ export function AccentShell({ nav, children }: { nav: Nav; children: React.React
             <List className="h-5 w-5" aria-hidden />
           </button>
           <Link href="/design-system" className="min-h-[44px] inline-flex items-center"><AccentMark /></Link>
-          <span className="hidden md:inline text-sm text-[var(--a-muted)]">The Pipes Design System</span>
+          <span className="hidden xl:inline text-sm text-[var(--a-muted)]">The Pipes &amp; CHB Design System</span>
           <div className="ml-auto flex items-center gap-2">
-            <Link href="/design-system/rules.json" className="hidden sm:inline-flex min-h-[44px] items-center px-3 text-sm font-mono hover:underline">rules.json</Link>
-            <Link href="/" className="hidden sm:inline-flex min-h-[44px] items-center px-3 text-sm hover:underline">pipes.pink</Link>
+            {/* Multi-Brand Theme Preset Switcher */}
+            <button
+              type="button"
+              onClick={cycleBrand}
+              title={`Active Theme: ${activeProfile.name}. Click to switch brand preset.`}
+              aria-label={`Switch brand theme preset (current: ${activeProfile.name})`}
+              className="inline-flex min-h-[40px] items-center gap-2 rounded-md border border-[var(--a-rule)] bg-[var(--a-surface)] px-3 text-xs font-mono t-press t-color hover:border-[var(--a-ink)] active:scale-[0.98]"
+            >
+              <Palette className="h-3.5 w-3.5 text-[var(--a-accent)]" aria-hidden="true" />
+              <span className="hidden sm:inline text-[var(--a-muted)]">Theme:</span>
+              <span className="font-semibold text-[var(--a-ink)]">
+                {brand === 'editorial-sandstone'
+                  ? 'Pipes Editorial'
+                  : brand === 'playful-principal'
+                    ? 'CHB Playful-Principal'
+                    : 'Albers Sandstone'}
+              </span>
+            </button>
+            <Link href="/design-system/rules.json" className="hidden md:inline-flex min-h-[44px] items-center px-2.5 text-sm font-mono hover:underline">rules.json</Link>
+            <Link href="/" className="hidden sm:inline-flex min-h-[44px] items-center px-2.5 text-sm hover:underline">pipes.pink</Link>
             <button
               type="button"
               onClick={() => {

@@ -267,6 +267,33 @@ small, caption, figcaption {
     transition-duration: var(--duration-base, 200ms);
     transition-timing-function: var(--ease-accent, cubic-bezier(0.16, 1, 0.3, 1));
   }
+  .link-swipe {
+    background: linear-gradient(currentColor, currentColor) 0 100% / 0% 2px no-repeat;
+    transition: background-size 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .link-swipe:hover {
+    background-size: 100% 2px;
+  }
+}
+
+@keyframes chb-marquee {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.animate-chb-marquee {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+  animation: chb-marquee 16s linear infinite;
+}
+
+.animate-chb-marquee:hover {
+  animation-play-state: paused;
 }
 
 /* ==========================================================================

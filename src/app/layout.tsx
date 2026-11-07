@@ -1,11 +1,13 @@
 import type { Metadata } from 'next';
 import { AccentShell } from '@/components/AccentShell';
+import { MotionProvider } from '@/components/motion/MotionProvider';
 import { getAccentNav } from '@/content/accent/registry';
 import { ACCENT_FONT_CLASSES } from './fonts';
+import './globals.css';
 
 export const metadata: Metadata = {
   title: {
-    default: 'Accént · The Pipes Design System',
+    default: 'Accént · The Pipes & CHB Design System',
     template: '%s · Accént',
   },
   description:
@@ -14,8 +16,12 @@ export const metadata: Metadata = {
 
 export default function DesignSystemLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className={ACCENT_FONT_CLASSES}>
-      <AccentShell nav={getAccentNav()}>{children}</AccentShell>
-    </div>
+    <html lang="en">
+      <body className={ACCENT_FONT_CLASSES}>
+        <MotionProvider>
+          <AccentShell nav={getAccentNav()}>{children}</AccentShell>
+        </MotionProvider>
+      </body>
+    </html>
   );
 }

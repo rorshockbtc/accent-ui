@@ -24,11 +24,13 @@ Accent makes a clean distinction between high-frequency product workflows and lo
    - Easing: **cubic-bezier(0.16, 1, 0.3, 1)**.
    - Doctrine: Snappy, minimal, zero text movement, zero distraction. Respects attention.
 
-2. **Tier 2: Editorial Showcase Motion**
-   - Low-frequency, high-impact surfaces: the marketing homepage, public launch pages, and Romanov Thesis editions.
-   - Durations: **650ms** (fade in), **850ms** (reveal), **35ms** (stagger per word).
+2. **Tier 2: Editorial & Corporate Showcase Motion**
+   - Low-frequency, high-impact surfaces: the marketing homepage, Colon Hyphen Bracket corporate flagship (\`colonhyphenbracket.pink\`), public launch pages, and Romanov Thesis editions.
+   - Durations: **650ms** (fade in), **850ms–900ms** (masked line/word reveal), **35ms** (stagger per word).
    - Easing: **cubic-bezier(0.22, 1, 0.36, 1)** (soft settle inspired by Chicuinaco).
-   - Primitives: \`AccentRevealText\` (staggered word masks rising from below), \`AccentEditorialReveal\` (viewport card stagger), and \`AccentRevealImage\` (clip-path curtain reveals).
+   - Primitives: \`RiseLines\` (line-by-line masked display rise), \`ScaryHeadline\` (3-phase strike-through + spring swap), \`Smile\` (animated \`: - ]\` wink), \`FadeUp\`, \`Hairline\` (left-origin rule draw), \`AccentRevealText\` (staggered word masks), \`AccentEditorialReveal\`, and \`AccentRevealImage\` (clip-path curtain reveals).
+
+::demo:motion-editorial-showcase::
 
 ## Three durations (Tier 1 Product)
 

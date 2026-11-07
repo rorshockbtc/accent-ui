@@ -9,6 +9,7 @@ import {
   IBM_Plex_Sans,
   Public_Sans,
   Work_Sans,
+  Bricolage_Grotesque,
 } from 'next/font/google';
 
 /**
@@ -26,6 +27,7 @@ const sourceSans = Source_Sans_3({ subsets: ['latin'], display: 'swap', variable
 const plexSans = IBM_Plex_Sans({ subsets: ['latin'], display: 'swap', variable: '--font-plex-sans', weight: ['400', '500', '600', '700'] });
 const publicSans = Public_Sans({ subsets: ['latin'], display: 'swap', variable: '--font-public-sans' });
 const workSans = Work_Sans({ subsets: ['latin'], display: 'swap', variable: '--font-work-sans' });
+const bricolage = Bricolage_Grotesque({ subsets: ['latin'], display: 'swap', variable: '--font-bricolage', weight: ['400', '600', '700', '800'] });
 
 export const ACCENT_FONT_CLASSES = [
   ebGaramond,
@@ -38,6 +40,7 @@ export const ACCENT_FONT_CLASSES = [
   plexSans,
   publicSans,
   workSans,
+  bricolage,
 ]
   .map((f) => f.variable)
   .join(' ');

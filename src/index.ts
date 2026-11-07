@@ -3,6 +3,7 @@ export * from './components/editorial-motion';
 export * from './components/motion/MotionProvider';
 export * from './components/motion/MotionToggle';
 export * from './styles/design-tokens';
+export * from './styles/themes';
 export * from './lib/motion/tokens';
 export * from './content/accent/registry';
 export * from './content/accent/types';
