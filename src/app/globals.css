@@ -113,6 +113,11 @@
   --duration-slow: 320ms;
   --ease-accent: cubic-bezier(0.16, 1, 0.3, 1);
 
+  /* Accént 3.0 5-Axis Structural & Typographic Dialect Tokens */
+  --a-font-display: var(--font-serif), Georgia, serif;
+  --a-tracking-display: -0.02em;
+  --a-radius-cta: 6px;
+
   color-scheme: light;
 }
 
@@ -442,4 +447,13 @@ html.theme-fade *::after {
   padding: 0.1em 0.35em;
   border-radius: 4px;
   background: var(--a-rule);
+}
+
+/* Accént 3.0 Adaptive Display Typography & Structural Dialect Binding */
+.accent-root .font-serif,
+.accent-root h1,
+.accent-root h2,
+.accent-root h3 {
+  font-family: var(--a-font-display, var(--font-serif), Georgia, serif);
+  letter-spacing: var(--a-tracking-display, -0.02em);
 }

@@ -20,9 +20,9 @@ function getButtonClasses(
     'inline-flex items-center justify-center gap-2 font-sans font-semibold t-press t-color cursor-pointer select-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--a-accent)] disabled:opacity-45 disabled:pointer-events-none';
 
   const sizeMap: Record<AccentButtonSize, string> = {
-    sm: 'min-h-[44px] px-3.5 text-xs rounded-md',
-    md: 'min-h-[44px] px-5 text-sm rounded-md',
-    lg: 'min-h-[48px] px-6 text-sm uppercase tracking-wider rounded-md',
+    sm: 'min-h-[44px] px-3.5 text-xs rounded-[var(--a-radius-cta,6px)]',
+    md: 'min-h-[44px] px-5 text-sm rounded-[var(--a-radius-cta,6px)]',
+    lg: 'min-h-[48px] px-6 text-sm uppercase tracking-wider rounded-[var(--a-radius-cta,6px)]',
   };
 
   const variantMap: Record<AccentButtonVariant, string> = {

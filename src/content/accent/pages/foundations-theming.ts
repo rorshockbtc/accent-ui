@@ -38,13 +38,13 @@ Instead of hardcoding rogue hex values inside component files, define your proje
 2. Runs \`validateThemeContrast()\` against both light and dark modes to verify that body ink (\`>= 7.0:1\` AAA), muted copy (\`>= 4.5:1\` AA), and CTA button fills (\`>= 4.5:1\` AA) pass WCAG 2.1 math.
 3. Generates both Accént \`--a-*\` variables **and** shadcn/ui bridge variables (\`--background\`, \`--foreground\`, \`--card\`, \`--primary\`, \`--muted\`, \`--border\`, \`--ring\`, \`--radius\`) via \`getShadcnBridgeVars()\`.
 
-## How to fork and upstream improvements across GitHub repositories
+## How to adopt and govern Accént via \`STYLES.md\` (Zero PRs Required)
 
-To maximize open-source reuse and showcase architectural velocity across your GitHub profile:
+To separate operational agent workflows from design-system governance:
 
-1. **Official Presets Live in \`rorshockbtc/accent-ui\`**: All 7 flagship CHB brand profiles live in \`src/styles/themes.ts\`, and all shared Tier 2 choreography primitives (\`RiseLines\`, \`ScaryHeadline\`, \`Smile\`, \`FadeUp\`, \`Reveal\`, \`Hairline\`, \`Stagger\`, \`Eyebrow\`, \`EyebrowRule\`, \`GhostNumeral\`, \`useParallax\`, \`AccentRevealText\`, \`AccentRevealImage\`) live in \`src/components/editorial-motion/\`.
-2. **Downstream Projects Consume via Adapter**: Each project (\`chb-corporate-site\`, \`portfolio\`, \`chicuinaco\`, \`marigold\`, \`greater-than\`, \`pipes\`) declares its official \`BrandProfileId\` in \`AGENTS.md\` and maps its root CSS variables through \`getShadcnBridgeVars(brandId, mode)\`.
-3. **Upstream Novel Primitives via PR**: Whenever an agent invents a reusable motion primitive or layout pattern in a product repo (such as \`GhostNumeral\` in Chicuinaco or \`ScaryHeadline\` in CHB Corporate), upstream the generalized primitive into \`rorshockbtc/accent-ui\` using \`--a-*\` tokens.`,
+1. **\`STYLES.md\` is the Design System Control Plane**: Keep \`AGENTS.md\` strictly for operational agent instructions (test runners, database safety, deployment workflows). Place your project's design contract in \`STYLES.md\` at the repository root.
+2. **Self-Service Brand Studio & Optional Code Injection (\`design.pipes.pink\`)**: Non-technical founders, designers, and AI agents can customize all 5 axes on \`design.pipes.pink\`—including optional live CSS overrides and custom component rules (\`customExtension\`)—and export a ready-to-commit \`STYLES.md\` in one click without opening a single GitHub Pull Request.
+3. **Downstream Projects Consume via Adapter**: Each project (\`chb-corporate-site\`, \`portfolio\`, \`chicuinaco\`, \`marigold\`, \`greater-than\`, \`pipes\`) declares its official \`BrandProfileId\` in \`STYLES.md\` and \`accent.config.ts\`, mapping its root CSS variables through \`getShadcnBridgeVars(brandId, mode)\` and \`deriveAccessibleAccent()\`.`,
 
     specs: `## Official Ecosystem Brand Profiles (\`src/styles/themes.ts\`)
 
