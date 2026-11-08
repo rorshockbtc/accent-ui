@@ -14,11 +14,11 @@ Movement is the strongest attention signal a screen has. Our eyes evolved to not
 
 Good motion explains. A menu that slides out from its button shows where it came from. A card that expands into a page shows that the page is that card, enlarged. A toast that fades in at the corner says "something happened, no rush." Motion that doesn't explain anything is decoration, and decoration that moves is the most distracting kind.
 
-## Two tiers of motion: Product vs. Editorial Showcase
+## Three tiers of motion: Product, Editorial Showcase & Project Sandbox
 
-Accent makes a clean distinction between high-frequency product workflows and low-frequency showcase surfaces:
+Accent distinguishes between high-frequency product workflows, editorial showcases, and autonomous project extensions:
 
-1. **Tier 1: Product / Operational Motion**
+1. **Tier 1: Product / Operational Motion (Baseline Invariant)**
    - High-frequency daily usage: exploring pipes, writing notes, toggling views, opening drawers.
    - Durations: **120ms** (micro/tap), **200ms** (base/menus), **320ms** (slow/panels).
    - Easing: **cubic-bezier(0.16, 1, 0.3, 1)**.
@@ -30,7 +30,19 @@ Accent makes a clean distinction between high-frequency product workflows and lo
    - Easing: **cubic-bezier(0.22, 1, 0.36, 1)** (soft settle inspired by Chicuinaco).
    - Primitives: \`RiseLines\` (line-by-line masked display rise), \`ScaryHeadline\` (3-phase strike-through + spring swap), \`Smile\` (animated \`: - ]\` wink), \`FadeUp\`, \`Hairline\` (left-origin rule draw), \`AccentRevealText\` (staggered word masks), \`AccentEditorialReveal\`, and \`AccentRevealImage\` (clip-path curtain reveals).
 
+3. **Tier 3: Project Domain Sandbox & Sovereign STYLES.md Dialects**
+   - Domain-specific physical gestures and reassurance metaphors (e.g. \`StripeSecurityBeacon\` for PCI-DSS checkout radar, \`BallFlightReveal\` for golf ball physics, or custom drawer springs).
+   - Governing Rule: Projects adopt Tier 1 & Tier 2 as non-negotiable invariants, then freely invent Tier 3 primitives codified inside their root \`STYLES.md\` (Section 5: Motion Dialect).
+
 ::demo:motion-editorial-showcase::
+
+## Zero-to-One Motion Adoption for New Repositories
+
+When bringing an external or newly created repository from **zero motion** into the Accént ecosystem:
+1. **Fork or Reference Upstream**: Link or fork \`rorshockbtc/accent-ui\` to inherit canonical tokens and providers.
+2. **Install Invariant Baseline**: Mount \`<MotionProvider>\` (\`LazyMotion features={domAnimation}\`), enforce GPU-safe transforms (\`transform\`, \`opacity\`, \`clipPath\`), and respect \`prefers-reduced-motion\`.
+3. **Deploy Editorial Entrances**: Use \`<RiseLines />\` on display titles, \`<Hairline />\` on dividers, and \`.t-press\` on primary controls.
+4. **Invent Domain Primitives**: Create bespoke choreography tailored to your product and write them into \`STYLES.md\`.
 
 ## Three durations (Tier 1 Product)
 
