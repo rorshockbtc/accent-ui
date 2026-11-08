@@ -29,7 +29,7 @@ export const metadata: Metadata = {
 const START = [
   { slug: 'start/introduction', label: 'New here', text: 'What Accént is and how to read it.' },
   { slug: 'foundations/motion', label: 'Motion & Choreography', text: 'Tier 1 operational vs. Tier 2 editorial & corporate motion.' },
-  { slug: 'essays/mixing-typefaces', label: 'Choosing fonts', text: 'Pair Fraunces or Bricolage Grotesque with Inter and JetBrains Mono.' },
+  { slug: 'foundations/theming', label: 'Theming & Engineered Drift', text: '7 brand presets, defineAccentTheme(), and WCAG contrast math.' },
   { slug: 'ai/rules', label: 'Building with AI', text: 'Rules a local model must never break.' },
 ];
 

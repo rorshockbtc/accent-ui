@@ -214,7 +214,7 @@ export function AccentHeroMotionShowcase() {
               <button
                 key={profile.id}
                 type="button"
-                onClick={() => selectBrand(profile.id)}
+                onClick={() => selectBrand(profile.id as BrandProfileId)}
                 aria-pressed={isSelected}
                 className={`text-left rounded-md p-5 border transition-all cursor-pointer flex flex-col justify-between ${
                   isSelected

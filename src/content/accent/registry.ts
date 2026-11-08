@@ -39,6 +39,7 @@ import { page as foundationsElevation } from './pages/foundations-elevation';
 import { page as foundationsDarkTheme } from './pages/foundations-dark-theme';
 import { page as foundationsWriting } from './pages/foundations-writing';
 import { page as foundationsBrand } from './pages/foundations-brand';
+import { page as foundationsTheming } from './pages/foundations-theming';
 import { page as componentSelect } from './pages/component-select';
 import { page as componentSelectionControls } from './pages/component-selection-controls';
 import { page as componentTabs } from './pages/component-tabs';
@@ -78,6 +79,7 @@ export const ACCENT_PAGES: AccentPage[] = [
   foundationsDarkTheme,
   foundationsWriting,
   foundationsBrand,
+  foundationsTheming,
   foundationsLayout,
   foundationsTouch,
   foundationsMotion,

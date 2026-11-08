@@ -1,7 +1,14 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
-import { AnimatePresence, m, type HTMLMotionProps } from 'framer-motion';
+import React, { useEffect, useRef, useState } from 'react';
+import {
+  AnimatePresence,
+  m,
+  useScroll,
+  useTransform,
+  type HTMLMotionProps,
+  type MotionValue,
+} from 'framer-motion';
 import { useMotionPreference } from '@/components/motion/MotionProvider';
 import { EASE_EDITORIAL } from '@/lib/motion/tokens';
 
@@ -477,3 +484,129 @@ export function ScaryHeadline({
 }
 
 export const AccentStrikeReplace = ScaryHeadline;
+
+// --------------------------------------------------------------------------
+// 8. Reveal — Configurable scroll reveal (Portfolio / Cassandra adapter alias)
+// --------------------------------------------------------------------------
+export interface RevealProps extends FadeUpProps {
+  duration?: number;
+}
+
+/**
+ * Configurable scroll-triggered settle reveal (`duration = 0.72, y = 20`).
+ * Upstreamed from `rorshockbtc/portfolio` (`client/src/components/motion/primitives.tsx`).
+ */
+export function Reveal({
+  children,
+  className = '',
+  delay = 0,
+  y = 20,
+  duration = 0.72,
+  immediate = false,
+}: RevealProps) {
+  const { isReduced } = useMotionPreference();
+
+  return (
+    <m.div
+      className={className}
+      initial={isReduced ? { opacity: 0 } : { opacity: 0, y }}
+      {...(immediate
+        ? { animate: { opacity: 1, y: 0 } }
+        : {
+            whileInView: { opacity: 1, y: 0 },
+            viewport: { once: true, margin: '-8% 0px' },
+          })}
+      transition={{
+        duration: isReduced ? 0.2 : duration,
+        ease: EASE_EDITORIAL,
+        delay,
+      }}
+    >
+      {children}
+    </m.div>
+  );
+}
+
+// --------------------------------------------------------------------------
+// 9. useParallax & GhostNumeral — Subtle scroll-tied parallax & ghost index
+// --------------------------------------------------------------------------
+/**
+ * Scroll-tied vertical parallax transform hook (`[-distance, distance]`).
+ * Upstreamed from `rorshockbtc/chicuinaco` (`client/src/components/motion.tsx`).
+ */
+export function useParallax(
+  ref: React.RefObject<HTMLElement | null>,
+  distance = 40
+): MotionValue<number> {
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ['start end', 'end start'],
+  });
+  return useTransform(scrollYProgress, [0, 1], [-distance, distance]);
+}
+
+export interface GhostNumeralProps {
+  value: string;
+  className?: string;
+}
+
+/**
+ * Giant low-opacity archival background numeral (`01`, `02`, `§`) with subtle scroll parallax.
+ * Upstreamed from `rorshockbtc/chicuinaco` (`client/src/components/motion.tsx`).
+ */
+export function GhostNumeral({ value, className = '' }: GhostNumeralProps) {
+  const { isReduced } = useMotionPreference();
+  const ref = useRef<HTMLDivElement>(null);
+  const y = useParallax(ref, isReduced ? 0 : 28);
+
+  return (
+    <m.div
+      ref={ref}
+      style={isReduced ? undefined : { y }}
+      aria-hidden="true"
+      className={`pointer-events-none select-none font-serif font-light leading-none tracking-[-0.05em] text-[clamp(7rem,18vw,16rem)] text-[var(--a-ink)] opacity-[0.05] ${className}`}
+    >
+      {value}
+    </m.div>
+  );
+}
+
+// --------------------------------------------------------------------------
+// 10. EyebrowRule — Drawn-line + tabular index eyebrow (Chicuinaco adapter)
+// --------------------------------------------------------------------------
+export interface EyebrowRuleProps {
+  children: React.ReactNode;
+  index?: string;
+  className?: string;
+}
+
+/**
+ * Animated left-drawn rule (`scaleX: 0 -> 1`) paired with an optional tabular index (`01 /`).
+ * Upstreamed from `rorshockbtc/chicuinaco` (`client/src/components/motion.tsx`).
+ */
+export function EyebrowRule({ children, index, className = '' }: EyebrowRuleProps) {
+  const { isReduced } = useMotionPreference();
+
+  return (
+    <m.div
+      initial={isReduced ? { opacity: 0 } : { opacity: 0, y: 8 }}
+      whileInView={isReduced ? { opacity: 1 } : { opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '-10% 0px' }}
+      transition={{ duration: isReduced ? 0.2 : 0.6, ease: EASE_EDITORIAL }}
+      className={`inline-flex items-center gap-3 font-mono text-xs uppercase tracking-[0.16em] text-[var(--a-accent-text)] ${className}`}
+    >
+      <m.span
+        initial={isReduced ? { opacity: 1 } : { scaleX: 0 }}
+        whileInView={isReduced ? { opacity: 1 } : { scaleX: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: isReduced ? 0.2 : 0.7, delay: 0.1, ease: EASE_EDITORIAL }}
+        style={{ transformOrigin: 'left center' }}
+        className="h-px w-6 bg-[var(--a-accent)]"
+        aria-hidden="true"
+      />
+      {index ? <span className="tabular-nums opacity-65">{index}</span> : null}
+      <span>{children}</span>
+    </m.div>
+  );
+}
+
