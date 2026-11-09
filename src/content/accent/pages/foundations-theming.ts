@@ -48,15 +48,15 @@ To separate operational agent workflows from design-system governance:
 
     specs: `## Official Ecosystem Brand Profiles (\`src/styles/themes.ts\`)
 
-| Mark | Profile ID | Name & Property | Display + Sans | Light Canvas (\`--a-bg\`) | Light Accent (\`--a-accent-fill\`) | CTA Radius |
+| Profile ID | Name & Property | Mark | Display + Sans | Light Canvas (\`--a-bg\`) | Light Accent (\`--a-accent-fill\`) | CTA Radius |
 |---|---|---|---|---|---|---|
-| \`´\` | \`editorial-sandstone\` | **Pipes Protocol** (\`pipes.pink\`) | Fraunces + Inter | \`#E8E2D5\` | \`#B8326D\` | \`6px\` |
-| \`: - ]\` | \`playful-principal\` | **CHB Corporate** (\`colonhyphenbracket.pink\`) | Bricolage Grotesque + Inter | \`#FAF8F5\` | \`#B81468\` (\`#FE299E\` mark) | \`9999px\` |
-| \`; - ]\` | \`albers-perspectives\` | **Albers Perspectives** (\`colonhyphenbracket.pink\`) | Newsreader + Inter | \`#EAE0D0\` | \`#B81468\` | \`10px\` |
-| \`>_\` | \`cassandra-noir\` | **Kyle Portfolio** (\`kyle.colonhyphenbracket.pink\`) | Cormorant Garamond + Inter | \`#EAE0D0\` (Dark: \`#161413\`) | \`#B81468\` (Dark: \`#D9777F\`) | \`6px\` |
-| \`01 /\` | \`hacienda-emerald\` | **Chicuinaco Estate** (\`chicuinaco\`) | Fraunces + Plus Jakarta Sans | \`#E8E2D5\` | \`#1B5E3A\` (Dark: \`#B8E986\`) | \`4px\` |
-| \`§\` | \`terracotta-civic\` | **Marigold Analytics** (\`marigold\`) | Fraunces + Inter | \`#E8E2D5\` (\`#FDFBF7\` card) | \`#AD3617\` | \`12px\` |
-| \`>\` | \`greater-terminal\` | **Greater \`>\` AI** (\`greater-than\`) | Major Mono Display + Inter | \`#F7F5F0\` (Dark: \`#0A0A0A\`) | \`#B81468\` | \`4px\` |
+| \`editorial-sandstone\` | **Pipes Protocol** (\`pipes.pink\`) | \`´\` | Fraunces + Inter | \`#E8E2D5\` | \`#B8326D\` | \`6px\` |
+| \`playful-principal\` | **CHB Corporate** (\`colonhyphenbracket.pink\`) | \`: - ]\` | Bricolage Grotesque + Inter | \`#FAF8F5\` | \`#B81468\` (\`#FE299E\` mark) | \`9999px\` |
+| \`albers-perspectives\` | **Albers Perspectives** (\`colonhyphenbracket.pink\`) | \`; - ]\` | Newsreader + Inter | \`#EAE0D0\` | \`#B81468\` | \`10px\` |
+| \`cassandra-noir\` | **Kyle Portfolio** (\`kyle.colonhyphenbracket.pink\`) | \`>_\` | Cormorant Garamond + Inter | \`#EAE0D0\` (Dark: \`#161413\`) | \`#B81468\` (Dark: \`#D9777F\`) | \`6px\` |
+| \`hacienda-emerald\` | **Chicuinaco Estate** (\`chicuinaco\`) | \`01 /\` | Fraunces + Plus Jakarta Sans | \`#E8E2D5\` | \`#1B5E3A\` (Dark: \`#B8E986\`) | \`4px\` |
+| \`terracotta-civic\` | **Marigold Analytics** (\`marigold\`) | \`§\` | Fraunces + Inter | \`#E8E2D5\` (\`#FDFBF7\` card) | \`#AD3617\` | \`12px\` |
+| \`greater-terminal\` | **Greater \`>\` AI** (\`greater-than\`) | \`>\` | Major Mono Display + Inter | \`#F7F5F0\` (Dark: \`#0A0A0A\`) | \`#B81468\` | \`4px\` |
 
 ## Code: Defining a Custom Theme Adapter (\`accent.config.ts\`)
 

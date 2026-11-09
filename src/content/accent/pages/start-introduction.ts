@@ -10,9 +10,9 @@ export const page: AccentPage = {
   tabs: {
     overview: `## What Accént is
 
-Accént is the design system behind Pipes. It is the set of decisions that makes a Pipes page, a ! Bang website, or a Colon Hyphen Bracket client project feel like it was made on purpose: the grid, the type, the colors, the components, and the reasons behind each of them.
+Accént is the open-source design system behind Pipes, available as MIT-licensed software on GitHub at [github.com/rorshockbtc/accent-ui](https://github.com/rorshockbtc/accent-ui). It is the set of decisions that makes a Pipes page, a ! Bang website, or a Colon Hyphen Bracket client project feel like it was made on purpose: the 8-point grid, the editorial type, the colors, the two-tier motion architecture, the components, and the reasons behind each of them.
 
-It is also a teaching document. Most design systems are written for the people who already know design. They list tokens and props and assume you understand why a 13px floor exists or why your prices look wrong in Georgia. Accént is written for the person who does not know yet, and for the AI model they are building with.
+It is also an open, malleable teaching document. Most design systems are written for the people who already know design. They list tokens and props and assume you understand why a 13px floor exists or why your prices look wrong in Georgia. Accént is written for the person who does not know yet, for engineers building sovereign products, and for the local AI models they are pair-programming with.
 
 ## Why the accent mark
 

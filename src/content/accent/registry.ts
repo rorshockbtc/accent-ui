@@ -34,12 +34,23 @@ import { page as patternStates } from './pages/pattern-states';
 import { page as patternBang } from './pages/pattern-bang';
 
 import { page as aiRules } from './pages/ai-rules';
+import { page as aiStylesMd } from './pages/ai-styles-md';
+import { page as aiAgentAdapters } from './pages/ai-agent-adapters';
+import { page as aiMcpAndCli } from './pages/ai-mcp-and-cli';
 import { page as startGlossary } from './pages/start-glossary';
+import { page as foundationsTokens } from './pages/foundations-tokens';
+import { page as foundationsAccessibility } from './pages/foundations-accessibility';
 import { page as foundationsElevation } from './pages/foundations-elevation';
 import { page as foundationsDarkTheme } from './pages/foundations-dark-theme';
 import { page as foundationsWriting } from './pages/foundations-writing';
 import { page as foundationsBrand } from './pages/foundations-brand';
 import { page as foundationsTheming } from './pages/foundations-theming';
+import { page as componentPedestal } from './pages/component-pedestal';
+import { page as componentTable } from './pages/component-table';
+import { page as componentCommandPalette } from './pages/component-command-palette';
+import { page as componentCodeBlock } from './pages/component-code-block';
+import { page as componentAccordion } from './pages/component-accordion';
+import { page as componentSheet } from './pages/component-sheet';
 import { page as componentSelect } from './pages/component-select';
 import { page as componentSelectionControls } from './pages/component-selection-controls';
 import { page as componentTabs } from './pages/component-tabs';
@@ -49,6 +60,8 @@ import { page as componentAvatar } from './pages/component-avatar';
 import { page as componentPagination } from './pages/component-pagination';
 import { page as componentAudioDispatch } from './pages/component-audio-dispatch';
 import { page as componentTooltip } from './pages/component-tooltip';
+import { page as patternOnboarding } from './pages/pattern-onboarding';
+import { page as patternCrossPlatform } from './pages/pattern-cross-platform';
 
 export const ACCENT_SECTIONS: { id: AccentSectionId; label: string }[] = [
   { id: 'start', label: 'Start here' },
@@ -69,9 +82,11 @@ export const ACCENT_PAGES: AccentPage[] = [
   essayReliefFocus,
   essayMixingType,
   essayStepwise,
+  foundationsTokens,
   foundationsGrid,
   foundationsTypography,
   foundationsColor,
+  foundationsAccessibility,
   foundationsIconography,
   foundationsImagery,
   foundationsShape,
@@ -83,6 +98,7 @@ export const ACCENT_PAGES: AccentPage[] = [
   foundationsLayout,
   foundationsTouch,
   foundationsMotion,
+  componentPedestal,
   componentButton,
   componentBadge,
   componentInput,
@@ -90,6 +106,11 @@ export const ACCENT_PAGES: AccentPage[] = [
   componentSelectionControls,
   componentTabs,
   componentCard,
+  componentTable,
+  componentCommandPalette,
+  componentCodeBlock,
+  componentAccordion,
+  componentSheet,
   componentDialog,
   componentToast,
   componentAvatar,
@@ -99,12 +120,17 @@ export const ACCENT_PAGES: AccentPage[] = [
   componentNavigation,
   componentAudioDispatch,
   componentChart,
+  patternOnboarding,
   patternArticle,
   patternPortfolio,
   patternMobile,
+  patternCrossPlatform,
   patternStates,
   patternBang,
   aiRules,
+  aiStylesMd,
+  aiAgentAdapters,
+  aiMcpAndCli,
 ];
 
 export function getAccentPage(slug: string): AccentPage | undefined {

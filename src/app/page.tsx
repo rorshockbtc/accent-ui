@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Palette, Code2, Layers, LayoutTemplate, Terminal, Sparkles } from 'lucide-react';
 import { ACCENT_PAGES, ACCENT_SECTIONS, getAllAccentRules } from '@/content/accent/registry';
 import {
   DESIGN_TOKENS,
@@ -19,18 +19,64 @@ import {
 } from '@/components/editorial-motion/AccentBrandMotion';
 import { AccentRevealText } from '@/components/editorial-motion/AccentRevealText';
 import { AccentHeroMotionShowcase } from '@/components/AccentHeroMotionShowcase';
+import { AccentAstryxPowerStage } from '@/components/AccentAstryxPowerStage';
 
 export const metadata: Metadata = {
-  title: 'Accént 3.0 · The Pipes & CHB Design System',
+  title: 'Accént 3.0 · The Exhaustive Agent-Ready Design System',
   description:
-    'Grids, typography, Dual-Accent color (Sovereign Pink + Crystalline Sky Blue), multi-brand theming, and choreography primitives. Written for non-designers, engineers and local AI models.',
+    'Grids, typography, Dual-Accent color (Sovereign Pink + Crystalline Sky Blue), 7-dialect 5-Axis theming, STYLES.md governance, and choreography primitives. Written for non-designers, engineers, and AI agents.',
 };
+
+const STUDIOS = [
+  {
+    href: '/design-system/themes',
+    eyebrow: '01 · 5-Axis Theme Studio',
+    title: '7 Brand Dialects · Live 5-Surface Canvas',
+    description:
+      'Switch between Sovereign Editorial, Playful Principal, Studio Portfolio, Swiss Corporate, Warm Well, Terminal Grid, and High-Contrast Civic. Customize chromatic math, display typography, CTA geometry, choreography, and punctuation in real time across 5 full application surfaces.',
+    cta: 'Launch Theme Studio',
+    badge: '7 Dialects · 5 Axes',
+    icon: Palette,
+  },
+  {
+    href: '/design-system/playground',
+    eyebrow: '02 · Live Code, Linter & STYLES.md Playground',
+    title: 'Split-Screen TSX Editor + Regex Ratchet',
+    description:
+      'Edit TSX templates, live-tweak all 5 axes plus custom CSS escape hatches, run the real-time regex rule linter against 200+ machine-enforceable rules, and compile zero-PR STYLES.md contracts or step-by-step 7B / 32B / Frontier agent prompts.',
+    cta: 'Open Playground',
+    badge: 'Live Linter · STYLES.md',
+    icon: Code2,
+  },
+  {
+    href: '/design-system/components',
+    eyebrow: '03 · Exhaustive Component & Pattern Matrix',
+    title: '57 Specification Pages · 4-Tab Architecture',
+    description:
+      'Every primitive, editorial layout, choreography engine, and AI governance specification includes Overview, Do/Don’t Guidelines, W3C DTCG Token & Prop Specs, WCAG Accessibility contracts, and regex violation patterns.',
+    cta: 'Browse 57 Specs',
+    badge: '57 Pages · 4 Tabs Each',
+    icon: Layers,
+  },
+  {
+    href: '/design-system/templates',
+    eyebrow: '04 · Multi-Brand Production Blueprints',
+    title: '6 Full-Page Architectural Templates',
+    description:
+      'Inspect Editorial Reading Room, 3-Archetype Browse Directory, Studio Portfolio & Toymaker Stage, Sovereign Publishing Desk, 3-Column Thesis Micro-Site, and DuckDB-Wasm Telemetry Ledger across every brand dialect.',
+    cta: 'Explore Templates',
+    badge: '6 Production Blueprints',
+    icon: LayoutTemplate,
+  },
+];
 
 const START = [
   { slug: 'start/introduction', label: 'New here', text: 'What Accént is and how to read it.' },
   { slug: 'foundations/motion', label: 'Motion & Choreography', text: 'Tier 1 operational vs. Tier 2 editorial & corporate motion.' },
   { slug: 'foundations/theming', label: 'Theming & Engineered Drift', text: '7 brand presets, defineAccentTheme(), and WCAG contrast math.' },
-  { slug: 'ai/rules', label: 'Building with AI', text: 'Rules a local model must never break.' },
+  { slug: 'ai/styles-md', label: 'STYLES.md Governance', text: 'Zero-PR design contracts separated from operational AGENTS.md.' },
+  { slug: 'ai/mcp-and-cli', label: 'MCP Server & CLI', text: 'Query rules.json, styles.md, and tokens from any coding agent.' },
+  { slug: 'ai/rules', label: 'Machine-Readable Rules', text: 'Every hard rule a local or frontier model must never break.' },
 ];
 
 export default function AccentHome() {
@@ -43,12 +89,13 @@ export default function AccentHome() {
   }));
 
   return (
-    <div className="py-12 sm:py-20 max-w-[1040px]">
+    <div className="py-12 sm:py-20 max-w-[1120px]">
       <section aria-labelledby="accent-hero">
         <FadeUp immediate y={12}>
-          <div className="flex flex-wrap items-center gap-2.5 mb-3">
-            <AccentBadge tone="pink">v{DESIGN_TOKENS.version}</AccentBadge>
-            <AccentBadge tone="sky">{ACCENT_PAGES.length} Pages · {totalRules} Enforced Rules</AccentBadge>
+          <div className="flex flex-wrap items-center gap-2.5 mb-4">
+            <AccentBadge tone="pink">v{DESIGN_TOKENS.version} · Exhaustive Edition</AccentBadge>
+            <AccentBadge tone="sky">{ACCENT_PAGES.length} Pages · {totalRules} Machine-Enforced Rules</AccentBadge>
+            <AccentBadge tone="neutral">7 Brand Dialects · 5-Axis Drift</AccentBadge>
             <AccentBadge tone="neutral">MIT Open Source · FOSS</AccentBadge>
             <a
               href="https://github.com/rorshockbtc/accent-ui"
@@ -64,31 +111,147 @@ export default function AccentHome() {
           </svg>
         </FadeUp>
 
-        <h1 id="accent-hero" className="mt-2 font-serif text-5xl sm:text-6xl leading-[1.05] font-semibold tracking-tight">
-          <RiseLines immediate lines={['Accént']} />
+        <h1 id="accent-hero" className="mt-2 font-serif text-5xl sm:text-7xl leading-[1.02] font-semibold tracking-tight">
+          <RiseLines immediate lines={['Accént 3.0']} />
         </h1>
 
-        <div className="mt-6 text-xl sm:text-2xl leading-9 max-w-[44ch]">
+        <div className="mt-6 text-xl sm:text-2xl leading-9 max-w-[52ch]">
           <AccentRevealText
             immediate
             as="p"
             delay={0.12}
-            text="The design system behind Pipes and Colon Hyphen Bracket. An accent changes how a word is spoken without changing the word. That is what design does to a product."
-            italicWords={[8]}
+            text="The exhaustive, malleable, agent-native design system behind Pipes, Colon Hyphen Bracket, and Greater. An accent changes how a word is spoken without changing the word—governing 7 distinct brand voices from one mathematical spine."
+            italicWords={[2, 3, 4]}
           />
         </div>
 
-        <FadeUp immediate delay={0.35} y={16}>
-          <p className="mt-4 text-base leading-7 text-[var(--a-muted)] max-w-[62ch]">
-            Written for people who are not designers yet, the engineers who build with them, and the small AI
-            models running on their laptops. Powered by a single W3C DTCG token source (<code className="font-mono text-xs">src/styles/design-tokens.json</code>), multi-brand theme presets (<code className="font-mono text-xs">src/styles/themes.ts</code>), and our Dual-Accent palette: <strong>Sovereign Pink</strong> and <strong>Crystalline Sky Blue</strong>.
+        <FadeUp immediate delay={0.3} y={16}>
+          <p className="mt-4 text-base leading-7 text-[var(--a-muted)] max-w-[68ch]">
+            Written for non-designers, principal engineers, and both local 7B models and frontier coding agents. Powered by a single W3C DTCG token source (<code className="font-mono text-xs">src/styles/design-tokens.json</code>), a 5-axis multi-brand theming engine (<code className="font-mono text-xs">src/styles/themes.ts</code>), zero-PR <code className="font-mono text-xs">STYLES.md</code> governance, and live machine-readable endpoints (<code className="font-mono text-xs">/design-system/styles.md</code> &amp; <code className="font-mono text-xs">/design-system/rules.json</code>).
           </p>
+
+          <div className="mt-8 flex flex-wrap items-center gap-3">
+            <Link
+              href="/design-system/themes"
+              className="inline-flex items-center gap-2 rounded-[var(--a-cta-radius,9999px)] bg-[var(--a-accent)] px-6 py-3 text-xs font-mono font-semibold uppercase tracking-[0.14em] text-[var(--a-accent-fg)] shadow-[var(--a-cta-shadow)] transition-colors hover:opacity-95"
+            >
+              <Palette className="h-4 w-4" aria-hidden />
+              Launch 5-Axis Theme Studio →
+            </Link>
+            <Link
+              href="/design-system/playground"
+              className="inline-flex items-center gap-2 rounded-[var(--a-cta-radius,9999px)] border border-[var(--a-ink)] bg-[var(--a-surface)] px-6 py-3 text-xs font-mono font-semibold uppercase tracking-[0.14em] text-[var(--a-ink)] transition-colors hover:border-[var(--a-accent)] hover:text-[var(--a-accent)]"
+            >
+              <Code2 className="h-4 w-4" aria-hidden />
+              Open Live Playground &amp; Linter
+            </Link>
+            <Link
+              href="/design-system/components"
+              className="inline-flex items-center gap-2 rounded-[var(--a-cta-radius,9999px)] border border-[var(--a-rule)] bg-[var(--a-bg)] px-5 py-3 text-xs font-mono font-semibold uppercase tracking-[0.14em] text-[var(--a-muted)] transition-colors hover:border-[var(--a-ink)] hover:text-[var(--a-ink)]"
+            >
+              Browse {ACCENT_PAGES.length} Specs ({totalRules} Rules)
+            </Link>
+          </div>
         </FadeUp>
       </section>
+
+      {/* 4 Interactive Studios Bento Matrix */}
+      <FadeUp delay={0.08}>
+        <section aria-labelledby="studios-heading" className="mt-16">
+          <div className="flex flex-wrap items-baseline justify-between gap-2 mb-4">
+            <h2 id="studios-heading" className="text-xs font-mono font-semibold uppercase tracking-[0.14em] text-[var(--a-accent)]">
+              Interactive Studios &amp; Agent Control Plane
+            </h2>
+            <div className="flex flex-wrap items-center gap-4 text-xs font-mono text-[var(--a-muted)]">
+              <a href="/design-system/styles.md" target="_blank" rel="noopener noreferrer" className="hover:text-[var(--a-accent)] transition-colors">
+                GET /design-system/styles.md ↗
+              </a>
+              <a href="/design-system/rules.json" target="_blank" rel="noopener noreferrer" className="hover:text-[var(--a-accent)] transition-colors">
+                GET /design-system/rules.json ↗
+              </a>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 border border-[var(--a-rule)] bg-[var(--a-surface)] divide-y md:divide-y-0 md:divide-x divide-[var(--a-rule)]">
+            {STUDIOS.slice(0, 2).map((studio) => {
+              const Icon = studio.icon;
+              return (
+                <Link
+                  key={studio.href}
+                  href={studio.href}
+                  className="group flex flex-col justify-between p-7 sm:p-9 transition-colors hover:bg-[var(--a-bg)]"
+                >
+                  <div>
+                    <div className="flex items-center justify-between gap-3">
+                      <span className="text-xs font-mono font-semibold uppercase tracking-[0.14em] text-[var(--a-accent)]">
+                        {studio.eyebrow}
+                      </span>
+                      <span className="inline-flex items-center gap-1.5 rounded-full border border-[var(--a-rule)] bg-[var(--a-bg)] px-2.5 py-0.5 text-xs font-mono text-[var(--a-muted)]">
+                        <Icon className="h-3.5 w-3.5 text-[var(--a-accent)]" aria-hidden />
+                        {studio.badge}
+                      </span>
+                    </div>
+                    <h3 className="mt-3 font-serif text-2xl sm:text-3xl font-semibold text-[var(--a-ink)] group-hover:text-[var(--a-accent)] transition-colors">
+                      {studio.title}
+                    </h3>
+                    <p className="mt-2.5 text-sm leading-relaxed text-[var(--a-muted)]">
+                      {studio.description}
+                    </p>
+                  </div>
+                  <div className="mt-6 pt-4 border-t border-[var(--a-rule)] flex items-center justify-between text-xs font-mono font-semibold uppercase tracking-[0.14em] text-[var(--a-ink)] group-hover:text-[var(--a-accent)]">
+                    <span>{studio.cta}</span>
+                    <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" aria-hidden />
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 border-x border-b border-[var(--a-rule)] bg-[var(--a-surface)] divide-y md:divide-y-0 md:divide-x divide-[var(--a-rule)]">
+            {STUDIOS.slice(2, 4).map((studio) => {
+              const Icon = studio.icon;
+              return (
+                <Link
+                  key={studio.href}
+                  href={studio.href}
+                  className="group flex flex-col justify-between p-7 sm:p-9 transition-colors hover:bg-[var(--a-bg)]"
+                >
+                  <div>
+                    <div className="flex items-center justify-between gap-3">
+                      <span className="text-xs font-mono font-semibold uppercase tracking-[0.14em] text-[var(--a-accent)]">
+                        {studio.eyebrow}
+                      </span>
+                      <span className="inline-flex items-center gap-1.5 rounded-full border border-[var(--a-rule)] bg-[var(--a-bg)] px-2.5 py-0.5 text-xs font-mono text-[var(--a-muted)]">
+                        <Icon className="h-3.5 w-3.5 text-[var(--a-accent)]" aria-hidden />
+                        {studio.badge}
+                      </span>
+                    </div>
+                    <h3 className="mt-3 font-serif text-2xl sm:text-3xl font-semibold text-[var(--a-ink)] group-hover:text-[var(--a-accent)] transition-colors">
+                      {studio.title}
+                    </h3>
+                    <p className="mt-2.5 text-sm leading-relaxed text-[var(--a-muted)]">
+                      {studio.description}
+                    </p>
+                  </div>
+                  <div className="mt-6 pt-4 border-t border-[var(--a-rule)] flex items-center justify-between text-xs font-mono font-semibold uppercase tracking-[0.14em] text-[var(--a-ink)] group-hover:text-[var(--a-accent)]">
+                    <span>{studio.cta}</span>
+                    <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" aria-hidden />
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
+        </section>
+      </FadeUp>
 
       {/* Interactive Corporate & Editorial Motion Showcase + Multi-Brand Theme Switcher */}
       <FadeUp delay={0.1}>
         <AccentHeroMotionShowcase />
+      </FadeUp>
+
+      {/* Agent Command Center & 5-Axis Architectural Benchmark Matrix */}
+      <FadeUp delay={0.12}>
+        <AccentAstryxPowerStage />
       </FadeUp>
 
       {/* Live Workbench: Dual-Accent & Surface Mode Specimen */}
@@ -175,17 +338,17 @@ export default function AccentHome() {
       <section aria-labelledby="start-heading" className="mt-16">
         <FadeUp>
           <h2 id="start-heading" className="text-xs font-semibold uppercase tracking-[0.12em] text-[var(--a-muted)]">
-            Start where you are
+            Start where you are · Human &amp; Agent Entry Points
           </h2>
         </FadeUp>
-        <Stagger className="mt-4 grid sm:grid-cols-2 border-t border-[var(--a-rule)]" staggerChildren={0.07}>
+        <Stagger className="mt-4 grid sm:grid-cols-2 lg:grid-cols-3 border-t border-l border-[var(--a-rule)]" staggerChildren={0.07}>
           {START.map((s) => (
-            <StaggerItem key={s.slug} className="border-b border-[var(--a-rule)] sm:odd:border-r">
-              <Link href={`/design-system/${s.slug}`} className="group flex min-h-[112px] flex-col justify-center p-6 t-color hover:bg-[var(--a-surface)]">
-                <span className="text-sm text-[var(--a-muted)]">{s.label}</span>
-                <span className="mt-1 flex items-center gap-2 text-lg font-medium">
+            <StaggerItem key={s.slug} className="border-b border-r border-[var(--a-rule)]">
+              <Link href={`/design-system/${s.slug}`} className="group flex min-h-[120px] flex-col justify-between p-6 t-color hover:bg-[var(--a-surface)]">
+                <span className="text-xs font-mono uppercase tracking-[0.12em] text-[var(--a-accent)]">{s.label}</span>
+                <span className="mt-2 flex items-center justify-between gap-2 text-base font-medium text-[var(--a-ink)]">
                   <span className="link-swipe">{s.text}</span>
-                  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" aria-hidden />
+                  <ArrowRight className="h-4 w-4 shrink-0 transition-transform group-hover:translate-x-1" aria-hidden />
                 </span>
               </Link>
             </StaggerItem>
@@ -260,7 +423,17 @@ export default function AccentHome() {
 
       <section aria-labelledby="contents-heading" className="mt-20">
         <FadeUp>
-          <h2 id="contents-heading" className="font-serif text-3xl leading-10 font-semibold">What&apos;s inside</h2>
+          <div className="flex flex-wrap items-baseline justify-between gap-3">
+            <h2 id="contents-heading" className="font-serif text-3xl leading-10 font-semibold">
+              Complete Specification Index ({ACCENT_PAGES.length} Pages · {totalRules} Rules)
+            </h2>
+            <Link
+              href="/design-system/components"
+              className="text-xs font-mono font-semibold uppercase tracking-[0.14em] text-[var(--a-accent)] hover:underline"
+            >
+              Open Interactive Matrix →
+            </Link>
+          </div>
         </FadeUp>
         <Stagger className="mt-8 grid gap-x-12 gap-y-10 sm:grid-cols-2" staggerChildren={0.08}>
           {counts.filter((s) => s.id !== 'start' && s.id !== 'essays').map((s) => (
@@ -269,7 +442,12 @@ export default function AccentHome() {
               <ul className="mt-3 space-y-1">
                 {ACCENT_PAGES.filter((p) => p.section === s.id).map((p) => (
                   <li key={p.slug}>
-                    <Link href={`/design-system/${p.slug}`} className="inline-flex min-h-[40px] items-center text-base link-swipe">{p.title}</Link>
+                    <Link href={`/design-system/${p.slug}`} className="inline-flex min-h-[40px] items-center justify-between w-full text-base link-swipe group">
+                      <span>{p.title}</span>
+                      <span className="text-xs font-mono text-[var(--a-muted)] group-hover:text-[var(--a-accent)]">
+                        {p.rules.length} rules
+                      </span>
+                    </Link>
                   </li>
                 ))}
               </ul>
