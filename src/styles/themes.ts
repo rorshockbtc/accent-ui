@@ -38,8 +38,6 @@ export interface CustomStyleExtension {
   rules?: string[];
   /** Optional React/Tailwind/TS code pattern snippet for downstream agents & developers */
   codeSnippet?: string;
-  /** Optional component names or token keys nominated for upstream graduation into Accént Core */
-  upstreamCandidates?: string[];
 }
 
 export interface BrandProfile<TId extends string = BrandProfileId> {
@@ -750,17 +748,18 @@ export function validateThemeContrast(profile: BrandProfile<string>): {
 export interface DefineAccentThemeInput {
   id: string;
   name: string;
-  tagline: string;
-  usedBy: string;
+  tagline?: string;
+  usedBy?: string;
   productionUrl?: string;
   repoUrl?: string;
   mark?: string;
   extends?: BrandProfileId;
+  accentPrimary?: string;
   typography?: Partial<BrandProfile['typography']>;
   structure?: Partial<NonNullable<BrandProfile['structure']>>;
   productSlots?: ProductColorSlot[];
   customExtension?: CustomStyleExtension;
-  tokens: {
+  tokens?: {
     light?: Partial<Record<string, string>>;
     dark?: Partial<Record<string, string>>;
   };
@@ -776,18 +775,27 @@ export function defineAccentTheme(input: DefineAccentThemeInput): BrandProfile<s
   contrastReport: ReturnType<typeof validateThemeContrast>;
   getCssVars: (mode: Mode) => Record<string, string>;
   toStylesMarkdown: () => string;
+  toFigmaVariablesJson: () => FigmaVariablesPayload;
+  toFigmaCodeConnect: () => string;
 } {
   const base = BRAND_PROFILES[input.extends ?? 'editorial-sandstone'];
 
   const cleanLight: Record<string, string> = { ...base.tokens.light };
-  if (input.tokens.light) {
+  if (input.tokens?.light) {
     for (const [k, v] of Object.entries(input.tokens.light)) {
       if (typeof v === 'string') cleanLight[k] = v;
     }
   }
+  if (input.accentPrimary) {
+    const derived = deriveAccessibleAccent(input.accentPrimary, cleanLight['--a-bg'] ?? '#FAF8F5');
+    cleanLight['--a-accent'] = derived.markHex;
+    cleanLight['--a-accent-fill'] = derived.fillHex;
+    cleanLight['--a-accent-fg'] = derived.fillForegroundHex;
+    cleanLight['--a-accent-text'] = derived.inlineTextHex;
+  }
 
   const cleanDark: Record<string, string> = { ...base.tokens.dark };
-  if (input.tokens.dark) {
+  if (input.tokens?.dark) {
     for (const [k, v] of Object.entries(input.tokens.dark)) {
       if (typeof v === 'string') cleanDark[k] = v;
     }
@@ -796,8 +804,8 @@ export function defineAccentTheme(input: DefineAccentThemeInput): BrandProfile<s
   const profile: BrandProfile<string> = {
     id: input.id,
     name: input.name,
-    tagline: input.tagline,
-    usedBy: input.usedBy,
+    tagline: input.tagline ?? base.tagline,
+    usedBy: input.usedBy ?? base.usedBy,
     productionUrl: input.productionUrl ?? base.productionUrl,
     repoUrl: input.repoUrl ?? base.repoUrl,
     mark: input.mark ?? base.mark,
@@ -825,7 +833,276 @@ export function defineAccentTheme(input: DefineAccentThemeInput): BrandProfile<s
     contrastReport,
     getCssVars: (mode: Mode) => getShadcnBridgeVars(profile, mode),
     toStylesMarkdown: () => generateStylesMarkdown(profile),
+    toFigmaVariablesJson: () => generateFigmaVariablesJson(profile),
+    toFigmaCodeConnect: () => generateFigmaCodeConnectManifest(profile),
   };
+}
+
+export interface FigmaVariablesPayload {
+  $schema: string;
+  version: string;
+  collection: {
+    name: string;
+    dialectId: string;
+    mark: string;
+    modes: ['Light', 'Dark'];
+  };
+  variables: {
+    color: Record<
+      string,
+      {
+        $type: 'color';
+        $description: string;
+        $extensions: {
+          'com.figma': {
+            scopes: string[];
+            codeSyntax: { WEB: string };
+          };
+        };
+        valuesByMode: {
+          Light: string;
+          Dark: string;
+        };
+      }
+    >;
+    typography: {
+      displayFamily: { $type: 'fontFamily'; $value: string };
+      serifFamily: { $type: 'fontFamily'; $value: string };
+      sansFamily: { $type: 'fontFamily'; $value: string };
+      monoFamily: { $type: 'fontFamily'; $value: string };
+      minimumFloorPx: { $type: 'dimension'; $value: '13px' };
+      displayTracking: { $type: 'string'; $value: string };
+      bodyLineHeight: { $type: 'string'; $value: string };
+    };
+    geometry: {
+      ctaRadius: { $type: 'dimension'; $value: string };
+      posture: { $type: 'string'; $value: string };
+      gridUnit: { $type: 'dimension'; $value: '8px' };
+      minTapTarget: { $type: 'dimension'; $value: '44px' };
+    };
+  };
+  tokensStudioSet: Record<string, unknown>;
+}
+
+/**
+ * Compiles any `BrandProfile` into a W3C DTCG + Figma Variables REST API & Tokens Studio
+ * bi-directional JSON bundle (`figma-tokens.json`), mapping every `--a-*` semantic variable
+ * into `Light` and `Dark` Figma Variable Modes with official `com.figma.codeSyntax.WEB` bindings.
+ */
+export function generateFigmaVariablesJson(
+  profile: BrandProfile<string>
+): FigmaVariablesPayload {
+  const l = profile.tokens.light;
+  const d = profile.tokens.dark;
+
+  const colorEntries: Array<{
+    key: string;
+    cssVar: string;
+    desc: string;
+    scopes: string[];
+  }> = [
+    {
+      key: 'canvas/bg',
+      cssVar: '--a-bg',
+      desc: 'Primary page canvas background (WCAG AAA with ink)',
+      scopes: ['FRAME_FILL', 'SHAPE_FILL'],
+    },
+    {
+      key: 'canvas/surface',
+      cssVar: '--a-surface',
+      desc: 'Elevated surface & archival reading card',
+      scopes: ['FRAME_FILL', 'SHAPE_FILL'],
+    },
+    {
+      key: 'canvas/well',
+      cssVar: '--a-well',
+      desc: 'Inner input or code well surface',
+      scopes: ['FRAME_FILL', 'SHAPE_FILL'],
+    },
+    {
+      key: 'text/ink',
+      cssVar: '--a-ink',
+      desc: 'Primary display & body ink (>= 7.0:1 AAA)',
+      scopes: ['TEXT_FILL', 'STROKE_COLOR'],
+    },
+    {
+      key: 'text/muted',
+      cssVar: '--a-muted',
+      desc: 'Secondary prose & metadata ink (>= 4.5:1 AA)',
+      scopes: ['TEXT_FILL'],
+    },
+    {
+      key: 'border/hairline',
+      cssVar: '--a-rule',
+      desc: '1px structural hairline rule divider',
+      scopes: ['STROKE_COLOR'],
+    },
+    {
+      key: 'accent/mark',
+      cssVar: '--a-accent',
+      desc: 'Electric signature punctuation mark (: - ], |||, ´) & focus ring',
+      scopes: ['TEXT_FILL', 'SHAPE_FILL', 'STROKE_COLOR'],
+    },
+    {
+      key: 'accent/fill',
+      cssVar: '--a-accent-fill',
+      desc: 'WCAG AA solid primary CTA button fill (>= 4.5:1 with accent/fg)',
+      scopes: ['FRAME_FILL', 'SHAPE_FILL'],
+    },
+    {
+      key: 'accent/fg',
+      cssVar: '--a-accent-fg',
+      desc: 'Foreground label on primary filled CTA buttons',
+      scopes: ['TEXT_FILL'],
+    },
+    {
+      key: 'accent/text',
+      cssVar: '--a-accent-text',
+      desc: 'WCAG AA inline accent text & links on canvas/bg',
+      scopes: ['TEXT_FILL'],
+    },
+    {
+      key: 'sky/fill',
+      cssVar: '--a-sky',
+      desc: 'Secondary interactive accent mark & highlight',
+      scopes: ['FRAME_FILL', 'SHAPE_FILL', 'TEXT_FILL'],
+    },
+    {
+      key: 'sky/surface',
+      cssVar: '--a-sky-surface',
+      desc: 'Tactile secondary surface tint',
+      scopes: ['FRAME_FILL', 'SHAPE_FILL'],
+    },
+    {
+      key: 'sky/text',
+      cssVar: '--a-sky-text',
+      desc: 'Accessible secondary inline text on canvas/bg',
+      scopes: ['TEXT_FILL'],
+    },
+  ];
+
+  const colorMap: FigmaVariablesPayload['variables']['color'] = {};
+  for (const item of colorEntries) {
+    colorMap[item.key] = {
+      $type: 'color',
+      $description: item.desc,
+      $extensions: {
+        'com.figma': {
+          scopes: item.scopes,
+          codeSyntax: { WEB: `var(${item.cssVar})` },
+        },
+      },
+      valuesByMode: {
+        Light: l[item.cssVar] ?? '#FAF8F5',
+        Dark: d[item.cssVar] ?? '#111827',
+      },
+    };
+  }
+
+  return {
+    $schema: 'https://design-tokens.github.io/community-group/format/',
+    version: '3.0.0',
+    collection: {
+      name: `Accént 3.0 · ${profile.name}`,
+      dialectId: profile.id,
+      mark: profile.mark,
+      modes: ['Light', 'Dark'],
+    },
+    variables: {
+      color: colorMap,
+      typography: {
+        displayFamily: { $type: 'fontFamily', $value: profile.typography.display },
+        serifFamily: { $type: 'fontFamily', $value: profile.typography.serif },
+        sansFamily: { $type: 'fontFamily', $value: profile.typography.sans },
+        monoFamily: { $type: 'fontFamily', $value: profile.typography.mono },
+        minimumFloorPx: { $type: 'dimension', $value: '13px' },
+        displayTracking: {
+          $type: 'string',
+          $value: profile.typography.displayTracking ?? '-0.02em',
+        },
+        bodyLineHeight: {
+          $type: 'string',
+          $value: profile.typography.bodyLineHeight ?? '1.65',
+        },
+      },
+      geometry: {
+        ctaRadius: {
+          $type: 'dimension',
+          $value: profile.structure?.ctaRadius ?? l['--a-radius-cta'] ?? '6px',
+        },
+        posture: {
+          $type: 'string',
+          $value: profile.structure?.posture ?? 'archival-spine',
+        },
+        gridUnit: { $type: 'dimension', $value: '8px' },
+        minTapTarget: { $type: 'dimension', $value: '44px' },
+      },
+    },
+    tokensStudioSet: {
+      [`accent-${profile.id}/light`]: l,
+      [`accent-${profile.id}/dark`]: d,
+      $themes: [
+        {
+          id: `${profile.id}-light`,
+          name: `${profile.name} (Light)`,
+          selectedTokenSets: { [`accent-${profile.id}/light`]: 'enabled' },
+        },
+        {
+          id: `${profile.id}-dark`,
+          name: `${profile.name} (Dark)`,
+          selectedTokenSets: { [`accent-${profile.id}/dark`]: 'enabled' },
+        },
+      ],
+    },
+  };
+}
+
+/**
+ * Compiles a Figma Code Connect (`*.figma.tsx`) manifest for Accént primitives so Figma Dev Mode
+ * surfaces exact `<AccentButton>`, `<ScaryHeadline>`, `<Smile>`, and open pedestal code snippets.
+ */
+export function generateFigmaCodeConnectManifest(profile: BrandProfile<string>): string {
+  return `// ${profile.id}.figma.tsx — Accént 3.0 Figma Code Connect Manifest (${profile.name})
+// Connect Figma Dev Mode components directly to @rorshockbtc/accent-ui & STYLES.md
+import figma from '@figma/code-connect';
+import { AccentButton, AccentBadge, ScaryHeadline, Smile } from '@rorshockbtc/accent-ui';
+
+// 1. Primary Action Button (bound to --a-accent-fill & --a-radius-cta: ${profile.structure?.ctaRadius ?? '6px'})
+figma.connect(AccentButton, 'https://www.figma.com/design/accent-ui-v3?node-id=101-1', {
+  props: {
+    label: figma.string('Label'),
+    variant: figma.enum('Variant', {
+      Primary: 'primary',
+      Secondary: 'secondary',
+      Ghost: 'ghost',
+    }),
+  },
+  example: (props) => (
+    <AccentButton variant={props.variant}>
+      {props.label}
+    </AccentButton>
+  ),
+});
+
+// 2. Signature 3-Phase Strike-Through Headline (bound to --a-accent: ${profile.tokens.light['--a-accent']})
+figma.connect(ScaryHeadline, 'https://www.figma.com/design/accent-ui-v3?node-id=102-4', {
+  props: {
+    accent: figma.string('Accent Token'),
+  },
+  example: () => (
+    <ScaryHeadline
+      accent="var(--a-accent)"
+      inkColor="var(--a-ink)"
+      struckColor="var(--a-muted)"
+    />
+  ),
+});
+
+// 3. Punctuation Identity Mark (${profile.mark})
+figma.connect(Smile, 'https://www.figma.com/design/accent-ui-v3?node-id=103-8', {
+  example: () => <Smile color="var(--a-accent)" winkEvery={3000} />,
+});
+`;
 }
 
 /**
@@ -857,13 +1134,6 @@ export function generateStylesMarkdown(profile: BrandProfile<string>): string {
   const customCodeSection = profile.customExtension?.codeSnippet
     ? `\n## 8. Custom Component / Agentic Pattern Extension\n\n\`\`\`tsx\n${profile.customExtension.codeSnippet.trim()}\n\`\`\`\n`
     : '';
-
-  const upstreamCandidatesSection =
-    profile.customExtension?.upstreamCandidates && profile.customExtension.upstreamCandidates.length > 0
-      ? `\n## 9. Upstream Contribution Pipeline Candidates\n\n> The following components or primitives are nominated for graduation back into \`@rorshockbtc/accent-ui\`:\n\n${profile.customExtension.upstreamCandidates
-          .map((c) => `- \`${c}\` (requires token parameterization & Layer 1 verification before upstream PR)`)
-          .join('\n')}\n`
-      : '';
 
   return `# STYLES.md — ${profile.name} (\`${profile.id}\`)
 
@@ -904,5 +1174,5 @@ ${slotsSection}
 - **CTA Geometry**: \`--a-radius-cta: ${profile.structure?.ctaRadius ?? l['--a-radius-cta'] ?? '6px'}\` with \`>= 44×44px\` minimum touch target area.
 - **Tier 1 Operational Motion**: \`120ms / 200ms / 320ms\` on \`cubic-bezier(0.16, 1, 0.3, 1)\`.
 - **Tier 2 Editorial & Brand Choreography**: \`550ms–900ms\` on \`cubic-bezier(0.22, 1, 0.36, 1)\` (\`RiseLines\`, \`ScaryHeadline\`, \`Smile\`, \`FadeUp\`, \`Hairline\`, \`GhostNumeral\`). Always honor \`prefers-reduced-motion: reduce\`.
-${customRulesSection}${customCssSection}${customCodeSection}${upstreamCandidatesSection}`;
+${customRulesSection}${customCssSection}${customCodeSection}`;
 }

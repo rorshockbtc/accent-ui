@@ -21,6 +21,7 @@ import {
   BRAND_PROFILE_LIST,
   deriveAccessibleAccent,
   generateStylesMarkdown,
+  generateFigmaVariablesJson,
   type BrandProfileId,
   type BrandProfile,
 } from '@/styles/themes';
@@ -165,7 +166,7 @@ const PLAYGROUND_TEMPLATES: Record<
 export default function AccentPlaygroundPage() {
   const [activeBrand, setActiveBrand] = useState<BrandProfileId>('playful-principal');
   const [activeTemplate, setActiveTemplate] = useState<TemplateId>('archetype-pedestals');
-  const [leftTab, setLeftTab] = useState<'code' | 'theme' | 'styles-md'>('code');
+  const [leftTab, setLeftTab] = useState<'code' | 'theme' | 'styles-md' | 'figma'>('code');
   const [viewport, setViewport] = useState<'desktop' | 'mobile' | 'extension'>('desktop');
   const [code, setCode] = useState(PLAYGROUND_TEMPLATES['archetype-pedestals'].defaultCode);
 
@@ -277,6 +278,45 @@ export default function AccentPlaygroundPage() {
     customDisplayFont,
     customCtaRadius,
     customCss,
+    derivedAccent,
+  ]);
+
+  const compiledFigmaJson = useMemo(() => {
+    const base = BRAND_PROFILES[activeBrand];
+    const profile: BrandProfile = {
+      ...base,
+      typography: {
+        ...base.typography,
+        display: customDisplayFont,
+      },
+      structure: {
+        ctaRadius: customCtaRadius,
+        posture: customCtaRadius === '9999px' ? 'pedestal-hairline' : 'archival-spine',
+        summary: `Configured in Accént Playground with ${customDisplayFont} and ${customCtaRadius} CTA radius.`,
+      },
+      tokens: {
+        ...base.tokens,
+        light: {
+          ...base.tokens.light,
+          '--a-bg': customBg,
+          '--a-surface': customSurface,
+          '--a-ink': customInk,
+          '--a-accent': customAccent,
+          '--a-accent-fill': derivedAccent.fillHex,
+          '--a-accent-text': derivedAccent.inlineTextHex,
+          '--a-radius-cta': customCtaRadius,
+        },
+      },
+    };
+    return JSON.stringify(generateFigmaVariablesJson(profile), null, 2);
+  }, [
+    activeBrand,
+    customBg,
+    customSurface,
+    customInk,
+    customAccent,
+    customDisplayFont,
+    customCtaRadius,
     derivedAccent,
   ]);
 
@@ -402,11 +442,12 @@ export default function AccentPlaygroundPage() {
         {/* LEFT PANE (5 Cols): Code Editor / 5-Axis Tokens / Compiled STYLES.md */}
         <div className="lg:col-span-5 rounded-xl border border-[var(--a-rule)] bg-[var(--a-surface)] overflow-hidden flex flex-col">
           <div className="flex items-center justify-between border-b border-[var(--a-rule)] px-3 py-2 bg-[var(--a-bg)]/60">
-            <div className="flex items-center gap-1">
+            <div className="flex flex-wrap items-center gap-1">
               {[
                 { id: 'code', label: '01 · TSX & Linter', icon: Code2 },
                 { id: 'theme', label: '02 · 5-Axis Theme', icon: Palette },
                 { id: 'styles-md', label: '03 · STYLES.md', icon: FileCode2 },
+                { id: 'figma', label: '04 · Figma JSON', icon: Sparkles },
               ].map((t) => {
                 const Icon = t.icon;
                 const active = leftTab === t.id;
@@ -431,9 +472,13 @@ export default function AccentPlaygroundPage() {
             <button
               type="button"
               onClick={async () => {
-                await navigator.clipboard.writeText(
-                  leftTab === 'styles-md' ? compiledStylesMd : code
-                );
+                const textToCopy =
+                  leftTab === 'styles-md'
+                    ? compiledStylesMd
+                    : leftTab === 'figma'
+                      ? compiledFigmaJson
+                      : code;
+                await navigator.clipboard.writeText(textToCopy);
                 setCopied(leftTab === 'styles-md' ? 'styles' : 'code');
                 window.setTimeout(() => setCopied('none'), 2000);
               }}
@@ -580,10 +625,19 @@ export default function AccentPlaygroundPage() {
                 />
               </label>
             </div>
-          ) : (
+          ) : leftTab === 'styles-md' ? (
             <div className="p-4">
               <pre className="max-h-[520px] overflow-auto rounded-lg border border-[var(--a-rule)] bg-[var(--a-bg)] p-4 font-mono text-xs leading-relaxed text-[var(--a-ink)]">
                 <code>{compiledStylesMd}</code>
+              </pre>
+            </div>
+          ) : (
+            <div className="p-4 space-y-2">
+              <div className="text-xs text-[var(--a-muted)]">
+                W3C DTCG + Figma Variables REST API JSON (<code className="font-mono">Light</code> &amp; <code className="font-mono">Dark</code> modes + <code className="font-mono">com.figma.codeSyntax.WEB</code>):
+              </div>
+              <pre className="max-h-[490px] overflow-auto rounded-lg border border-[var(--a-rule)] bg-[var(--a-bg)] p-4 font-mono text-xs leading-relaxed text-[var(--a-ink)]">
+                <code>{compiledFigmaJson}</code>
               </pre>
             </div>
           )}

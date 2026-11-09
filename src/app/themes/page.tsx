@@ -21,6 +21,7 @@ import {
   BRAND_PROFILE_LIST,
   deriveAccessibleAccent,
   generateStylesMarkdown,
+  generateFigmaVariablesJson,
   type BrandProfileId,
   type BrandProfile,
 } from '@/styles/themes';
@@ -189,6 +190,19 @@ export default function AccentThemesStudioPage() {
     URL.revokeObjectURL(url);
   };
 
+  const handleDownloadFigmaJson = () => {
+    const figmaJson = JSON.stringify(generateFigmaVariablesJson(buildActiveProfile()), null, 2);
+    const blob = new Blob([figmaJson], { type: 'application/json;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${activeBrand}.figma-tokens.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
   const handleCopyStylesMd = async () => {
     const md = generateStylesMarkdown(buildActiveProfile());
     await navigator.clipboard.writeText(md);
@@ -282,10 +296,19 @@ export default function AccentThemesStudioPage() {
             <button
               type="button"
               onClick={handleDownloadStylesMd}
-              className="w-full min-h-[44px] inline-flex items-center justify-center gap-2 rounded-full bg-[var(--a-ink)] text-[var(--a-bg)] hover:opacity-90 font-mono text-xs font-bold uppercase tracking-wider transition-all cursor-pointer"
+              className="w-full min-h-[44px] inline-flex items-center justify-center gap-2 rounded-full bg-[var(--a-ink)] text-[var(--a-bg)] hover:opacity-90 font-sans text-xs font-bold uppercase tracking-wider transition-all cursor-pointer"
             >
               <Download className="h-3.5 w-3.5" />
               <span>Use This Theme (STYLES.md)</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={handleDownloadFigmaJson}
+              className="w-full min-h-[40px] inline-flex items-center justify-center gap-2 rounded-full border border-[var(--a-accent)]/40 bg-[var(--a-bg)] text-[var(--a-ink)] hover:border-[var(--a-accent)] hover:text-[var(--a-accent)] font-sans text-xs font-bold uppercase tracking-wider transition-all cursor-pointer"
+            >
+              <Download className="h-3.5 w-3.5 text-[var(--a-accent)]" />
+              <span>Export Figma Variables (.json)</span>
             </button>
 
             <div className="grid grid-cols-2 gap-2">

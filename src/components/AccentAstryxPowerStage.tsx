@@ -17,12 +17,19 @@ import {
   Zap,
 } from 'lucide-react';
 import Link from 'next/link';
-import { BRAND_PROFILES, BRAND_PROFILE_LIST, type BrandProfileId } from '@/styles/themes';
+import {
+  BRAND_PROFILES,
+  BRAND_PROFILE_LIST,
+  generateFigmaVariablesJson,
+  generateFigmaCodeConnectManifest,
+  type BrandProfileId,
+} from '@/styles/themes';
 import { SPRING_LAYOUT, EASE_EDITORIAL } from '@/lib/motion/tokens';
 
 type AgentChannel =
   | 'npm-sdk'
   | 'styles-md'
+  | 'figma-sync'
   | 'mcp-json'
   | 'stepwise-7b'
   | 'frontier-1pass'
@@ -37,28 +44,35 @@ const COMPARISON_ROWS = [
     multiplier: '5× Axes',
   },
   {
-    dimension: '02 · Specification & Rule Depth',
+    dimension: '02 · Figma Variables & Code Connect',
+    astryx: 'No W3C DTCG Figma Variables API or Dev Mode Code Connect manifest',
+    accent:
+      'Bi-directional W3C DTCG + Figma Variables REST API JSON (/design-system/figma-tokens.json?brand=<id>), Light/Dark Mode variable scopes, Tokens Studio sets, and @figma/code-connect Dev Mode manifests.',
+    multiplier: 'Figma Native',
+  },
+  {
+    dimension: '03 · Specification & Rule Depth',
     astryx: '~18 high-level component pages with prose descriptions',
     accent:
       '57 Exhaustive 4-Tab Pages (Overview, Guidelines, W3C DTCG Specs, WCAG Accessibility) + 223 Machine-Enforced AgentRule contracts with JavaScript regex violationPatterns.',
     multiplier: '3.2× Specs',
   },
   {
-    dimension: '03 · Interactive Live Playground',
+    dimension: '04 · Interactive Live Playground',
     astryx: 'Read-only preview with basic preset dropdown',
     accent:
       'Split-Screen Live TSX Editor + Real-Time 223-Rule Regex Ratchet Linter + 5-Axis Token & Custom CSS Escape Hatch + Desktop / Mobile (390px) / Extension (400px) Viewport Switcher.',
     multiplier: 'Full IDE',
   },
   {
-    dimension: '04 · AI Agent Control Plane',
+    dimension: '05 · AI Agent Control Plane',
     astryx: 'Static CLI install command (`npx skills add`)',
     accent:
       'Zero-PR STYLES.md Governance separated from operational AGENTS.md + Live Edge Endpoints (/design-system/styles.md & /design-system/rules.json) + Stepwise 7B / 32B / Frontier Prompt Compiler.',
     multiplier: 'Zero-PR CI',
   },
   {
-    dimension: '05 · Motion & Choreography System',
+    dimension: '06 · Motion & Choreography System',
     astryx: 'Standard CSS hover transitions only',
     accent:
       'Two-Tier Motion Architecture: Tier 1 Operational Utility (120ms/200ms/320ms GPU-only) + Tier 2 Editorial & Corporate Choreography (ScaryHeadline 3-phase strike, RiseLines, Smile wink, GhostNumeral parallax).',
@@ -150,6 +164,40 @@ const audit = validateThemeContrast(myBrand); // Mathematically verifies AA/AAA 
 - CTA Border Radius (\`--a-cta-radius\`): \`${profile.structure?.ctaRadius ?? '6px'}\`
 - Hard Invariants: Minimum 13px font floor (\`type.floor-13\`), 8pt spacing grid (\`grid.8pt\`), zero nested cards (\`card.no-nesting\`).`,
         };
+      case 'figma-sync': {
+        const figmaPayload = generateFigmaVariablesJson(profile);
+        const codeConnect = generateFigmaCodeConnectManifest(profile);
+        return {
+          title: `Figma Variables (W3C DTCG) & Dev Mode Code Connect (${profile.name})`,
+          subtitle: `GET /design-system/figma-tokens.json?brand=${profile.id}`,
+          code: `// 1. Pull W3C DTCG + Figma Variables REST API JSON (Light & Dark Modes + com.figma.codeSyntax.WEB):
+// curl -sL "https://accent.design.pipes.pink/figma-tokens.json?brand=${profile.id}" > figma-tokens.json
+//
+// 2. Pull Figma Dev Mode Code Connect Manifest (@figma/code-connect):
+// curl -sL "https://accent.design.pipes.pink/figma-tokens.json?brand=${profile.id}&format=code-connect" > ${profile.id}.figma.tsx
+
+${JSON.stringify(
+  {
+    $schema: figmaPayload.$schema,
+    collection: figmaPayload.collection,
+    variables: {
+      color: {
+        'canvas/bg': figmaPayload.variables.color['canvas/bg'],
+        'text/ink': figmaPayload.variables.color['text/ink'],
+        'accent/mark': figmaPayload.variables.color['accent/mark'],
+        'accent/fill': figmaPayload.variables.color['accent/fill'],
+      },
+      typography: figmaPayload.variables.typography,
+      geometry: figmaPayload.variables.geometry,
+    },
+  },
+  null,
+  2
+)}
+
+${codeConnect}`,
+        };
+      }
       case 'mcp-json':
         return {
           title: 'MCP Server & CLI Integration (`mcp_config.json`)',
@@ -331,10 +379,11 @@ Enforce these non-negotiable architectural invariants:
                 [
                   { id: 'npm-sdk', label: '01 · npm & defineAccentTheme()' },
                   { id: 'styles-md', label: '02 · STYLES.md Contract' },
-                  { id: 'mcp-json', label: '03 · MCP & CLI' },
-                  { id: 'stepwise-7b', label: '04 · 4-Step 7B Prompt' },
-                  { id: 'frontier-1pass', label: '05 · Frontier Agent Prompt' },
-                  { id: 'tailwind-css', label: '06 · W3C CSS Variables' },
+                  { id: 'figma-sync', label: '03 · Figma Variables & Code Connect' },
+                  { id: 'mcp-json', label: '04 · MCP & CLI' },
+                  { id: 'stepwise-7b', label: '05 · 4-Step 7B Prompt' },
+                  { id: 'frontier-1pass', label: '06 · Frontier Agent Prompt' },
+                  { id: 'tailwind-css', label: '07 · W3C CSS Variables' },
                 ] as const
               ).map((tab) => {
                 const active = channel === tab.id;

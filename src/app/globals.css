@@ -1,7 +1,7 @@
 @import "tailwindcss";
-
-
-
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+@import "@clerk/ui/themes/shadcn.css";
 
 @theme inline {
   --color-background: var(--background);
@@ -69,7 +69,7 @@
   --card: #F3EFE9;       /* Soft Archival Card Surface */
   --card-foreground: #111827;
   
-  --primary: #B8326D; /* Accessible Brand Pink Fill (5.65:1 AA with white) */
+  --primary: #B8326D; /* Accessible Primary CTA Fill (5.65:1 AA with #FFFFFF) */
   --primary-foreground: #FFFFFF;
   
   --muted: #E2DBD0; /* Sandstone Muted */
@@ -84,7 +84,7 @@
   
   --radius: 6px;
 
-  /* Canonical Accént Semantic Variables (Light Mode) */
+  /* Canonical Accént Semantic Variables (Light Mode — Synchronized with W3C DTCG & Figma Variables) */
   --a-bg: #E8E2D5;
   --a-surface: #F3EFE9;
   --a-card: #F3EFE9;
@@ -92,7 +92,7 @@
   --a-ink: #111827;
   --a-muted: #4B5563;
   --a-rule: rgba(17, 24, 39, 0.14);
-  --a-accent: #D44983;
+  --a-accent: #FE299E;
   --a-accent-fill: #B8326D;
   --a-accent-fill-hover: #A3285C;
   --a-accent-fg: #FFFFFF;
@@ -456,4 +456,9 @@ html.theme-fade *::after {
 .accent-root h3 {
   font-family: var(--a-font-display, var(--font-serif), Georgia, serif);
   letter-spacing: var(--a-tracking-display, -0.02em);
+}
+
+/* Suppress Global Pipes Chrome when rendering standalone Accént Design System (.accent-root) */
+body:has(.accent-root) [data-global-chrome] {
+  display: none !important;
 }
