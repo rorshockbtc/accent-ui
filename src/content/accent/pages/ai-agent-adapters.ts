@@ -15,7 +15,9 @@ When you want to introduce Accént—or just Accént's **Two-Tier Choreography &
 Instead, the downstream agent follows the **3-Step Fork-and-Adapt Protocol**:
 1. **Invoke**: Pull the canonical motion tokens (\`src/lib/motion/tokens.ts\`), brand primitives (\`AccentBrandMotion.tsx\`), and base \`STYLES.md\` from Accént (\`github.com/rorshockbtc/accent-ui\` or \`design.pipes.pink/design-system/styles.md\`).
 2. **Adapt**: Create a local \`accent.config.ts\` and \`STYLES.md\` in the target repository using \`defineAccentTheme()\`.
-3. **Experiment Locally**: Write project-specific motion variants, custom springs, or bespoke choreography primitives inside the target repo's \`src/lib/motion/\` and document them in Section 5 (\`customExtension\`) of the repo's local \`STYLES.md\`.`,
+3. **Experiment Locally**: Write project-specific motion variants, custom springs, or bespoke choreography primitives inside the target repo's \`src/lib/motion/\` and document them in Section 5 (\`customExtension\`) of the repo's local \`STYLES.md\`.
+
+::demo:agent-adapter-playground::`,
 
     guidelines: `## Ready-to-Send Prompt for a Downstream Repository Agent (e.g. \`highdraw\`)
 

@@ -10,7 +10,9 @@ export const page: AccentPage = {
   tabs: {
     overview: `## Thumb-friendly overlays on mobile, side panels on desktop
 
-On mobile viewports (\`< 1024px\`), top-left hamburger drawers force users to stretch their thumb to the top corner of the screen. Accént uses **Bottom Sheets (\`max-h-[85vh] rounded-t-2xl\`)** that slide up smoothly from the bottom edge using \`SHEET_SLIDE_UP\` (\`320ms cubic-bezier(0.16, 1, 0.3, 1)\`).`,
+On mobile viewports (\`< 1024px\`), top-left hamburger drawers force users to stretch their thumb to the top corner of the screen. Accént uses **Bottom Sheets (\`max-h-[85vh] rounded-t-2xl\`)** that slide up smoothly from the bottom edge using \`SHEET_SLIDE_UP\` (\`320ms cubic-bezier(0.16, 1, 0.3, 1)\`).
+
+::demo:sheet-demo::`,
 
     guidelines: `## Behavior & Dismissal
 

@@ -1,9 +1,9 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { Moon, Sun, X, List, Palette, Terminal, Sparkles } from 'lucide-react';
+import { usePathname, useRouter } from 'next/navigation';
+import { Moon, Sun, X, List, Palette, Terminal, Sparkles, Search, ArrowRight } from 'lucide-react';
 import { AnimatePresence, m } from 'framer-motion';
 import { BACKDROP_FADE, SHEET_SLIDE_UP, SPRING_LAYOUT } from '@/lib/motion/tokens';
 import {
@@ -12,7 +12,7 @@ import {
   getBrandThemeVars,
   type BrandProfileId,
 } from '@/styles/themes';
-import type { AccentNavItem } from '@/content/accent/registry';
+import { ACCENT_PAGES, type AccentNavItem } from '@/content/accent/registry';
 import type { AccentSectionId } from '@/content/accent/types';
 
 type Nav = { id: AccentSectionId; label: string; items: AccentNavItem[] }[];
@@ -149,9 +149,12 @@ function SidebarNav({
 
 export function AccentShell({ nav, children }: { nav: Nav; children: React.ReactNode }) {
   const pathname = usePathname() || '/design-system';
+  const router = useRouter();
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
   const [brand, setBrand] = useState<BrandProfileId>('editorial-sandstone');
   const [sheet, setSheet] = useState(false);
+  const [cmdOpen, setCmdOpen] = useState(false);
+  const [cmdQuery, setCmdQuery] = useState('');
 
   // Full-bleed studio routes (Themes & Playground) get wider canvas when needed
   const isFullWidthStudio =
@@ -192,11 +195,18 @@ export function AccentShell({ nav, children }: { nav: Nav; children: React.React
   }, [brand]);
 
   useEffect(() => {
-    if (!sheet) return;
-    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setSheet(false);
-    window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
-  }, [sheet]);
+    const onKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        setCmdOpen((v) => !v);
+      } else if (e.key === 'Escape') {
+        setCmdOpen(false);
+        setSheet(false);
+      }
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, []);
 
   const brandVars = getBrandThemeVars(brand, theme);
   const activeProfile = BRAND_PROFILES[brand] || BRAND_PROFILES['editorial-sandstone'];
@@ -209,6 +219,26 @@ export function AccentShell({ nav, children }: { nav: Nav; children: React.React
     setBrand(next.id);
     window.dispatchEvent(new CustomEvent('accent-brand-change', { detail: next.id }));
   };
+
+  const selectDialect = (id: BrandProfileId) => {
+    document.documentElement.classList.add('theme-fade');
+    window.setTimeout(() => document.documentElement.classList.remove('theme-fade'), 220);
+    setBrand(id);
+    window.dispatchEvent(new CustomEvent('accent-brand-change', { detail: id }));
+    setCmdOpen(false);
+  };
+
+  const filteredPages = useMemo(() => {
+    const q = cmdQuery.trim().toLowerCase();
+    if (!q) return ACCENT_PAGES.slice(0, 12);
+    return ACCENT_PAGES.filter(
+      (p) =>
+        p.title.toLowerCase().includes(q) ||
+        p.summary.toLowerCase().includes(q) ||
+        p.slug.toLowerCase().includes(q) ||
+        p.rules.some((r) => r.id.toLowerCase().includes(q) || r.statement.toLowerCase().includes(q))
+    ).slice(0, 14);
+  }, [cmdQuery]);
 
   return (
     <div
@@ -224,9 +254,9 @@ export function AccentShell({ nav, children }: { nav: Nav; children: React.React
         Skip to content
       </a>
 
-      {/* Sticky Top Header — Astryx-Class Studio Navigation + 7-Brand Dialect Switcher + Agent Endpoints */}
+      {/* Sticky Top Header — Astryx-Class Studio Navigation + ⌘K Command Palette + 7-Brand Dialect Switcher */}
       <header className="sticky top-0 z-40 h-16 border-b border-[var(--a-rule)] bg-[var(--a-bg)]/95 backdrop-blur">
-        <div className="mx-auto max-w-[1440px] h-full px-4 sm:px-6 flex items-center gap-3 sm:gap-5">
+        <div className="mx-auto max-w-[1440px] h-full px-4 sm:px-6 flex items-center gap-2.5 sm:gap-4">
           <button
             type="button"
             onClick={() => setSheet(true)}
@@ -244,7 +274,7 @@ export function AccentShell({ nav, children }: { nav: Nav; children: React.React
           {/* Primary Studio Navigation Links (Overview, Docs, Components, Templates, Themes, Playground) */}
           <nav
             aria-label="Accént primary navigation"
-            className="hidden md:flex items-center gap-1 ml-2"
+            className="hidden md:flex items-center gap-1 ml-1"
           >
             {TOP_NAV_LINKS.map((link) => {
               const active = link.match(pathname);
@@ -265,17 +295,32 @@ export function AccentShell({ nav, children }: { nav: Nav; children: React.React
           </nav>
 
           <div className="ml-auto flex items-center gap-2">
+            {/* Global ⌘K Command Palette Trigger */}
+            <button
+              type="button"
+              onClick={() => setCmdOpen(true)}
+              aria-label="Open Accént command palette (Command+K)"
+              className="inline-flex min-h-[40px] shrink-0 items-center gap-2 whitespace-nowrap rounded-md border border-[var(--a-rule)] bg-[var(--a-surface)]/80 px-3 text-xs font-mono text-[var(--a-muted)] hover:border-[var(--a-ink)] hover:text-[var(--a-ink)] transition-colors cursor-pointer"
+            >
+              <Search className="h-3.5 w-3.5 text-[var(--a-accent)] shrink-0" />
+              <span className="hidden 2xl:inline">Search 57 specs...</span>
+              <span className="2xl:hidden">Search</span>
+              <kbd className="hidden sm:inline-block rounded border border-[var(--a-rule)] bg-[var(--a-bg)] px-1.5 py-0.5 text-xs font-mono">
+                ⌘K
+              </kbd>
+            </button>
+
             {/* Multi-Brand Theme Preset Switcher (Cycles all 7 Sovereign Dialects) */}
             <button
               type="button"
               onClick={cycleBrand}
               title={`Active Dialect: ${activeProfile.name}. Click to cycle all 7 sovereign brand dialects.`}
               aria-label={`Switch brand theme preset (current: ${activeProfile.name})`}
-              className="inline-flex min-h-[40px] items-center gap-2 rounded-md border border-[var(--a-rule)] bg-[var(--a-surface)] px-3 text-xs font-mono t-press t-color hover:border-[var(--a-ink)] active:scale-[0.98] cursor-pointer"
+              className="inline-flex min-h-[40px] shrink-0 items-center gap-2 whitespace-nowrap rounded-md border border-[var(--a-rule)] bg-[var(--a-surface)] px-3 text-xs font-mono t-press t-color hover:border-[var(--a-ink)] active:scale-[0.98] cursor-pointer"
             >
-              <Palette className="h-3.5 w-3.5 text-[var(--a-accent)]" aria-hidden="true" />
+              <Palette className="h-3.5 w-3.5 text-[var(--a-accent)] shrink-0" aria-hidden="true" />
               <span className="font-bold text-[var(--a-accent)]">{activeProfile.mark}</span>
-              <span className="font-semibold text-[var(--a-ink)] max-w-[140px] truncate">
+              <span className="hidden sm:inline font-semibold text-[var(--a-ink)] max-w-[120px] truncate">
                 {activeProfile.name.split('(')[0].trim()}
               </span>
             </button>
@@ -283,25 +328,25 @@ export function AccentShell({ nav, children }: { nav: Nav; children: React.React
             {/* Agent-Ready Machine Endpoints */}
             <Link
               href={`/design-system/styles.md?brand=${brand}`}
-              className="hidden xl:inline-flex min-h-[40px] items-center gap-1 rounded-md border border-[var(--a-rule)] bg-[var(--a-surface)]/60 px-2.5 text-xs font-mono hover:border-[var(--a-accent)] transition-colors"
+              className="hidden xl:inline-flex min-h-[40px] shrink-0 items-center gap-1 whitespace-nowrap rounded-md border border-[var(--a-rule)] bg-[var(--a-surface)]/60 px-2.5 text-xs font-mono hover:border-[var(--a-accent)] transition-colors"
               title="Download or curl machine-readable STYLES.md contract for this dialect"
             >
-              <Sparkles className="h-3 w-3 text-[var(--a-accent)]" />
+              <Sparkles className="h-3 w-3 text-[var(--a-accent)] shrink-0" />
               <span>STYLES.md</span>
             </Link>
 
             <Link
               href="/design-system/rules.json"
-              className="hidden lg:inline-flex min-h-[40px] items-center gap-1 rounded-md border border-[var(--a-rule)] bg-[var(--a-surface)]/60 px-2.5 text-xs font-mono hover:border-[var(--a-accent)] transition-colors"
+              className="hidden lg:inline-flex min-h-[40px] shrink-0 items-center gap-1 whitespace-nowrap rounded-md border border-[var(--a-rule)] bg-[var(--a-surface)]/60 px-2.5 text-xs font-mono hover:border-[var(--a-accent)] transition-colors"
               title="Machine-readable rules.json endpoint for AI coding agents"
             >
-              <Terminal className="h-3 w-3 text-[var(--a-accent)]" />
+              <Terminal className="h-3 w-3 text-[var(--a-accent)] shrink-0" />
               <span>rules.json</span>
             </Link>
 
             <Link
               href="/"
-              className="hidden sm:inline-flex min-h-[40px] items-center px-2.5 text-xs font-mono uppercase tracking-wider text-[var(--a-muted)] hover:text-[var(--a-ink)]"
+              className="hidden sm:inline-flex min-h-[40px] shrink-0 items-center whitespace-nowrap px-2 text-xs font-mono uppercase tracking-wider text-[var(--a-muted)] hover:text-[var(--a-ink)]"
             >
               pipes.pink ↗
             </Link>
@@ -314,7 +359,7 @@ export function AccentShell({ nav, children }: { nav: Nav; children: React.React
                 setTheme(theme === 'light' ? 'dark' : 'light');
               }}
               aria-label={theme === 'light' ? 'Switch to dark theme' : 'Switch to light theme'}
-              className="h-10 w-10 grid place-items-center rounded-md border border-[var(--a-rule)] t-press t-color active:scale-[0.97] cursor-pointer"
+              className="h-11 w-11 grid place-items-center rounded-md border border-[var(--a-rule)] t-press t-color active:scale-[0.97] cursor-pointer"
             >
               <AnimatePresence mode="wait" initial={false}>
                 {theme === 'light' ? (
@@ -361,6 +406,115 @@ export function AccentShell({ nav, children }: { nav: Nav; children: React.React
         </div>
       )}
 
+      {/* Global ⌘K Command Palette Modal */}
+      <AnimatePresence>
+        {cmdOpen && (
+          <div
+            className="fixed inset-0 z-50 flex items-start justify-center pt-16 sm:pt-24 px-4"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Accént Command Palette"
+          >
+            <m.button
+              type="button"
+              aria-label="Close command palette"
+              className="fixed inset-0 bg-black/50 backdrop-blur-xs"
+              onClick={() => setCmdOpen(false)}
+              variants={BACKDROP_FADE}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+            />
+            <m.div
+              initial={{ opacity: 0, y: 12, scale: 0.98 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 8, scale: 0.98 }}
+              transition={{ duration: 0.18 }}
+              className="relative z-10 w-full max-w-2xl rounded-lg border-2 border-[var(--a-ink)] bg-[var(--a-bg)] text-[var(--a-ink)] shadow-2xl overflow-hidden"
+            >
+              <div className="flex items-center gap-3 px-4 h-14 border-b border-[var(--a-rule)] bg-[var(--a-surface)]">
+                <Search className="h-4 w-4 text-[var(--a-accent)] shrink-0" />
+                <input
+                  type="text"
+                  autoFocus
+                  value={cmdQuery}
+                  onChange={(e) => setCmdQuery(e.target.value)}
+                  placeholder="Jump to any of 57 specs, 4 studios, 7 brand dialects, or 223 rules..."
+                  aria-label="Search Accént specifications, studios, and brand dialects"
+                  className="w-full bg-transparent text-sm font-sans focus:outline-none"
+                />
+                <button
+                  type="button"
+                  onClick={() => setCmdOpen(false)}
+                  className="px-2 py-1 rounded border border-[var(--a-rule)] font-mono text-xs text-[var(--a-muted)] hover:text-[var(--a-ink)] cursor-pointer"
+                >
+                  ESC
+                </button>
+              </div>
+
+              <div className="max-h-[68vh] overflow-y-auto divide-y divide-[var(--a-rule)]">
+                {/* Quick Switch: 7 Brand Dialects */}
+                <div className="p-3 bg-[var(--a-surface)]/40">
+                  <div className="px-2 mb-2 text-xs font-mono font-bold uppercase tracking-[0.14em] text-[var(--a-muted)]">
+                    Switch Active Brand Dialect (7 Voices)
+                  </div>
+                  <div className="flex flex-wrap gap-1.5 px-2">
+                    {BRAND_PROFILE_LIST.map((b) => (
+                      <button
+                        key={b.id}
+                        type="button"
+                        onClick={() => selectDialect(b.id)}
+                        className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-mono cursor-pointer transition-colors ${
+                          b.id === brand
+                            ? 'bg-[var(--a-accent-fill,var(--a-accent))] text-white font-bold'
+                            : 'border border-[var(--a-rule)] bg-[var(--a-bg)] text-[var(--a-ink)] hover:border-[var(--a-accent)]'
+                        }`}
+                      >
+                        <span>{b.mark}</span>
+                        <span>{b.name.split('(')[0].trim()}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Matching Specification Pages */}
+                <div className="p-2">
+                  <div className="px-3 py-1.5 text-xs font-mono font-bold uppercase tracking-[0.14em] text-[var(--a-muted)]">
+                    Specification Pages ({filteredPages.length})
+                  </div>
+                  <ul>
+                    {filteredPages.map((p) => (
+                      <li key={p.slug}>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setCmdOpen(false);
+                            router.push(`/design-system/${p.slug}`);
+                          }}
+                          className="w-full px-3 py-2.5 rounded-md flex items-center justify-between gap-4 text-left hover:bg-[var(--a-surface)] transition-colors cursor-pointer group"
+                        >
+                          <div className="min-w-0">
+                            <div className="text-sm font-semibold text-[var(--a-ink)] group-hover:text-[var(--a-accent)] truncate">
+                              {p.title}
+                            </div>
+                            <div className="text-xs text-[var(--a-muted)] truncate">{p.summary}</div>
+                          </div>
+                          <div className="shrink-0 flex items-center gap-2 font-mono text-xs text-[var(--a-muted)]">
+                            <span>{p.rules.length} rules</span>
+                            <ArrowRight className="h-3.5 w-3.5" />
+                          </div>
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </m.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* Mobile Drawer Sheet */}
       <AnimatePresence>
         {sheet && (
           <div

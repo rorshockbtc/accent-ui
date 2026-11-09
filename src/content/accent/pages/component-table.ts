@@ -12,7 +12,9 @@ export const page: AccentPage = {
 
 Whether displaying WCAG contrast ratios, bank balance-sheet NIM schedules in \`pipe\\commercial-banking\`, or 260+ Topic Pipes in a directory, tables must scan effortlessly across rows and columns.
 
-Accént tables strip away vertical cell borders and alternating zebra stripes in favor of **clean horizontal hairlines (\`divide-y divide-[var(--a-rule)]\`)**, right-aligned \`tabular-nums\` for numbers, and generous \`py-3.5\` row padding.`,
+Accént tables strip away vertical cell borders and alternating zebra stripes in favor of **clean horizontal hairlines (\`divide-y divide-[var(--a-rule)]\`)**, right-aligned \`tabular-nums\` for numbers, and generous \`py-3.5\` row padding.
+
+::demo:hairline-table-demo::`,
 
     guidelines: `## Do & Don't
 

@@ -15,7 +15,9 @@ Generic AI-generated websites wrap every piece of content in a rounded white car
 Accént replaces card soup with **Open Architectural Pedestals** and **Hairline Ledgers**:
 
 - **Open Architectural Pedestal**: Content sits directly on the warm sandstone (\`#E8E2D5\`) or archival paper (\`#FAF8F5\`) canvas, anchored at the top by a crisp \`2px\` structural rule (\`border-t-2 border-[#111827]\`, or \`border-[#FE299E]\` for the primary focal column).
-- **Hairline Ledger Row**: Dense directories and indexes use a 12-column horizontal table row separated by \`1px\` hairlines (\`border-b border-[var(--a-rule)]\`) with tabular numerals and hover highlights.`,
+- **Hairline Ledger Row**: Dense directories and indexes use a 12-column horizontal table row separated by \`1px\` hairlines (\`border-b border-[var(--a-rule)]\`) with tabular numerals and hover highlights.
+
+::demo:pedestal-comparison::`,
 
     guidelines: `## When to use a Pedestal vs. a Ledger vs. a Card
 

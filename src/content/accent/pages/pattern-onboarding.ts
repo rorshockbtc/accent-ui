@@ -16,7 +16,9 @@ Accént solves discovery overload with the **Airy 3-Archetype Discovery Pattern*
 
 1. **\`01 · Personal Pipes (pipe\\your-name)\`**: Show 3 real human notebooks (\`pipe\\cubby\`, \`pipe\\dr-cyree\`, \`pipe\\bombthrower\`) on open architectural pedestals so visitors immediately see how an individual uses a Pipe.
 2. **\`02 · Business & Studio Pipes (pipe\\your-company)\`**: Show 3 real studio and product canons (\`pipe\\chb\`, \`pipe\\optimization\`, \`pipe\\marigold\`) so founders and teams see how a business uses a Pipe.
-3. **\`03 · Topic-Based Pipes (pipe\\subject)\`**: Present featured public subject libraries in an airy 3-column grid followed by a complete, scannable hairline directory of all remaining topics.`,
+3. **\`03 · Topic-Based Pipes (pipe\\subject)\`**: Present featured public subject libraries in an airy 3-column grid followed by a complete, scannable hairline directory of all remaining topics.
+
+::demo:three-archetype-onboarding::`,
 
     guidelines: `## Airy Spacing Rules (\`max-w-6xl\`, \`py-16 sm:py-24\`)
 

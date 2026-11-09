@@ -14,7 +14,9 @@ Pipes and Colon Hyphen Bracket ship across four distinct runtime environments:
 1. **Desktop Web (\`1280px–1440px\`)**: 12-column editorial grids, 3-column open architectural pedestals, and sticky sidebars.
 2. **Mobile Web & PWA (\`390×844px\`)**: Single-column vertical flow, \`85vh\` thumb-zone bottom sheets, and \`44×44px\` touch targets with zero horizontal scroll (\`overflow-x-clip\`).
 3. **Chrome Extension Manifest V3 (\`400×600px\` Popup & Side Panel)**: Compact single-column pedestal stack, instant URL clipper, and shared \`--a-*\` token sheet.
-4. **Native Desktop App (\`Tauri / macOS & Windows\`)**: Draggable window titlebar region, local SQLite/Parquet shard status bar, and keyboard-first (\`⌘K\`) navigation.`,
+4. **Native Desktop App (\`Tauri / macOS & Windows\`)**: Draggable window titlebar region, local SQLite/Parquet shard status bar, and keyboard-first (\`⌘K\`) navigation.
+
+::demo:cross-platform-parity::`,
 
     guidelines: `## Cross-Platform Adaptation Rules
 

@@ -12,7 +12,9 @@ export const page: AccentPage = {
 
 When a page needs to offer deep technical controls—such as custom CSS injection in the Brand Studio, advanced API parameters, or long FAQ answers—dumping every textarea onto the initial screen creates cognitive overload.
 
-Accént uses **Disclosure Wells** and **Hairline Accordions** to keep the default view calm while keeping power-user controls one click away.`,
+Accént uses **Disclosure Wells** and **Hairline Accordions** to keep the default view calm while keeping power-user controls one click away.
+
+::demo:accordion-demo::`,
 
     guidelines: `## Do & Don't
 

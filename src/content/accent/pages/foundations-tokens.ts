@@ -22,7 +22,9 @@ Accént solves this mathematically with \`deriveAccessibleAccent(rawHex, canvasH
 
 1. **\`--a-accent\` (Raw Signature Mark)**: Used for large punctuation marks (\`: - ]\`, \`|||\`, \`>\`), \`<Smile />\` winks, \`<ScaryHeadline />\` strike bars, and active focus rings (e.g., Sovereign Hot Pink \`#FE299E\`).
 2. **\`--a-accent-fill\` (WCAG AA Button Fill)**: Automatically darkened until contrast with \`#FFFFFF\` is \`>= 4.6:1\` (e.g., \`#B81468\` at \`5.6:1\`), used for solid primary CTA buttons when strict AA text contrast is required.
-3. **\`--a-accent-text\` (WCAG AA Inline Text)**: Automatically calibrated against the active canvas \`--a-bg\` (\`>= 4.6:1\`) for inline kickers, badges, and prose links.`,
+3. **\`--a-accent-text\` (WCAG AA Inline Text)**: Automatically calibrated against the active canvas \`--a-bg\` (\`>= 4.6:1\`) for inline kickers, badges, and prose links.
+
+::demo:triad-explorer::`,
 
     guidelines: `## Token Naming & Usage Rules
 

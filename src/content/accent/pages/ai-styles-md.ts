@@ -15,7 +15,9 @@ In an agentic engineering organization, **operational agent control** and **desi
 - **\`AGENTS.md\` (Operational Control Group)**: Governs how autonomous agents execute tasks—test runners, database safety, git workflows, and deployment gates.
 - **\`STYLES.md\` (Design System Control Group)**: Governs how the product looks, feels, and moves—its \`BrandProfileId\`, semantic \`--a-*\` token table, typography voice, structural posture, choreography tier, and optional project-local CSS/component extensions.
 
-By separating \`STYLES.md\` from \`AGENTS.md\`, any project—whether an internal CHB property (\`colonhyphenbracket.pink\`, \`hire.colonhyphenbracket.pink\`, \`marigold\`, \`chicuinaco\`, \`highdraw\`) or an external open-source fork—can adapt Accént and generate a binding \`STYLES.md\` contract in one click on \`design.pipes.pink\` **without opening cross-repo Pull Requests or waiting for manual human PR arbitration**.`,
+By separating \`STYLES.md\` from \`AGENTS.md\`, any project—whether an internal CHB property (\`colonhyphenbracket.pink\`, \`hire.colonhyphenbracket.pink\`, \`marigold\`, \`chicuinaco\`, \`highdraw\`) or an external open-source fork—can adapt Accént and generate a binding \`STYLES.md\` contract in one click on \`design.pipes.pink\` **without opening cross-repo Pull Requests or waiting for manual human PR arbitration**.
+
+::demo:styles-md-compiler::`,
 
     guidelines: `## The 5 Sections of a Compiled \`STYLES.md\` Contract
 

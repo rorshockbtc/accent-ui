@@ -804,6 +804,7 @@ import { DEMOS as FOUNDATIONS_B } from './sets/foundations-b';
 import { DEMOS as FOUNDATIONS_C } from './sets/foundations-c';
 import { DEMOS as PATTERNS } from './sets/patterns';
 import { DEMOS as ESSAYS } from './sets/essays';
+import { DEMOS as EXHAUSTIVE_3 } from './sets/exhaustive-3';
 
 export const ACCENT_DEMOS: Record<string, React.ComponentType> = {
   ...COMPONENTS_A,
@@ -813,6 +814,7 @@ export const ACCENT_DEMOS: Record<string, React.ComponentType> = {
   ...FOUNDATIONS_C,
   ...PATTERNS,
   ...ESSAYS,
+  ...EXHAUSTIVE_3,
   poster: Poster,
   'punctuation-family': PunctuationFamily,
   'grid-overlay': GridOverlay,

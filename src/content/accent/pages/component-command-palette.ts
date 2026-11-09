@@ -14,7 +14,9 @@ A common failure in complex web apps is stacking multiple rows of competing filt
 
 Accént enforces a **Single-Row Filter & Search Bar**:
 - Left side: 4 to 7 clear category pills in one horizontal row (\`gap-2\`).
-- Right side: A clean \`h-11\` search input with a leading \`16px\` icon in \`--a-accent\` and an instant \`Clear ×\` action when active.`,
+- Right side: A clean \`h-11\` search input with a leading \`16px\` icon in \`--a-accent\` and an instant \`Clear ×\` action when active.
+
+::demo:command-palette-demo::`,
 
     guidelines: `## Guidelines
 

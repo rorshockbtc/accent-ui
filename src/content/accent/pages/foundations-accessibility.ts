@@ -16,7 +16,9 @@ In Accént, accessibility is not a post-launch audit checklist—it is baked int
 2. **WCAG 2.1 AA UI & Muted Contrast (\`>= 4.5:1\`)**: Secondary captions (\`--a-muted\`), inline links (\`--a-accent-text\`), and filled buttons (\`--a-accent-fg\` on \`--a-accent-fill\`) never drop below \`4.5:1\`.
 3. **\`44×44px\` Minimum Hit Area**: Every interactive control (buttons, icon toggles, filter pills, pagination links) enforces \`min-h-[44px]\` or an equivalent touch target.
 4. **Native Semantic HTML & Landmarks**: Buttons are \`<button>\`, links are \`<a href>\`, modals use \`role="dialog" aria-modal="true"\`, and icon-only buttons carry explicit \`aria-label\` attributes.
-5. **Deterministic \`prefers-reduced-motion\`**: Every Framer Motion and CSS choreography primitive collapses duration to \`<= 120ms\` and strips spatial translation when reduced motion is requested.`,
+5. **Deterministic \`prefers-reduced-motion\`**: Every Framer Motion and CSS choreography primitive collapses duration to \`<= 120ms\` and strips spatial translation when reduced motion is requested.
+
+::demo:a11y-audit-demo::`,
 
     guidelines: `## Keyboard Navigation & Focus Rings
 

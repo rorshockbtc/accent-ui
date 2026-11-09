@@ -14,7 +14,9 @@ Like Meta's Astryx—and going three steps further with mathematical WCAG verifi
 
 1. **\`GET /design-system/rules.json\`**: Returns all \`200+\` atomic \`AgentRule\` objects across all 57 pages, including regular-expression \`violationPattern\` ratchets and W3C DTCG verified contrast pairs.
 2. **\`GET /design-system/styles.md?brand=<id>\`**: Returns a complete, ready-to-commit \`STYLES.md\` Markdown contract for any of the 7 official Brand Profiles (\`editorial-sandstone\`, \`playful-principal\`, \`albers-perspectives\`, \`cassandra-noir\`, \`hacienda-emerald\`, \`terracotta-civic\`, \`greater-terminal\`).
-3. **Stepwise Prompt Compiler (\`compileStepwisePrompt\`)**: Splits complex UI generation tasks into 4 small, regex-validated steps for local 7B models, 2 phases for 14B–32B models, or 1 pass for frontier cloud models.`,
+3. **Stepwise Prompt Compiler (\`compileStepwisePrompt\`)**: Splits complex UI generation tasks into 4 small, regex-validated steps for local 7B models, 2 phases for 14B–32B models, or 1 pass for frontier cloud models.
+
+::demo:mcp-endpoint-tester::`,
 
     guidelines: `## How Agents Query Accént
 

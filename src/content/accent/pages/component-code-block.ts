@@ -12,7 +12,9 @@ export const page: AccentPage = {
 
 Because Accént is written for engineers, product builders, and AI coding agents alike, code blocks and terminal commands must be as legible as editorial paragraphs.
 
-Every code block uses **JetBrains Mono** (\`var(--font-mono)\`) at \`13px\`–\`14px\` with \`1.6\` line-height, wrapped in a horizontal scroll container so long lines never break mobile layouts.`,
+Every code block uses **JetBrains Mono** (\`var(--font-mono)\`) at \`13px\`–\`14px\` with \`1.6\` line-height, wrapped in a horizontal scroll container so long lines never break mobile layouts.
+
+::demo:code-block-demo::`,
 
     guidelines: `## Copy-to-Clipboard Choreography
 

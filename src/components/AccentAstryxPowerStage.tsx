@@ -20,7 +20,13 @@ import Link from 'next/link';
 import { BRAND_PROFILES, BRAND_PROFILE_LIST, type BrandProfileId } from '@/styles/themes';
 import { SPRING_LAYOUT, EASE_EDITORIAL } from '@/lib/motion/tokens';
 
-type AgentChannel = 'styles-md' | 'mcp-json' | 'stepwise-7b' | 'frontier-1pass' | 'tailwind-css';
+type AgentChannel =
+  | 'npm-sdk'
+  | 'styles-md'
+  | 'mcp-json'
+  | 'stepwise-7b'
+  | 'frontier-1pass'
+  | 'tailwind-css';
 
 const COMPARISON_ROWS = [
   {
@@ -62,7 +68,7 @@ const COMPARISON_ROWS = [
 
 export function AccentAstryxPowerStage() {
   const [selectedBrand, setSelectedBrand] = useState<BrandProfileId>('playful-principal');
-  const [channel, setChannel] = useState<AgentChannel>('styles-md');
+  const [channel, setChannel] = useState<AgentChannel>('npm-sdk');
   const [copied, setCopied] = useState(false);
 
   const profile = BRAND_PROFILES[selectedBrand] || BRAND_PROFILES['editorial-sandstone'];
@@ -79,6 +85,46 @@ export function AccentAstryxPowerStage() {
 
   const getChannelPayload = (): { title: string; subtitle: string; code: string } => {
     switch (channel) {
+      case 'npm-sdk':
+        return {
+          title: `Adopt via npm & defineAccentTheme() (${profile.name})`,
+          subtitle: 'Strict Layer 1 Guardrails + 5-Axis Freedom + Section 5 Custom Leeway',
+          code: `// 1. Install the open-source package & pull your Zero-PR STYLES.md contract:
+// npm install @rorshockbtc/accent-ui framer-motion lucide-react
+// curl -sL "https://accent.design.pipes.pink/styles.md?brand=${profile.id}" > STYLES.md
+
+import {
+  defineAccentTheme,
+  validateThemeContrast,
+  AccentButton,
+  ScaryHeadline,
+  Smile,
+} from '@rorshockbtc/accent-ui';
+
+// 2. Fork any of the 7 dialects with full creative leeway + automatic WCAG math:
+export const myBrand = defineAccentTheme({
+  id: 'my-sovereign-app',
+  name: 'My Sovereign App',
+  tagline: 'Built on Accént 3.0 with custom leeway.',
+  usedBy: 'my-repo',
+  extends: '${profile.id}',
+  mark: '${profile.mark}',
+  tokens: {
+    light: {
+      '--a-bg': '${light['--a-bg']}',
+      '--a-ink': '${light['--a-ink']}',
+      '--a-accent': '${light['--a-accent']}', // Auto-derives --a-accent-fill (${light['--a-accent-fill']}) & --a-accent-text (${light['--a-accent-text']})
+    },
+  },
+  // 3. Creative Leeway Escape Hatch (Section 5 of STYLES.md):
+  customExtension: {
+    css: '.hero-stage { border-top: 2px solid var(--a-accent); }',
+    rules: ['Allow full-bleed canvas stages on /studio routes while keeping >= 13px type floor.'],
+  },
+});
+
+const audit = validateThemeContrast(myBrand); // Mathematically verifies AA/AAA compliance`,
+        };
       case 'styles-md':
         return {
           title: `STYLES.md · Zero-PR Design Contract (${profile.name})`,
@@ -283,11 +329,12 @@ Enforce these non-negotiable architectural invariants:
             <div className="flex flex-wrap items-center gap-1.5" role="tablist" aria-label="Agent export format">
               {(
                 [
-                  { id: 'styles-md', label: '01 · STYLES.md Contract' },
-                  { id: 'mcp-json', label: '02 · MCP & CLI' },
-                  { id: 'stepwise-7b', label: '03 · 4-Step 7B Prompt' },
-                  { id: 'frontier-1pass', label: '04 · Frontier Agent Prompt' },
-                  { id: 'tailwind-css', label: '05 · W3C CSS Variables' },
+                  { id: 'npm-sdk', label: '01 · npm & defineAccentTheme()' },
+                  { id: 'styles-md', label: '02 · STYLES.md Contract' },
+                  { id: 'mcp-json', label: '03 · MCP & CLI' },
+                  { id: 'stepwise-7b', label: '04 · 4-Step 7B Prompt' },
+                  { id: 'frontier-1pass', label: '05 · Frontier Agent Prompt' },
+                  { id: 'tailwind-css', label: '06 · W3C CSS Variables' },
                 ] as const
               ).map((tab) => {
                 const active = channel === tab.id;
@@ -338,6 +385,48 @@ Enforce these non-negotiable architectural invariants:
               </pre>
             </m.div>
           </AnimatePresence>
+        </div>
+      </div>
+
+      {/* PART 1.5: THE 3-LAYER SOVEREIGN GOVERNANCE MODEL (GUARDRAILS VS. LEEWAY) */}
+      <div className="grid grid-cols-1 md:grid-cols-3 border border-[var(--a-rule)] bg-[var(--a-bg)] divide-y md:divide-y-0 md:divide-x divide-[var(--a-rule)]">
+        <div className="p-6 sm:p-8 space-y-3">
+          <div className="flex items-center justify-between font-mono text-xs">
+            <span className="font-bold uppercase tracking-[0.14em] text-[var(--a-ink)]">Layer 01 · Hard Guardrails</span>
+            <span className="px-2 py-0.5 rounded bg-[var(--a-surface)] border border-[var(--a-rule)] text-[var(--a-muted)]">Locked in CI</span>
+          </div>
+          <h3 className="font-serif text-2xl font-semibold text-[var(--a-ink)]">
+            Never Compromised
+          </h3>
+          <p className="text-sm text-[var(--a-muted)] leading-relaxed">
+            No adopter or AI model can accidentally break human legibility: <strong>8pt spatial grid</strong>, <strong>&gt;= 13px minimum font floor</strong>, <strong>&gt;= 44×44px touch targets</strong>, <strong>WCAG AAA (7.0:1) body ink</strong>, and <strong>zero nested card soup</strong>.
+          </p>
+        </div>
+
+        <div className="p-6 sm:p-8 space-y-3">
+          <div className="flex items-center justify-between font-mono text-xs">
+            <span className="font-bold uppercase tracking-[0.14em] text-[var(--a-accent)]">Layer 02 · 5-Axis Dialect Drift</span>
+            <span className="px-2 py-0.5 rounded bg-[var(--a-surface)] border border-[var(--a-rule)] text-[var(--a-accent)]">7 Presets + Custom</span>
+          </div>
+          <h3 className="font-serif text-2xl font-semibold text-[var(--a-ink)]">
+            Guided Brand Expression
+          </h3>
+          <p className="text-sm text-[var(--a-muted)] leading-relaxed">
+            Dial in your own <strong>Canvas &amp; Signature Hex</strong> (auto-deriving accessible button fills via <code className="font-mono text-xs">deriveAccessibleAccent</code>), <strong>Optical Display Font</strong>, <strong>CTA Geometry</strong> (<code className="font-mono text-xs">6px</code> vs <code className="font-mono text-xs">9999px</code>), and <strong>Choreography Tier</strong>.
+          </p>
+        </div>
+
+        <div className="p-6 sm:p-8 space-y-3">
+          <div className="flex items-center justify-between font-mono text-xs">
+            <span className="font-bold uppercase tracking-[0.14em] text-[var(--a-sky-text,var(--a-ink))]">Layer 03 · Section 5 Leeway</span>
+            <span className="px-2 py-0.5 rounded bg-[var(--a-surface)] border border-[var(--a-rule)] text-[var(--a-muted)]">customExtension</span>
+          </div>
+          <h3 className="font-serif text-2xl font-semibold text-[var(--a-ink)]">
+            100% Creative Leeway
+          </h3>
+          <p className="text-sm text-[var(--a-muted)] leading-relaxed">
+            Need bespoke shaders, custom WebGL canvases, or domain-specific rules? Inject custom CSS, TSX adapter snippets, and repo-specific prompt rules into <strong>Section 5 of <code className="font-mono text-xs">STYLES.md</code></strong> with zero upstream PR friction.
+          </p>
         </div>
       </div>
 
