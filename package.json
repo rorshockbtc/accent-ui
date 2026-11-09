@@ -25,13 +25,17 @@
   "files": [
     "dist"
   ],
+  "bin": {
+    "accent-contribute": "./scripts/accent-contribute.js"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "build:lib": "tsup",
     "typecheck": "tsc --noEmit",
-    "lint": "next lint"
+    "lint": "next lint",
+    "contribute": "node scripts/accent-contribute.js"
   },
   "keywords": [
     "design-system",

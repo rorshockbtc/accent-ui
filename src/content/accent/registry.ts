@@ -37,6 +37,7 @@ import { page as aiRules } from './pages/ai-rules';
 import { page as aiStylesMd } from './pages/ai-styles-md';
 import { page as aiAgentAdapters } from './pages/ai-agent-adapters';
 import { page as aiMcpAndCli } from './pages/ai-mcp-and-cli';
+import { page as aiContributingBack } from './pages/ai-contributing-back';
 import { page as startGlossary } from './pages/start-glossary';
 import { page as foundationsTokens } from './pages/foundations-tokens';
 import { page as foundationsAccessibility } from './pages/foundations-accessibility';
@@ -131,6 +132,7 @@ export const ACCENT_PAGES: AccentPage[] = [
   aiStylesMd,
   aiAgentAdapters,
   aiMcpAndCli,
+  aiContributingBack,
 ];
 
 export function getAccentPage(slug: string): AccentPage | undefined {

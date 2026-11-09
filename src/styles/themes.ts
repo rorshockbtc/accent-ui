@@ -38,6 +38,8 @@ export interface CustomStyleExtension {
   rules?: string[];
   /** Optional React/Tailwind/TS code pattern snippet for downstream agents & developers */
   codeSnippet?: string;
+  /** Optional component names or token keys nominated for upstream graduation into Accént Core */
+  upstreamCandidates?: string[];
 }
 
 export interface BrandProfile<TId extends string = BrandProfileId> {
@@ -856,6 +858,13 @@ export function generateStylesMarkdown(profile: BrandProfile<string>): string {
     ? `\n## 8. Custom Component / Agentic Pattern Extension\n\n\`\`\`tsx\n${profile.customExtension.codeSnippet.trim()}\n\`\`\`\n`
     : '';
 
+  const upstreamCandidatesSection =
+    profile.customExtension?.upstreamCandidates && profile.customExtension.upstreamCandidates.length > 0
+      ? `\n## 9. Upstream Contribution Pipeline Candidates\n\n> The following components or primitives are nominated for graduation back into \`@rorshockbtc/accent-ui\`:\n\n${profile.customExtension.upstreamCandidates
+          .map((c) => `- \`${c}\` (requires token parameterization & Layer 1 verification before upstream PR)`)
+          .join('\n')}\n`
+      : '';
+
   return `# STYLES.md — ${profile.name} (\`${profile.id}\`)
 
 > **Design System**: [Accént 3.0](https://design.pipes.pink) (\`https://github.com/rorshockbtc/accent-ui\`) · MIT Open Source
@@ -895,5 +904,5 @@ ${slotsSection}
 - **CTA Geometry**: \`--a-radius-cta: ${profile.structure?.ctaRadius ?? l['--a-radius-cta'] ?? '6px'}\` with \`>= 44×44px\` minimum touch target area.
 - **Tier 1 Operational Motion**: \`120ms / 200ms / 320ms\` on \`cubic-bezier(0.16, 1, 0.3, 1)\`.
 - **Tier 2 Editorial & Brand Choreography**: \`550ms–900ms\` on \`cubic-bezier(0.22, 1, 0.36, 1)\` (\`RiseLines\`, \`ScaryHeadline\`, \`Smile\`, \`FadeUp\`, \`Hairline\`, \`GhostNumeral\`). Always honor \`prefers-reduced-motion: reduce\`.
-${customRulesSection}${customCssSection}${customCodeSection}`;
+${customRulesSection}${customCssSection}${customCodeSection}${upstreamCandidatesSection}`;
 }
