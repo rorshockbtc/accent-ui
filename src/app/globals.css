@@ -1,7 +1,4 @@
 @import "tailwindcss";
-@import "tw-animate-css";
-@import "shadcn/tailwind.css";
-@import "@clerk/ui/themes/shadcn.css";
 
 @theme inline {
   --color-background: var(--background);
@@ -461,4 +458,54 @@ html.theme-fade *::after {
 /* Suppress Global Pipes Chrome when rendering standalone Accént Design System (.accent-root) */
 body:has(.accent-root) [data-global-chrome] {
   display: none !important;
+}
+
+/* Accént 3.1 Modern Web Guidance Disclosure, Single-Row Tabs & Anchored Hovercards */
+details.accent-disclosure summary::-webkit-details-marker {
+  display: none;
+}
+details.accent-disclosure .accent-disclosure-marker {
+  display: inline-block;
+  transition: transform 140ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+details.accent-disclosure[open] .accent-disclosure-marker {
+  transform: rotate(90deg);
+}
+@media (prefers-reduced-motion: no-preference) {
+  details.accent-disclosure {
+    interpolate-size: allow-keywords;
+  }
+  details.accent-disclosure::details-content {
+    block-size: 0;
+    overflow: clip;
+    contain: layout;
+    transition: block-size 220ms cubic-bezier(0.16, 1, 0.3, 1), content-visibility 220ms allow-discrete;
+  }
+  details.accent-disclosure[open]::details-content {
+    block-size: auto;
+  }
+}
+
+.accent-tab-btn {
+  position: relative;
+}
+.accent-tab-btn[aria-selected="true"]::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0.25rem;
+  inset-block-end: 0;
+  border-bottom: 2px solid var(--a-accent, #FE299E);
+}
+
+[popover].accent-hovercard {
+  max-width: min(22rem, calc(100vw - 2rem));
+}
+@supports (position-area: block-end) {
+  [popover].accent-hovercard {
+    inset: auto;
+    margin: 0;
+    position-area: block-end span-inline-end;
+    position-try-fallbacks: flip-block, flip-inline;
+    margin-block-start: 0.5rem;
+  }
 }

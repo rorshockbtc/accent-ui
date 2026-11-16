@@ -4,6 +4,9 @@ export const page: AccentPage = {
   slug: 'patterns/cross-platform',
   section: 'patterns',
   title: 'Cross-Platform Parity: Web, Mobile, Chrome Extension & Desktop',
+  aiPhase: 'architecture',
+  subPatterns: ['1440px Web', '390×844 Mobile', '400×600 Extension', 'Tauri Desktop'],
+  liveInPipes: [{ label: 'Desktop Sovereign App', href: '/desktop' }],
   summary:
     'How Accént adapts seamlessly across 1440px desktop web, 390×844 mobile viewports, 400×600 Chrome Extension side panels, and native Tauri desktop apps.',
   readingMinutes: 7,
@@ -11,6 +14,8 @@ export const page: AccentPage = {
     overview: `## Four surfaces, one design genome
 
 Pipes and Colon Hyphen Bracket ship across four distinct runtime environments:
+
+> **Why:** Sharing one mathematical token source across Web, Mobile PWA, Chrome Extension Side Panel, and Tauri Desktop eliminates visual drift while letting column counts flex per viewport.
 1. **Desktop Web (\`1280px–1440px\`)**: 12-column editorial grids, 3-column open architectural pedestals, and sticky sidebars.
 2. **Mobile Web & PWA (\`390×844px\`)**: Single-column vertical flow, \`85vh\` thumb-zone bottom sheets, and \`44×44px\` touch targets with zero horizontal scroll (\`overflow-x-clip\`).
 3. **Chrome Extension Manifest V3 (\`400×600px\` Popup & Side Panel)**: Compact single-column pedestal stack, instant URL clipper, and shared \`--a-*\` token sheet.
@@ -21,7 +26,12 @@ Pipes and Colon Hyphen Bracket ship across four distinct runtime environments:
     guidelines: `## Cross-Platform Adaptation Rules
 
 - **Never fork token hexes per platform**: Web, mobile, extension, and desktop consume the exact same \`BrandProfile\` tokens from \`src/styles/themes.ts\`.
-- **Adapt column count, never type floor**: Even inside a \`360px\` Chrome Extension side panel, body and code text never drop below \`13px\` (\`0.8125rem\`).`,
+
+::demo:platform-token-parity::
+
+- **Adapt column count, never type floor**: Even inside a \`360px\` Chrome Extension side panel, body and code text never drop below \`13px\` (\`0.8125rem\`).
+
+::demo:platform-floor-in-ext::`,
 
     specs: `## Surface Viewport Breakpoints
 
@@ -31,11 +41,16 @@ Pipes and Colon Hyphen Bracket ship across four distinct runtime environments:
 | **Tablet** | \`768px–1023px\` | 2 pedestals | Sticky top header + bottom sheet |
 | **Mobile (\`390×844\`)** | \`320px–767px\` | 1 column | Top bar + \`85vh\` bottom sheet |
 | **Chrome Extension** | \`360px–420px\` | 1 column | 4-tab top pill bar (\`Clip · Search · Desk · Trim\`) |
-| **Desktop IDE (Tauri)** | \`1200px+\` | 3-pane split (\`240px + 1fr + 320px\`) | Left rail + \`⌘K\` command palette |`,
+| **Desktop IDE (Tauri)** | \`1200px+\` | 3-pane split (\`240px + 1fr + 320px\`) | Left rail + \`⌘K\` command palette |
 
-    accessibility: `## Cross-Surface Ergonomics
+::demo:platform-breakpoint-switcher::`,
 
-- All four surfaces respect \`prefers-reduced-motion: reduce\` and system light/dark mode (\`prefers-color-scheme\`).`,
+    accessibility: `## Cross-Surface Ergonomics & System Sync
+
+- All four surfaces honor OS \`prefers-reduced-motion: reduce\` by collapsing non-essential displacement transitions to \`<= 120ms\` opacity fades, and adapt cleanly to \`prefers-color-scheme\` light and dark tokens.
+- Interactive controls across extension popups and Tauri panes retain the strict \`44×44px\` pointer/touch hit target floor.
+
+::demo:platform-reduced-motion-sync::`,
   },
   rules: [
     {

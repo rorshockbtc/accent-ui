@@ -12,6 +12,8 @@ export const page: AccentPage = {
 
 When you want to introduce Accént—or just Accént's **Two-Tier Choreography & Motion System**—into another GitHub repository that currently has zero motion or its own brand identity, the downstream agent does **not** need to submit Pull Requests back to the master Accént repo.
 
+> **Why:** Fork-and-adapt lets downstream repos iterate freely in \`STYLES.md\` Section 5 and \`<LazyMotion>\` variants without blocking on upstream package releases.
+
 Instead, the downstream agent follows the **3-Step Fork-and-Adapt Protocol**:
 1. **Invoke**: Pull the canonical motion tokens (\`src/lib/motion/tokens.ts\`), brand primitives (\`AccentBrandMotion.tsx\`), and base \`STYLES.md\` from Accént (\`github.com/rorshockbtc/accent-ui\` or \`design.pipes.pink/design-system/styles.md\`).
 2. **Adapt**: Create a local \`accent.config.ts\` and \`STYLES.md\` in the target repository using \`defineAccentTheme()\`.
@@ -21,24 +23,13 @@ Instead, the downstream agent follows the **3-Step Fork-and-Adapt Protocol**:
 
     guidelines: `## Ready-to-Send Prompt for a Downstream Repository Agent (e.g. \`highdraw\`)
 
-Copy and paste the block below directly to the coding agent in your other GitHub project:
+Every downstream repository adopts Accént in three autonomous steps (\`Invoke -> Adapt -> Experiment\`):
 
-\`\`\`markdown
-### Agent Task: Adopt Accént Motion & Create Local STYLES.md Adapter
+::demo:adapter-fork-workflow::
 
-1. **Fetch the Canonical Accént Contracts**:
-   - Reference the Accént Design System repo (\`https://github.com/rorshockbtc/accent-ui\`) and live spec endpoints:
-     - Rules JSON: \`https://design.pipes.pink/design-system/rules.json\`
-     - Base Style Contract: \`https://design.pipes.pink/design-system/styles.md?brand=playful-principal\`
-2. **Install & Scaffold Two-Tier Motion (\`src/lib/motion/tokens.ts\`)**:
-   - Wrap the app in Framer Motion \`<LazyMotion features={domAnimation}>\` so the motion runtime stays \`~16KB\`.
-   - Import or copy Accént's Tier 1 operational physics (\`140ms\` micro press \`scale(0.97)\`, \`220ms\` standard transition \`[0.16, 1, 0.3, 1]\`, \`SPRING_LAYOUT\` \`{ stiffness: 380, damping: 32 }\`) and Tier 2 editorial/brand choreography (\`<RiseLines />\`, \`<FadeUp />\`, \`<Hairline />\`, \`<ScaryHeadline />\`, \`<Smile />\`).
-   - Always honor \`useReducedMotion()\` by collapsing durations to \`<= 120ms\` and stripping Y-axis translation.
-3. **Create Local \`STYLES.md\` (Do NOT put style rules in \`AGENTS.md\`)**:
-   - Write our project's \`STYLES.md\` in the repo root.
-   - Keep Layer 1 invariants intact (8pt spatial grid, \`>= 13px\` minimum font size, \`>= 44×44px\` touch targets, WCAG AA/AAA contrast, no layout-thrashing \`transition-all\` on \`width\`/\`height\`).
-   - Use Section 5 (\`customExtension\`) of \`STYLES.md\` and \`src/lib/motion/custom.ts\` to freely experiment with project-specific motion choreography, custom spring curves, and brand tokens without opening PRs to upstream Accént.
-\`\`\``,
+Wrap the application root in Framer Motion \`<LazyMotion features={domAnimation}>\` and strictly prohibit layout-thrashing CSS properties (\`width\`, \`height\`, \`transition-all\`).
+
+::demo:adapter-lazy-motion::`,
 
     specs: `## Motion Injection Checklist for Downstream Repos
 
@@ -48,12 +39,16 @@ Copy and paste the block below directly to the coding agent in your other GitHub
 | \`SPRING_LAYOUT\` | Tier 1 Operational | \`stiffness: 380, damping: 32\` | \`layoutId\` transform |
 | \`RiseLines\` | Tier 2 Editorial | \`900ms\` · \`[0.22, 1, 0.36, 1]\` | \`transform: translateY\` inside \`overflow-hidden\` |
 | \`ScaryHeadline\` | Tier 2 Editorial | \`350ms\` strike + \`stiffness: 240, damping: 24\` | \`scaleX\`, \`y\`, \`opacity\` |
-| \`Hairline\` | Tier 2 Editorial | \`900ms\` draw from \`origin-left\` | \`transform: scaleX\` |`,
+| \`Hairline\` | Tier 2 Editorial | \`900ms\` draw from \`origin-left\` | \`transform: scaleX\` |
 
-    accessibility: `## Motion Safety Guardrails
+::demo:adapter-tier-inspector::`,
 
-- Never animate \`width\`, \`height\`, \`top\`, \`left\`, or \`margin\`. Animate only \`transform\` (\`translate\`, \`scale\`, \`rotate\`) and \`opacity\`.
-- Never introduce infinite looping animations on reading surfaces (the only permitted ambient tick is the discrete \`<Smile />\` punctuation wink, which halts under \`prefers-reduced-motion\`).`,
+    accessibility: `## Motion Safety Guardrails & Reduced Motion Compliance
+
+- Never animate \`width\`, \`height\`, \`top\`, \`left\`, or \`margin\`. Animate only GPU-composited \`transform\` (\`translate\`, \`scale\`, \`rotate\`) and \`opacity\`.
+- Never introduce infinite looping animations on reading surfaces (the only permitted ambient tick is the discrete \`<Smile />\` punctuation wink, which halts immediately under \`prefers-reduced-motion\`).
+
+::demo:adapter-motion-audit::`,
   },
   rules: [
     {

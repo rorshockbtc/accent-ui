@@ -4,7 +4,6 @@ import React, { useState, useEffect, useMemo } from 'react';
 import {
   RotateCcw,
   Palette,
-  Sparkles,
   GitFork,
   Download,
   Copy,
@@ -298,7 +297,7 @@ export function AccentHeroMotionShowcase() {
               onClick={() => setPairMode((m) => (m === 'design' ? 'corporate' : 'design'))}
               className="inline-flex min-h-[44px] items-center gap-1.5 rounded-md border border-[var(--a-rule)] bg-[var(--a-bg)] px-3 text-xs font-mono t-press t-color hover:border-[var(--a-ink)] active:scale-[0.97] cursor-pointer"
             >
-              <Sparkles className="h-3.5 w-3.5 text-[var(--a-accent)]" aria-hidden="true" />
+              <span className="font-bold text-[var(--a-accent)]" aria-hidden="true">´</span>
               <span>Copy: {pairMode === 'design' ? 'Accént Design' : 'CHB Corporate'}</span>
             </button>
             <AccentButton
@@ -328,7 +327,7 @@ export function AccentHeroMotionShowcase() {
             </div>
             <Hairline className="mt-6 bg-[var(--a-rule)]" delay={0.15} />
             <p className="mt-3 text-xs font-mono text-[var(--a-muted)]">
-              import &#123; ScaryHeadline, Smile, Hairline &#125; from &apos;@rorshockbtc/accent-ui&apos;
+              import &#123; ScaryHeadline, Smile, Hairline &#125; from &apos;accent-ui&apos;
             </p>
           </div>
 

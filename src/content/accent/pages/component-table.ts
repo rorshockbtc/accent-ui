@@ -14,24 +14,36 @@ Whether displaying WCAG contrast ratios, bank balance-sheet NIM schedules in \`p
 
 Accént tables strip away vertical cell borders and alternating zebra stripes in favor of **clean horizontal hairlines (\`divide-y divide-[var(--a-rule)]\`)**, right-aligned \`tabular-nums\` for numbers, and generous \`py-3.5\` row padding.
 
+> **Why:** Vertical borders create optical cages that slow horizontal reading; subtle 1px horizontal rules guide the eye cleanly across columns.
+
 ::demo:hairline-table-demo::`,
 
     guidelines: `## Do & Don't
 
-- **Do** apply \`tabular-nums\` (\`font-variant-numeric: tabular-nums\`) to every column containing numbers, prices, percentages, dates, or contrast ratios.
-- **Do** left-align text columns and right-align numeric columns so decimal points line up vertically.
-- **Don't** put cards or multi-line buttons inside table cells.`,
+- **Do** apply \`tabular-nums\` (\`font-variant-numeric: tabular-nums\`) to every column containing numbers, prices, percentages, dates, or contrast ratios so decimals align vertically.
+
+::demo:table-tabular-nums::
+
+- **Do** left-align text columns and right-align numeric columns so decimal points line up cleanly, and never nest cards or multi-button toolbars inside table rows.
+
+::demo:table-cell-restraint::`,
 
     specs: `## Table Anatomy & Spacing
 
-- **Header Row (\`<thead>\`)**: \`text-xs font-mono font-semibold uppercase tracking-wider text-[var(--a-muted)] border-b-2 border-[var(--a-ink)]\`
-- **Body Row (\`<tbody> tr\`)**: \`border-b border-[var(--a-rule)] hover:bg-[var(--a-surface)] transition-colors\`
-- **Cell Padding**: \`py-3.5 px-3\` (minimum \`44px\` row height)`,
+| Layer | Class / Token | Role |
+|---|---|---|
+| **Header Row (\`<thead>\`)** | \`border-b-2 border-[var(--a-ink)] font-mono text-[13px] uppercase\` | Anchors sticky column headers cleanly |
+| **Body Row (\`<tbody> tr\`)** | \`border-b border-[var(--a-rule)] hover:bg-[var(--a-surface)]\` | Subtle sand shift on row inspection |
+| **Cell Padding** | \`py-3.5 px-3\` | Ensures generous row rhythm and touch safety |
 
-    accessibility: `## Table Accessibility
+::demo:table-anatomy-redline::`,
 
-- Always use native \`<table>\`, \`<thead>\`, \`<tbody>\`, \`<th scope="col">\`, and \`<td>\` elements.
-- Wrap wide tables in an \`overflow-x-auto\` container with \`tabIndex={0}\` and \`role="region"\` so mobile viewports never clip columns.`,
+    accessibility: `## Table Accessibility & Responsive Scroll Containment
+
+- Always use native \`<table>\`, \`<thead>\`, \`<tbody>\`, \`<th scope="col">\`, and \`<td>\` elements so assistive technology announces row/column headers automatically.
+- Wrap wide tables in an \`overflow-x-auto\` container with \`tabIndex={0}\` and \`role="region"\` so 390px mobile viewports scroll the table locally rather than breaking page width.
+
+::demo:table-scroll-region::`,
   },
   rules: [
     {

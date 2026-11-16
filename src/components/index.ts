@@ -1,4 +1,5 @@
 export * from './ui';
+export * from './ai';
 export { AccentShell, AccentMark } from './AccentShell';
 export { AccentProse, slugifyHeading } from './AccentProse';
 export { AccentDoc } from './AccentDoc';

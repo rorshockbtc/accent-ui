@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { ArrowLeft, ArrowRight, Code2, Sparkles, Check, Terminal } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Code2, Check, Terminal } from 'lucide-react';
 import { AnimatePresence, m } from 'framer-motion';
 import { DURATION, EASE_ACCENT, SPRING_LAYOUT } from '@/lib/motion/tokens';
 import { FadeUp, Hairline, RiseLines } from './editorial-motion/AccentBrandMotion';
@@ -27,6 +27,9 @@ export type AccentDocProps = {
   readingMinutes: number;
   kind: 'doc' | 'essay';
   pipes?: string[];
+  subPatterns?: string[];
+  liveInPipes?: Array<{ label: string; href: string }>;
+  relatedPages?: Array<{ slug: string; title: string; kind?: 'doc' | 'essay' }>;
   tabs: Partial<Record<AccentTabId, string>>;
   rules: AgentRule[];
   prev?: PageLite;
@@ -79,6 +82,7 @@ export function AccentDoc(props: AccentDocProps) {
   const available = TAB_ORDER.filter((t) => props.tabs[t]);
   const [tab, setTab] = useState<AccentTabId>(available[0] ?? 'overview');
   const [copiedPrompt, setCopiedPrompt] = useState(false);
+  const [copiedLocalPrompt, setCopiedLocalPrompt] = useState(false);
   const [copiedRules, setCopiedRules] = useState(false);
 
   useEffect(() => {
@@ -121,6 +125,16 @@ export function AccentDoc(props: AccentDocProps) {
     window.setTimeout(() => setCopiedRules(false), 1800);
   };
 
+  const handleCopyLocalPrompt = () => {
+    const rulesList = props.rules
+      .map((r) => `- [${r.id}] ${r.statement}`)
+      .join('\n');
+    const cmd = `# Run locally with Ollama (0 cloud tokens) using Accént's STYLES.md contract:\ncurl -s https://accent.pipes.pink/styles.md > /tmp/accent-styles.md\nollama run qwen2.5-coder:7b "$(cat <<'EOF'\nImplement ${props.title} (${props.slug}) strictly following Accént 3.1.\nRules:\n${rulesList || '- Enforce >= 13px font floor, >= 44x44px hit targets, 0 Sparkles icons, and card.no-nesting.'}\nSpecification excerpt:\n${(props.tabs[tab] ?? '').slice(0, 1200)}\nEOF\n)"`;
+    navigator.clipboard.writeText(cmd);
+    setCopiedLocalPrompt(true);
+    window.setTimeout(() => setCopiedLocalPrompt(false), 1800);
+  };
+
   const isEssay = props.kind === 'essay';
 
   return (
@@ -155,7 +169,7 @@ export function AccentDoc(props: AccentDocProps) {
                     {props.pipes.map((p, i) => (
                       <React.Fragment key={p}>
                         {i > 0 && ', '}
-                        <Link href={`/${p}`} className="font-mono underline underline-offset-4 hover:text-[var(--a-accent)]">
+                        <Link href={`/explore/${p}`} className="font-mono underline underline-offset-4 hover:text-[var(--a-accent)]">
                           pipe\{p}
                         </Link>
                       </React.Fragment>
@@ -169,16 +183,24 @@ export function AccentDoc(props: AccentDocProps) {
                 <button
                   type="button"
                   onClick={handleCopyAgentSpec}
-                  className="inline-flex items-center gap-1.5 rounded-full border border-[var(--a-rule)] bg-[var(--a-surface)] px-3 py-1.5 text-xs font-mono font-medium text-[var(--a-ink)] transition-colors hover:border-[var(--a-accent)] hover:text-[var(--a-accent)]"
+                  className="inline-flex min-h-[44px] items-center gap-1.5 rounded-full border border-[var(--a-rule)] bg-[var(--a-surface)] px-3.5 py-2 text-[13px] font-mono font-medium text-[var(--a-ink)] transition-colors hover:border-[var(--a-accent)] hover:text-[var(--a-accent-text)] cursor-pointer"
                 >
-                  {copiedPrompt ? <Check className="h-3.5 w-3.5 text-emerald-600" /> : <Sparkles className="h-3.5 w-3.5 text-[var(--a-accent)]" />}
+                  {copiedPrompt ? <Check className="h-3.5 w-3.5 text-emerald-600" /> : <span className="font-bold text-[var(--a-accent-text)]" aria-hidden="true">&gt;</span>}
                   {copiedPrompt ? 'Copied Spec Prompt' : 'Copy Agent Spec'}
+                </button>
+                <button
+                  type="button"
+                  onClick={handleCopyLocalPrompt}
+                  className="inline-flex min-h-[44px] items-center gap-1.5 rounded-full border border-[var(--a-rule)] bg-[var(--a-surface)] px-3.5 py-2 text-[13px] font-mono font-medium text-[var(--a-ink)] transition-colors hover:border-[var(--a-accent)] hover:text-[var(--a-accent-text)] cursor-pointer"
+                >
+                  {copiedLocalPrompt ? <Check className="h-3.5 w-3.5 text-emerald-600" /> : <Terminal className="h-3.5 w-3.5 text-[var(--a-accent-text)]" aria-hidden="true" />}
+                  {copiedLocalPrompt ? 'Copied Ollama CLI' : 'Copy Sovereign Local Prompt'}
                 </button>
                 {props.rules.length > 0 && (
                   <button
                     type="button"
                     onClick={handleCopyRulesJson}
-                    className="inline-flex items-center gap-1.5 rounded-full border border-[var(--a-rule)] bg-[var(--a-surface)] px-3 py-1.5 text-xs font-mono font-medium text-[var(--a-muted)] transition-colors hover:border-[var(--a-ink)] hover:text-[var(--a-ink)]"
+                    className="inline-flex min-h-[44px] items-center gap-1.5 rounded-full border border-[var(--a-rule)] bg-[var(--a-surface)] px-3.5 py-2 text-[13px] font-mono font-medium text-[var(--a-muted)] transition-colors hover:border-[var(--a-ink)] hover:text-[var(--a-ink)] cursor-pointer"
                   >
                     {copiedRules ? <Check className="h-3.5 w-3.5 text-emerald-600" /> : <Terminal className="h-3.5 w-3.5" />}
                     {copiedRules ? 'Copied JSON' : 'Rules JSON'}
@@ -186,13 +208,39 @@ export function AccentDoc(props: AccentDocProps) {
                 )}
                 <Link
                   href="/design-system/playground"
-                  className="inline-flex items-center gap-1.5 rounded-full bg-[var(--a-ink)] px-3.5 py-1.5 text-xs font-mono font-semibold text-[var(--a-bg)] transition-colors hover:bg-[var(--a-accent)] hover:text-[var(--a-accent-fg)]"
+                  className="inline-flex min-h-[44px] items-center gap-1.5 rounded-full bg-[var(--a-ink)] px-4 py-2 text-[13px] font-mono font-semibold text-[var(--a-bg)] transition-colors hover:bg-[var(--a-accent-fill)] hover:text-[var(--a-accent-fg)]"
                 >
                   <Code2 className="h-3.5 w-3.5" />
                   Playground →
                 </Link>
               </div>
             </div>
+
+            {((props.subPatterns && props.subPatterns.length > 0) ||
+              (props.liveInPipes && props.liveInPipes.length > 0)) && (
+              <div className="border-b border-[var(--a-rule)] py-3 space-y-2 text-[13px] font-mono">
+                {props.subPatterns && props.subPatterns.length > 0 && (
+                  <p className="text-[var(--a-ink)] leading-relaxed">
+                    <span className="text-[var(--a-muted)] uppercase mr-2">Sub-patterns:</span>
+                    {props.subPatterns.join(' · ')}
+                  </p>
+                )}
+                {props.liveInPipes && props.liveInPipes.length > 0 && (
+                  <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
+                    <span className="text-[var(--a-muted)] uppercase">Live in Pipes:</span>
+                    {props.liveInPipes.map((ref) => (
+                      <Link
+                        key={ref.href}
+                        href={ref.href}
+                        className="inline-flex min-h-[44px] items-center underline underline-offset-4 text-[var(--a-accent-text)] hover:text-[var(--a-ink)]"
+                      >
+                        {ref.label} ↗
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
           </FadeUp>
         </header>
 
@@ -281,6 +329,33 @@ export function AccentDoc(props: AccentDocProps) {
                 ))}
               </ol>
             </FadeUp>
+          </section>
+        )}
+
+        {props.relatedPages && props.relatedPages.length > 0 && (
+          <section aria-labelledby="bridge-heading" className="mt-14 pt-8 border-t border-[var(--a-rule)] max-w-[68ch]">
+            <p className="font-mono text-[13px] font-semibold uppercase tracking-[0.12em] text-[var(--a-accent-text)]">
+              &gt; Theory ↔ Implementation Bridge
+            </p>
+            <h2 id="bridge-heading" className="mt-1 font-serif text-2xl font-semibold text-[var(--a-ink)]">
+              Companion Specifications &amp; Essays
+            </h2>
+            <ul className="mt-4 divide-y divide-[var(--a-rule)] border-y border-[var(--a-rule)]">
+              {props.relatedPages.map((rp) => (
+                <li key={rp.slug}>
+                  <Link
+                    href={`/design-system/${rp.slug}`}
+                    className="flex min-h-[48px] items-center justify-between gap-4 py-3 text-base font-medium text-[var(--a-ink)] hover:text-[var(--a-accent-text)] group"
+                  >
+                    <span>{rp.title}</span>
+                    <span className="inline-flex items-center gap-2 font-mono text-[13px] text-[var(--a-muted)] group-hover:text-[var(--a-accent-text)] shrink-0">
+                      <span>{rp.kind === 'essay' ? 'Essay' : 'Spec'}</span>
+                      <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" aria-hidden />
+                    </span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
           </section>
         )}
 

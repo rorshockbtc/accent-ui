@@ -1,7 +1,7 @@
 'use client';
 
 import { useMotionPreference } from '@/components/motion/MotionProvider';
-import { Sparkles, EyeOff } from 'lucide-react';
+import { Eye, EyeOff } from 'lucide-react';
 
 export function MotionToggle({ className = '' }: { className?: string }) {
   const { isReduced, toggleMotionMode } = useMotionPreference();
@@ -20,7 +20,7 @@ export function MotionToggle({ className = '' }: { className?: string }) {
       {isReduced ? (
         <EyeOff className="w-4 h-4 text-stone-500" aria-hidden="true" />
       ) : (
-        <Sparkles className="w-4 h-4 text-[#D44983]" aria-hidden="true" />
+        <Eye className="w-4 h-4 text-[#D44983]" aria-hidden="true" />
       )}
     </button>
   );

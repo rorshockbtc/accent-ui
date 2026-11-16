@@ -8,6 +8,8 @@ export const page: AccentPage = {
   summary:
     'How to pair one serif with one sans, six open pairings with fallback stacks, when to use just one, and why Georgia numerals can wreck a price list.',
   readingMinutes: 10,
+  insightCategory: 'philosophy',
+  relatedSlugs: ['foundations/typography', 'components/table'],
   pipes: ['website-design', 'chb'],
   rules: [
     {

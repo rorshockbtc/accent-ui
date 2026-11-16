@@ -35,6 +35,17 @@
 
 ---
 
-## 3. Optional Agentic & Custom Code Injection (`customExtension`)
+## 3. Surface Archetypes & Progressive Disclosure (Accént 3.1)
+
+| Surface Archetype | Motion & Scroll Budget | Disclosure Rule | Production Examples |
+|---|---|---|---|
+| `threshold` | Choreographed scroll horizons, wet-in-wet shader skies, expressive pigment blooms (`prefers-reduced-motion` settles to still plate). | Lead with interactive story/demo; tuck secondary tables into footer or colophon. | `asterisk.pipes.pink/`, `pipes.pink/asterisk`, `colonhyphenbracket.pink/` |
+| `sanctuary` | Action-only motion (focus, typing, tab switch, publish flight). Zero scroll-jacking or continuous background motion. | Single open reading/writing sheet; move drafts to native `<dialog closedby="any">` drawers and collapse passing checks via `AccentWeatherBand`. | `asterisk.pipes.pink/studio`, `pipes.pink/write` |
+| `gallery` | Generous negative space, `mix-blend-mode: multiply` artwork glazes (`.wc-glaze`), gentle ambient emphasis. | Pair each visual plate with 3 crisp rules and 1 clear action; tuck side-by-side comparison matrices inside `<details>`. | `asterisk.pipes.pink/studio/rooms`, `pipes.pink/sign-up?ref=asterisk` |
+| `edition` | Calm `60–70ch` spine with opacity/hairline reveals and `tabindex="0" role="region"` table containers. | 3-column micro-site spine with left chapter index and right margin notes. | `pipes.pink/explore/*`, `design.pipes.pink/*` |
+
+- **`playful-principal` Primary CTA Contrast**: Sovereign Hot Pink (`#FE299E`, `large-cta-aa` `3.19:1 >= 3.0:1` on bold `>= 18.67px` full-pill CTAs with hover `#111827`) plus `--a-accent-fill-aa: #B81468` (`5.61:1 >= 4.5:1`) for compact small-text controls.
+
+## 4. Optional Agentic & Custom Code Injection (`customExtension`)
 
 When a downstream brand requires bespoke styling beyond the 5 core axes, pass `customExtension: { css, rules, codeSnippet }` to `defineAccentTheme()` or use the **"Optional: Inject Custom CSS / Agent Rules"** drawer on https://design.pipes.pink to live-preview and export a self-contained `STYLES.md` with zero GitHub pull requests required.

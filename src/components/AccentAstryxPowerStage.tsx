@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 import { AnimatePresence, m } from 'framer-motion';
 import {
   Terminal,
-  Sparkles,
   Check,
   Copy,
   ShieldCheck,
@@ -104,7 +103,7 @@ export function AccentAstryxPowerStage() {
           title: `Adopt via npm & defineAccentTheme() (${profile.name})`,
           subtitle: 'Strict Layer 1 Guardrails + 5-Axis Freedom + Section 5 Custom Leeway',
           code: `// 1. Install the open-source package & pull your Zero-PR STYLES.md contract:
-// npm install @rorshockbtc/accent-ui framer-motion lucide-react
+// npm install accent-ui framer-motion lucide-react
 // curl -sL "https://accent.design.pipes.pink/styles.md?brand=${profile.id}" > STYLES.md
 
 import {
@@ -113,7 +112,7 @@ import {
   AccentButton,
   ScaryHeadline,
   Smile,
-} from '@rorshockbtc/accent-ui';
+} from 'accent-ui';
 
 // 2. Fork any of the 7 dialects with full creative leeway + automatic WCAG math:
 export const myBrand = defineAccentTheme({

@@ -8,6 +8,8 @@ export const page: AccentPage = {
   summary:
     'Words travel badly between languages. Pauses, emphasis and exclamation travel well. Here is why Colon Hyphen Bracket names its products after punctuation.',
   readingMinutes: 9,
+  insightCategory: 'philosophy',
+  relatedSlugs: ['foundations/brand', 'essays/dont-make-people-prompt'],
   pipes: ['website-design', 'chb', 'cubby'],
   rules: [
     {

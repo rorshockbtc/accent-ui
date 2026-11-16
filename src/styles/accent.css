@@ -1,0 +1,159 @@
+/* ============================================================================
+ * Accént 3.1 Consumer Stylesheet (`accent-ui/styles.css`)
+ * Tailwind CSS v4 @source scan + WCAG 13px floor + Ergonomic & Watercolor utils
+ * ========================================================================== */
+
+@source "./**/*.{js,mjs,ts,tsx}";
+
+:root {
+  --a-bg: #E8E2D5;
+  --a-surface: #F3EFE9;
+  --a-card: #F3EFE9;
+  --a-well: #FAF8F5;
+  --a-ink: #111827;
+  --a-muted: #4B5563;
+  --a-rule: rgba(17, 24, 39, 0.14);
+  --a-accent: #FE299E;
+  --a-accent-fill: #B8326D;
+  --a-accent-fill-aa: #B8326D;
+  --a-accent-fill-hover: #A3285C;
+  --a-accent-fg: #FFFFFF;
+  --a-accent-text: #A3285C;
+  --a-sky: #01A9F4;
+  --a-sky-fg: #111827;
+  --a-sky-deep: #0369A1;
+  --a-sky-deep-fg: #FFFFFF;
+  --a-sky-surface: #D4EBF5;
+  --a-sky-ink: #02212F;
+  --a-sky-text: #0369A1;
+  --a-emerald: #15803D;
+  --a-radius-cta: 6px;
+  --a-leading-body: 1.65;
+  /* Enforce Accént Layer 1 13px minimum typographic floor across text-xs */
+  --text-xs: 0.8125rem;
+  --text-xs--line-height: 1.4;
+}
+
+/* Tier 1 Ergonomic Motion Transitions */
+.t-press {
+  transition-property: transform, opacity;
+  transition-duration: 150ms;
+  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.t-color {
+  transition-property: color, background-color, border-color, box-shadow;
+  transition-duration: 180ms;
+  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Auto-sizing textareas locked to horizontal width per modern-web-guidance */
+.a-textarea {
+  field-sizing: content;
+  height: auto;
+  width: 100%;
+  min-block-size: 5lh;
+  max-block-size: 18lh;
+}
+
+/* Corporate Print Underline Swipe */
+.link-swipe {
+  position: relative;
+  text-decoration: none;
+  background-image: linear-gradient(currentColor, currentColor);
+  background-position: 0% 100%;
+  background-repeat: no-repeat;
+  background-size: 0% 1.5px;
+  transition: background-size 220ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.link-swipe:hover,
+.link-swipe:focus-visible {
+  background-size: 100% 1.5px;
+}
+
+/* Watercolor Artwork Compositing (`multiply` removes white paper wash cleanly) */
+.wc-glaze {
+  mix-blend-mode: multiply;
+}
+
+/* Watercolor Hand-Brushed Underline (inline SVG stroke) */
+.wc-link {
+  position: relative;
+  text-decoration: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 6' preserveAspectRatio='none'%3E%3Cpath d='M0 4 Q 30 1.5 60 3.5 T 120 3' fill='none' stroke='%23FE299E' stroke-width='2.4' stroke-linecap='round' opacity='0.78'/%3E%3C/svg%3E");
+  background-position: 0% 100%;
+  background-repeat: no-repeat;
+  background-size: 0% 5px;
+  padding-bottom: 2px;
+  transition: background-size 260ms cubic-bezier(0.16, 1, 0.3, 1), color 180ms ease;
+}
+.wc-link:hover,
+.wc-link:focus-visible,
+.wc-link[data-active='true'] {
+  background-size: 100% 5px;
+}
+
+/* Watercolor Pigment-Bloom CTA (--bx, --by set dynamically by bloomHandlers) */
+.wc-cta {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  transition: transform 180ms cubic-bezier(0.16, 1, 0.3, 1), color 220ms ease, background-color 220ms ease, box-shadow 220ms ease;
+}
+.wc-cta::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: radial-gradient(
+    circle at var(--bx, 50%) var(--by, 50%),
+    #111827 0%,
+    rgba(17, 24, 39, 0.94) 55%,
+    transparent 74%
+  );
+  transform: scale(0);
+  opacity: 0;
+  transition: transform 420ms cubic-bezier(0.16, 1, 0.3, 1), opacity 260ms ease;
+  pointer-events: none;
+}
+.wc-cta:hover::before,
+.wc-cta:focus-visible::before {
+  transform: scale(2.8);
+  opacity: 1;
+}
+
+/* Ambient Folon Door Threshold Pulse (respects reduced motion) */
+@keyframes a-door-glow {
+  0%, 100% { opacity: 0.24; }
+  50% { opacity: 0.52; }
+}
+.a-door-glow {
+  animation: a-door-glow 8s ease-in-out infinite;
+}
+
+/* Single-Row Scrollable Tablist Edge Fade Tokens (registered via @property for smooth interpolation) */
+@property --fade-start {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+@property --fade-end {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .t-press,
+  .t-color,
+  .link-swipe,
+  .wc-link,
+  .wc-cta,
+  .wc-cta::before {
+    transition-duration: 0.01ms !important;
+  }
+  .a-door-glow {
+    animation: none !important;
+    opacity: 0.35;
+  }
+}

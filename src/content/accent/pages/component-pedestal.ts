@@ -12,6 +12,8 @@ export const page: AccentPage = {
 
 Generic AI-generated websites wrap every piece of content in a rounded white card with a drop shadow, a border, a badge, and a sub-card inside it. When a page has 30 cards on screen, the boxes compete with the typography and nothing feels important.
 
+> **Why:** Stripping unnecessary borders lets Warm Sandstone breathe as paper so Fraunces headlines and a single chromatic rule establish immediate hierarchy.
+
 Accént replaces card soup with **Open Architectural Pedestals** and **Hairline Ledgers**:
 
 - **Open Architectural Pedestal**: Content sits directly on the warm sandstone (\`#E8E2D5\`) or archival paper (\`#FAF8F5\`) canvas, anchored at the top by a crisp \`2px\` structural rule (\`border-t-2 border-[#111827]\`, or \`border-[#FE299E]\` for the primary focal column).
@@ -21,38 +23,32 @@ Accént replaces card soup with **Open Architectural Pedestals** and **Hairline 
 
     guidelines: `## When to use a Pedestal vs. a Ledger vs. a Card
 
-- **Use an Open Pedestal** for 3-column feature rows, flagship canons, Today's Three stories, and Personal/Business/Topic Pipe showcases.
+- **Use an Open Pedestal** for 3-column feature rows, flagship canons, and Personal/Business/Topic showcases.
 - **Use a Hairline Ledger** whenever displaying more than 9 items in a directory, changelog, token table, or search index.
-- **Reserve Cards** strictly for standalone interactive widgets (such as an audio player, a checkout form well, or a draggable modal) and **never nest a card inside another card**.`,
 
-    specs: `## Reference Markup: 3-Column Open Architectural Pedestal
+::demo:pedestal-density-rule::
 
-\`\`\`tsx
-<article className="group flex flex-col justify-between pt-6 border-t-2 border-[#111827] hover:border-[#FE299E] transition-colors">
-  <div className="space-y-3.5">
-    <div className="flex items-center justify-between font-mono text-xs">
-      <span className="font-bold text-[#FE299E]">pipe\\stoicism</span>
-      <span className="text-[#111827]/60">27 notes</span>
-    </div>
-    <h3 className="font-serif text-2xl sm:text-3xl text-[#111827]">
-      Classical Stoic Canon
-    </h3>
-    <p className="text-sm sm:text-base text-[#111827]/75 leading-relaxed">
-      Primary-source treatises from Marcus Aurelius, Epictetus, and Seneca.
-    </p>
-  </div>
-  <div className="pt-6 mt-6 flex items-center justify-between">
-    <a href="/explore/stoicism" className="font-mono text-xs font-bold uppercase tracking-wider">
-      Open Pipe →
-    </a>
-  </div>
-</article>
-\`\`\``,
+- **Reserve Cards** strictly for standalone interactive widgets and **never nest a card inside another card**.
 
-    accessibility: `## Semantic Structure
+::demo:pedestal-nesting-dont::`,
 
-- Wrap each independent pedestal in \`<article>\` or \`<li>\` inside an \`<ol>\`/\`<ul>\`.
-- Ensure the heading inside the pedestal follows sequential document hierarchy (\`<h2>\` or \`<h3>\`).`,
+    specs: `## Architectural Pedestal Spacing & Border Tokens
+
+| Property | Light Token | Focal Column | Purpose |
+|---|---|---|---|
+| **Top Stroke** | \`border-t-2 border-[var(--a-ink)]\` | \`border-t-2 border-[var(--a-accent)]\` | Anchors reading start without enclosing sides |
+| **Top Padding** | \`pt-6\` (\`24px\`) | \`pt-6\` (\`24px\`) | Keeps kicker typography off the top border |
+| **Vertical Gap** | \`gap-y-14\` (\`56px\`) | \`gap-y-14\` | Replaces horizontal card gaps with quiet breathing room |
+
+::demo:pedestal-anatomy::`,
+
+    accessibility: `## Semantic Structure & Sequential Landmarks
+
+- Wrap each independent pedestal in \`<article>\` or \`<li>\` inside a semantic \`<ol>\` or \`<ul>\`.
+- Ensure the heading inside the pedestal follows sequential document hierarchy (\`<h2>\` for section intro, \`<h3>\` per column) so screen-reader rotor navigation jumps cleanly from item to item.
+- Keep all action links inside pedestals \`>= 44×44px\` via inline-flex padding.
+
+::demo:pedestal-heading-tree::`,
   },
   rules: [
     {

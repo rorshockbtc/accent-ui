@@ -4,6 +4,9 @@ export const page: AccentPage = {
   slug: 'patterns/onboarding',
   section: 'patterns',
   title: '3-Archetype Discovery & Airy Onboarding',
+  aiPhase: 'architecture',
+  subPatterns: ['Archetype Pedestals', 'Single-Row Jump Bar', 'Zero-Box Directory'],
+  liveInPipes: [{ label: 'Explore Pipes Directory', href: '/explore' }],
   summary:
     'How to structure discovery and browse pages around Personal, Business, and Topic-based examples with airy max-w-6xl spacing and zero cognitive overload.',
   readingMinutes: 6,
@@ -11,6 +14,8 @@ export const page: AccentPage = {
     overview: `## Show how the system works by live archetype
 
 When a new visitor lands on a platform like Pipes (\`/explore\`), dumping 270 unsorted items or multi-row filter controls leaves them asking: *"What is this for? Why does this matter to me?"*
+
+> **Why:** Visitors grasp concrete human examples in three seconds; grouping discovery around real Personal, Business, and Topic archetypes eliminates protocol abstraction fatigue.
 
 Accént solves discovery overload with the **Airy 3-Archetype Discovery Pattern**:
 
@@ -22,19 +27,30 @@ Accént solves discovery overload with the **Airy 3-Archetype Discovery Pattern*
 
     guidelines: `## Airy Spacing Rules (\`max-w-6xl\`, \`py-16 sm:py-24\`)
 
-- Alternate section backgrounds between Warm Sandstone (\`#E8E2D5\`) and Archival Paper (\`#FAF8F5\`) separated by \`1px\` hairlines (\`border-t border-[#111827]/15\`).
+- Alternate section backgrounds between Warm Sandstone (\`#E8E2D5\`) and Archival Paper (\`#FAF8F5\`) separated by \`1px\` hairlines, paired with one single-row archetype jump bar.
+
+::demo:onboard-jump-bar::
+
 - Keep descriptions directly on the canvas—never trap item descriptions inside nested sub-boxes inside cards.
-- Provide a single-row jump bar (\`All Three Types · 01 Personal · 02 Business · 03 Topics\`) paired with one search input.`,
+
+::demo:onboard-canvas-copy::`,
 
     specs: `## Container & Grid Cadence
 
-- **Container**: \`container max-w-6xl mx-auto px-6 sm:px-8\`
-- **Vertical Section Padding**: \`py-16 sm:py-24\`
-- **3-Column Pedestal Grid**: \`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-10 lg:gap-x-12 gap-y-14\``,
+| Breakpoint | Container | Vertical Rhythm | Pedestal Columns |
+|---|---|---|---|
+| **Mobile (\`390px\`)** | \`px-6\` | \`py-16\` | \`grid-cols-1 gap-y-14\` |
+| **Tablet (\`768px\`)** | \`max-w-6xl px-8\` | \`py-20\` | \`md:grid-cols-2 gap-x-10\` |
+| **Desktop (\`1280px+\`)** | \`max-w-6xl px-8\` | \`py-24\` | \`lg:grid-cols-3 gap-x-12\` |
+
+::demo:onboard-cadence-grid::`,
 
     accessibility: `## Landmark & Heading Progression
 
-- Each archetype section uses a semantic \`<section>\` with a sequential \`<h2>\` (\`How Personal Pipes Work.\`, \`How Business Pipes Work.\`, \`How Topic Pipes Work.\`).`,
+- Each archetype section uses a semantic \`<section aria-labelledby>\` paired with a sequential \`<h2>\` (\`How Personal Pipes Work.\`, \`How Business Pipes Work.\`, \`How Topic Pipes Work.\`).
+- Pedestals inside each section advance sequentially to \`<h3>\` headlines inside \`<article>\` or ordered lists so assistive technology preserves document hierarchy.
+
+::demo:onboard-landmark-sections::`,
   },
   rules: [
     {

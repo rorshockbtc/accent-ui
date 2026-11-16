@@ -8,6 +8,8 @@ export const page: AccentPage = {
   summary:
     'What a colour theorist and a Modernist typographer can teach a team shipping cards in Figma: the 8-point grid, relief versus focus, and when to break the rules.',
   readingMinutes: 10,
+  insightCategory: 'philosophy',
+  relatedSlugs: ['foundations/grid', 'foundations/color'],
   pipes: ['website-design', 'cubby'],
   rules: [
     {

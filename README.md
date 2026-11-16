@@ -100,16 +100,34 @@ npm install
 npm run dev
 ```
 
+### Two Sides of Accént (v3.1)
+
+Accént pairs **Developer & Designer Specifications** with **Design Philosophy & Human–AI Interaction Theory**:
+
+1. **Human–AI Interaction Lifecycle (`/patterns` · Phases `01`–`06`)**:
+   - **01 · Discovering**: Zero-shot intent recipes + `AccentEngineTierSwitch` (`0ms` Local / `120ms` WebGPU / `800ms+` Cloud BYOK).
+   - **02 · Instructing**: `AccentPromptComposer` with removable `pipe\slug` context chips, voice dictation hook, and live `AbortController` stop button.
+   - **03 · Observing**: `healStreamingMarkdown()` + `AccentStreamingProse` + native `<details>` `AccentReasoningTrace` (preserves browser `⌘F` Find-in-Page while collapsed).
+   - **04 · Evaluating**: Anchored `[popover]` `AccentCitationLink` (`aria-describedby` tooltip semantics) + sticky SHA-256 `AccentVerificationLedger` table.
+   - **05 · Refining**: Client-side `diffWords`/`diffLines` (`diff`) in `AccentDiffViewer` with WCAG 1.4.1 explicit `[-]`/`[+]` markers + `AccentFollowUpList` ending in `Seal to Pipe`.
+   - **06 · Sovereign Flows**: End-to-end reading-to-curation compositions without leaving the editorial pane.
+2. **Design Philosophy, Matrix & Essays (`/insights`, `/philosophy`)**:
+   - Four founding pillars (*Paper Over Glass*, *Typography & Color Over Icon Soup*, *Engineered Drift Over Monoculture*, *Local-First Agency Over Cloud Theater*).
+   - Interactive 49-Pair WCAG AAA Cross-Chromatic Color Matrix (`PASTELS × TONAL_DARKS`) and CHB Punctuation Grammar (`´`, `!`, `:-]`, `; - ]`, `>`, `#`, `~`, `\`).
+   - Strict `ai.no-sparkle-slop` policy: zero `Sparkles` icons or `✨` glyphs on any surface.
+3. **Live Model Context Protocol (`/mcp` & `/api/mcp`)**:
+   - Public JSON-RPC 2.0 tools: `accent_search_patterns`, `accent_get_spec`, `accent_get_brand_contract`, and `accent_lint_code`.
+
 ### Build & Verification Commands
 
 ```bash
-npm run typecheck    # Validate strict TypeScript types across all 57 specs & studios
+npm run typecheck    # Validate strict TypeScript types across all 66+ specs & studios
 npm run build:lib    # Build ESM & CJS distribution bundles via tsup
 npm run build        # Build Next.js documentation & studio site
 ```
 
 ---
 
-## ✦ License
+## License
 
 [MIT](LICENSE) © [Colon Hyphen Bracket](https://colonhyphenbracket.pink) & Kendall Kyle Cyree.

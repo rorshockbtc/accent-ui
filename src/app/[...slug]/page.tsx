@@ -22,6 +22,10 @@ export default async function AccentPageRoute({ params }: { params: Promise<Para
   if (!page) notFound();
   const { prev, next } = getAdjacentPages(page.slug);
   const sectionLabel = ACCENT_SECTIONS.find((s) => s.id === page.section)?.label ?? '';
+  const relatedPages = (page.relatedSlugs ?? [])
+    .map((relSlug) => getAccentPage(relSlug))
+    .filter((p): p is NonNullable<typeof p> => Boolean(p))
+    .map((p) => ({ slug: p.slug, title: p.title, kind: p.kind }));
   return (
     <AccentDoc
       slug={page.slug}
@@ -31,6 +35,9 @@ export default async function AccentPageRoute({ params }: { params: Promise<Para
       readingMinutes={page.readingMinutes}
       kind={page.kind ?? 'doc'}
       pipes={page.pipes}
+      subPatterns={page.subPatterns}
+      liveInPipes={page.liveInPipes}
+      relatedPages={relatedPages}
       tabs={page.tabs}
       rules={page.rules}
       prev={prev ? { slug: prev.slug, title: prev.title } : undefined}

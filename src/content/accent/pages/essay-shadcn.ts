@@ -8,6 +8,8 @@ export const page: AccentPage = {
   summary:
     'Zinc borders, 14px Inter, three-column pricing. How shadcn/ui won, why AI agents copy it, and how opinionated tokens and 12 rooms bring the soul back.',
   readingMinutes: 10,
+  insightCategory: 'case-studies',
+  relatedSlugs: ['foundations/theming', 'components/pedestal'],
   pipes: ['chb', 'website-design'],
   rules: [
     {

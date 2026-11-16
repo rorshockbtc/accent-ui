@@ -12,25 +12,38 @@ export const page: AccentPage = {
 
 When a page needs to offer deep technical controls—such as custom CSS injection in the Brand Studio, advanced API parameters, or long FAQ answers—dumping every textarea onto the initial screen creates cognitive overload.
 
+> **Why:** Native HTML \`<details>\` and \`<summary>\` handle toggle semantics, keyboard Enter/Space activation, and automatic browser Find-in-Page expansion reliably without layout-thrashing JavaScript height animations.
+
 Accént uses **Disclosure Wells** and **Hairline Accordions** to keep the default view calm while keeping power-user controls one click away.
 
 ::demo:accordion-demo::`,
 
     guidelines: `## Do & Don't
 
-- **Do** use progressive disclosure for optional escape hatches (like \`Optional: Inject Custom CSS / Agent Rules\`).
-- **Don't** hide primary value propositions or core navigation inside an accordion.
-- **Don't** animate \`height\` or \`max-height\` with layout-thrashing CSS; use native disclosure or opacity + transform transitions.`,
+- **Do** use native \`<details>\`/\`<summary>\` progressive disclosure for optional escape hatches (like \`Optional: Inject Custom CSS / Agent Rules\`), placing any disclosure chevron right before the label text.
+
+::demo:accordion-escape-hatch::
+
+- **Don't** place heading elements (\`<h2>\`–\`<h4>\`) inside \`<summary>\`—screen readers like JAWS and TalkBack flatten \`<summary>\` into a button and strip inner heading navigation. Keep headings outside or use plain phrasing text inside \`<summary>\`.
+
+::demo:accordion-summary-heading::`,
 
     specs: `## Disclosure Trigger Spec
 
-- **Trigger Button**: \`min-h-[44px] w-full flex items-center justify-between py-3 border-b border-[var(--a-rule)]\`
-- **Attributes**: \`aria-expanded={isOpen}\` and \`aria-controls={panelId}\``,
+| Part | Specification | Constraint |
+|---|---|---|
+| **Element Pair** | Native \`<details>\` + \`<summary>\` | Preferred over custom JS height state or \`hidden="until-found"\` |
+| **Trigger Height** | \`min-h-[44px]\` flex inline layout | Chevron placed adjacent to text label, never pushed far right |
+| **Motion** | \`details::details-content\` + \`allow-discrete\` | Scoped inside \`@media (prefers-reduced-motion: no-preference)\` |
 
-    accessibility: `## ARIA Contract
+::demo:accordion-details-spec::`,
 
-- The toggle button must carry \`aria-expanded="true" | "false"\`.
-- Enter and Space keys must toggle the panel natively.`,
+    accessibility: `## ARIA, Keyboard & Searchability Contract
+
+- Native \`<details>\`/\`<summary>\` exposes expanded/collapsed state automatically to screen readers, toggles cleanly with \`Enter\` or \`Space\`, and stays searchable and auto-expandable via browser Find-in-Page (\`⌘F\` / \`Ctrl+F\`) without hidden DOM hacks.
+- When building non-native disclosures, always keep \`aria-expanded\` synchronized on the invoking \`<button>\` with \`44×44px\` minimum hit area.
+
+::demo:accordion-keyboard-state::`,
   },
   rules: [
     {

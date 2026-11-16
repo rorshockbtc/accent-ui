@@ -20,6 +20,22 @@ export type AccentSectionId =
 
 export type AccentTabId = 'overview' | 'guidelines' | 'specs' | 'accessibility';
 
+export type AiLifecyclePhase =
+  | 'discovering'
+  | 'instructing'
+  | 'observing'
+  | 'evaluating'
+  | 'refining'
+  | 'flows'
+  | 'architecture';
+
+export type InsightCategory =
+  | 'philosophy'
+  | 'signals'
+  | 'workflows'
+  | 'case-studies'
+  | 'cheatsheets';
+
 export type AgentRule = {
   /** Stable dotted id, e.g. `grid.multiple-of-8`. */
   id: string;
@@ -50,4 +66,16 @@ export type AccentPage = {
   kind?: 'doc' | 'essay';
   /** Cross-posted Pipes namespaces (essays). */
   pipes?: string[];
+  /** Human-AI interaction lifecycle phase (for patterns index grouping). */
+  aiPhase?: AiLifecyclePhase;
+  /** Sub-patterns unified under a grouping spec (e.g. Prompt Suggestions, Prompt Enhancement). */
+  subPatterns?: string[];
+  /** Cross-chromatic pastel/dark editorial surface pair for pattern & insight hubs. */
+  chromaticPair?: { pastel: string; dark: string };
+  /** Real product routes in Pipes / CHB where this pattern runs in production. */
+  liveInPipes?: Array<{ label: string; href: string }>;
+  /** Vertical category for /design-system/insights & /design-system/philosophy. */
+  insightCategory?: InsightCategory;
+  /** Cross-linked complementary doc/essay slugs. */
+  relatedSlugs?: string[];
 };

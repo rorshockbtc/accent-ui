@@ -32,7 +32,15 @@ When even the top two or three links will not fit, usually below 640px, the nav 
 
 ## Sticky behavior
 
-The top nav may stick to the top of the viewport. When it does, it stays 56–64px tall, gains a hairline bottom border once content scrolls under it, and never grows. On mobile, consider hiding it on scroll down and revealing it on scroll up, so reading space is not eaten by chrome. Pipes rooms pass \`sticky\` to \`PipeRibbon\` to opt in.
+The top nav may stick to the top of the viewport. When it does, it stays 56–64px tall, uses a **solid opaque surface** (\`bg-white\`, \`bg-[#FFF8EF]\`, or the room canvas token rather than translucent \`backdrop-blur\` over dense tables), gains a hairline bottom border once content scrolls under it, and never grows. On mobile, keep single-row sub-navigation horizontally scrollable with \`min-h-[44px]\` pills or use a bottom sheet so links never wrap into multi-line stacks.
+
+## Page navigation vs. Tabs
+
+Never use WAI-ARIA \`role="tablist"\` / \`role="tab"\` for top-level page switching, even when links look like underlined tabs. Wrap page switchers in a \`<nav aria-label="...">\` landmark and mark the active destination with \`aria-current="page"\` plus a non-color underline or weight change. Reserve \`role="tab"\` strictly for in-page panel toggles (such as switching an Overview / Specs view of one component).
+
+## Keyboard-scrollable wide tables
+
+When navigation leads into dense rate sheets, tax deadline schedules, or spec matrices, wrap wide \`<table>\` elements in \`<div tabIndex={0} role="region" aria-label="...">\` with \`overflow-x-auto\` so keyboard-only visitors can focus and scroll horizontally without clipping at \`390px\`.
 
 ## Skip link
 

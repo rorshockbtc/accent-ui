@@ -12,6 +12,8 @@ export const page: AccentPage = {
 
 A common failure in complex web apps is stacking multiple rows of competing filter pills, view-mode toggles, sort dropdowns, and search bars at the top of a page. Visitors spend more time decoding the controls than reading the content.
 
+> **Why:** Collapsing discovery controls onto one scannable 44px horizontal row eliminates multi-row UI clutter and puts the content immediately above the fold on 390px screens.
+
 Accént enforces a **Single-Row Filter & Search Bar**:
 - Left side: 4 to 7 clear category pills in one horizontal row (\`gap-2\`).
 - Right side: A clean \`h-11\` search input with a leading \`16px\` icon in \`--a-accent\` and an instant \`Clear ×\` action when active.
@@ -21,19 +23,29 @@ Accént enforces a **Single-Row Filter & Search Bar**:
     guidelines: `## Guidelines
 
 - **Instant client-side filtering**: Filter lists on keystroke without requiring a submit button when the dataset has fewer than 500 items.
-- **Always provide a zero-results recovery action**: When a search query matches 0 items, offer a 1-click \`Clear Search\` button and a constructive next action (such as claiming the missing topic).`,
+
+::demo:cmd-instant-filter::
+
+- **Always provide a zero-results recovery action**: When a search query matches 0 items, offer a 1-click \`Clear Search\` button and a constructive next action (such as claiming the missing topic).
+
+::demo:cmd-zero-recovery::`,
 
     specs: `## Search Input Specification
 
-- **Height**: \`44px\` (\`h-11\`)
-- **Shape**: \`rounded-full\` (or \`var(--a-radius-cta)\`)
-- **Border**: \`border border-[var(--a-rule)] focus:border-[var(--a-accent)]\`
-- **Typography**: \`text-sm font-sans text-[var(--a-ink)] placeholder:text-[var(--a-muted)]\``,
+| Token / Property | Value | Role |
+|---|---|---|
+| **Height** | \`44px\` (\`h-11\`) | Enforces WCAG minimum interactive tap height |
+| **Shape** | \`rounded-full\` (\`var(--a-radius-cta)\`) | Distinguishes search pill from rectangular forms |
+| **Border** | \`border-[var(--a-rule)] -> focus:border-[var(--a-accent)]\` | Clear active focus state on sandstone |
+
+::demo:cmd-height-redline::`,
 
     accessibility: `## Keyboard & Screen Reader Support
 
-- Every search input must have \`type="search"\` and an explicit \`aria-label\`.
-- Filter pills must indicate active state via \`aria-pressed={isActive}\` or \`aria-current\`.`,
+- Every search input must carry \`type="search"\` and an explicit \`aria-label\` so assistive technology announces search landmarks cleanly.
+- Filter pills indicate active selection with \`aria-pressed={isActive}\` or \`aria-current\`, never by subtle color shifts alone, keeping navigation unmistakable for keyboard-only users.
+
+::demo:cmd-aria-pressed::`,
   },
   rules: [
     {

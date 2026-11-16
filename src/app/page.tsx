@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { ArrowRight, Palette, Code2, Layers, LayoutTemplate, Terminal, Sparkles } from 'lucide-react';
+import { ArrowRight, Palette, Code2, Layers, LayoutTemplate, Terminal } from 'lucide-react';
 import { ACCENT_PAGES, ACCENT_SECTIONS, getAllAccentRules } from '@/content/accent/registry';
 import {
   DESIGN_TOKENS,
@@ -29,44 +29,44 @@ export const metadata: Metadata = {
 
 const STUDIOS = [
   {
-    href: '/design-system/themes',
-    eyebrow: '01 · 5-Axis Theme Studio',
-    title: '7 Brand Dialects · Live 5-Surface Canvas',
+    href: '/design-system/templates',
+    eyebrow: '01 · App Studies, Templates & Craft Tiers',
+    title: 'Clickable Mini-Apps, 8 Free Themes & :-] Sprint',
     description:
-      'Switch between Sovereign Editorial, Playful Principal, Studio Portfolio, Swiss Corporate, Warm Well, Terminal Grid, and High-Contrast Civic. Customize chromatic math, display typography, CTA geometry, choreography, and punctuation in real time across 5 full application surfaces.',
-    cta: 'Launch Theme Studio',
-    badge: '7 Dialects · 5 Axes',
+      'Click through 5 multi-screen themed apps, inspect all 8 free small-business website themes with real photos, and compare a free local BANG! draft side-by-side against a custom Colon Hyphen Bracket (:-]) sprint.',
+    cta: 'Explore Templates & Studies',
+    badge: '5 App Studies · 8 Themes',
+    icon: LayoutTemplate,
+  },
+  {
+    href: '/design-system/themes',
+    eyebrow: '02 · Visual Theme Customizer',
+    title: '15 Themes · Plain-English Color & Font Picker',
+    description:
+      'Pick from 8 small-business website looks or 7 publication palettes, tweak background warmth, accent colors, fonts, and button roundness live, and verify readable contrast automatically.',
+    cta: 'Open Themes Studio',
+    badge: '15 Themes · Auto Contrast',
     icon: Palette,
   },
   {
     href: '/design-system/playground',
-    eyebrow: '02 · Live Code, Linter & STYLES.md Playground',
-    title: 'Split-Screen TSX Editor + Regex Ratchet',
+    eyebrow: '03 · Visual Copy & Card Sandbox',
+    title: 'Test Your Business Words, Photos & Cards Live',
     description:
-      'Edit TSX templates, live-tweak all 5 axes plus custom CSS escape hatches, run the real-time regex rule linter against 200+ machine-enforceable rules, and compile zero-PR STYLES.md contracts or step-by-step 7B / 32B / Frontier agent prompts.',
+      'Type your own business name and headline, swap photography and card styles visually on Laptop or Phone (390px), or switch to Developer & AI Export for STYLES.md and Figma tokens.',
     cta: 'Open Playground',
-    badge: 'Live Linter · STYLES.md',
+    badge: 'Visual First + AI Export',
     icon: Code2,
   },
   {
     href: '/design-system/components',
-    eyebrow: '03 · Exhaustive Component & Pattern Matrix',
-    title: '57 Specification Pages · 4-Tab Architecture',
+    eyebrow: '04 · Complete Component & Pattern Matrix',
+    title: 'Interactive Components, Rules & Patterns',
     description:
-      'Every primitive, editorial layout, choreography engine, and AI governance specification includes Overview, Do/Don’t Guidelines, W3C DTCG Token & Prop Specs, WCAG Accessibility contracts, and regex violation patterns.',
-    cta: 'Browse 57 Specs',
-    badge: '57 Pages · 4 Tabs Each',
+      'Inspect every button, table, reading column, Human–AI pattern, do/don’t guideline, accessibility contract, and machine-readable design rule across the system.',
+    cta: 'Browse Components & Specs',
+    badge: '66+ Pages · 4 Tabs Each',
     icon: Layers,
-  },
-  {
-    href: '/design-system/templates',
-    eyebrow: '04 · Multi-Brand Production Blueprints',
-    title: '6 Full-Page Architectural Templates',
-    description:
-      'Inspect Editorial Reading Room, 3-Archetype Browse Directory, Studio Portfolio & Toymaker Stage, Sovereign Publishing Desk, 3-Column Thesis Micro-Site, and DuckDB-Wasm Telemetry Ledger across every brand dialect.',
-    cta: 'Explore Templates',
-    badge: '6 Production Blueprints',
-    icon: LayoutTemplate,
   },
 ];
 
@@ -127,29 +127,30 @@ export default function AccentHome() {
 
         <FadeUp immediate delay={0.3} y={16}>
           <p className="mt-4 text-base leading-7 text-[var(--a-muted)] max-w-[68ch]">
-            Written for non-designers, principal engineers, and both local 7B models and frontier coding agents. Powered by a single W3C DTCG token source (<code className="font-mono text-xs">src/styles/design-tokens.json</code>), a 5-axis multi-brand theming engine (<code className="font-mono text-xs">src/styles/themes.ts</code>), zero-PR <code className="font-mono text-xs">STYLES.md</code> governance, and live machine-readable endpoints (<code className="font-mono text-xs">/design-system/styles.md</code> &amp; <code className="font-mono text-xs">/design-system/rules.json</code>).
+            Written in plain English for business owners, designers, and AI coding tools alike. Test live multi-screen app studies, customize 15 themes without breaking contrast, or export clean rules for your editor (<code className="font-mono text-[13px]">STYLES.md</code> &amp; <code className="font-mono text-[13px]">rules.json</code>).
           </p>
 
           <div className="mt-8 flex flex-wrap items-center gap-3">
             <Link
+              href="/design-system/templates"
+              className="inline-flex min-h-[46px] items-center gap-2 rounded-[var(--a-cta-radius,9999px)] bg-[var(--a-accent)] px-6 py-3 text-[13px] font-mono font-semibold uppercase tracking-[0.12em] text-[var(--a-accent-fg)] shadow-[var(--a-cta-shadow)] transition-colors hover:opacity-95"
+            >
+              <LayoutTemplate className="h-4 w-4" aria-hidden />
+              Explore App Studies &amp; Templates →
+            </Link>
+            <Link
               href="/design-system/themes"
-              className="inline-flex items-center gap-2 rounded-[var(--a-cta-radius,9999px)] bg-[var(--a-accent)] px-6 py-3 text-xs font-mono font-semibold uppercase tracking-[0.14em] text-[var(--a-accent-fg)] shadow-[var(--a-cta-shadow)] transition-colors hover:opacity-95"
+              className="inline-flex min-h-[46px] items-center gap-2 rounded-[var(--a-cta-radius,9999px)] border border-[var(--a-ink)] bg-[var(--a-surface)] px-6 py-3 text-[13px] font-mono font-semibold uppercase tracking-[0.12em] text-[var(--a-ink)] transition-colors hover:border-[var(--a-accent)] hover:text-[var(--a-accent)]"
             >
               <Palette className="h-4 w-4" aria-hidden />
-              Launch 5-Axis Theme Studio →
+              Pick From 15 Themes
             </Link>
             <Link
               href="/design-system/playground"
-              className="inline-flex items-center gap-2 rounded-[var(--a-cta-radius,9999px)] border border-[var(--a-ink)] bg-[var(--a-surface)] px-6 py-3 text-xs font-mono font-semibold uppercase tracking-[0.14em] text-[var(--a-ink)] transition-colors hover:border-[var(--a-accent)] hover:text-[var(--a-accent)]"
+              className="inline-flex min-h-[46px] items-center gap-2 rounded-[var(--a-cta-radius,9999px)] border border-[var(--a-rule)] bg-[var(--a-bg)] px-5 py-3 text-[13px] font-mono font-semibold uppercase tracking-[0.12em] text-[var(--a-muted)] transition-colors hover:border-[var(--a-ink)] hover:text-[var(--a-ink)]"
             >
               <Code2 className="h-4 w-4" aria-hidden />
-              Open Live Playground &amp; Linter
-            </Link>
-            <Link
-              href="/design-system/components"
-              className="inline-flex items-center gap-2 rounded-[var(--a-cta-radius,9999px)] border border-[var(--a-rule)] bg-[var(--a-bg)] px-5 py-3 text-xs font-mono font-semibold uppercase tracking-[0.14em] text-[var(--a-muted)] transition-colors hover:border-[var(--a-ink)] hover:text-[var(--a-ink)]"
-            >
-              Browse {ACCENT_PAGES.length} Specs ({totalRules} Rules)
+              Try Your Copy in Playground
             </Link>
           </div>
         </FadeUp>
@@ -159,10 +160,10 @@ export default function AccentHome() {
       <FadeUp delay={0.08}>
         <section aria-labelledby="studios-heading" className="mt-16">
           <div className="flex flex-wrap items-baseline justify-between gap-2 mb-4">
-            <h2 id="studios-heading" className="text-xs font-mono font-semibold uppercase tracking-[0.14em] text-[var(--a-accent)]">
-              Interactive Studios &amp; Agent Control Plane
+            <h2 id="studios-heading" className="text-[13px] font-mono font-semibold uppercase tracking-[0.14em] text-[var(--a-accent)]">
+              Explore Accént Interactive Studios
             </h2>
-            <div className="flex flex-wrap items-center gap-4 text-xs font-mono text-[var(--a-muted)]">
+            <div className="flex flex-wrap items-center gap-4 text-[13px] font-mono text-[var(--a-muted)]">
               <a href="/design-system/styles.md" target="_blank" rel="noopener noreferrer" className="hover:text-[var(--a-accent)] transition-colors">
                 GET /design-system/styles.md ↗
               </a>
@@ -266,7 +267,7 @@ export default function AccentHome() {
               Live Component Primitives · Editorial Mode vs. Commercial Mode
             </h2>
             <span className="font-mono text-xs text-[var(--a-muted)]">
-              import &#123; AccentButton, AccentLinkButton, AccentBadge &#125; from &apos;@rorshockbtc/accent-ui&apos;
+              import &#123; AccentButton, AccentLinkButton, AccentBadge &#125; from &apos;accent-ui&apos;
             </span>
           </div>
           <div className="mt-6 grid gap-8 sm:grid-cols-2">
@@ -330,6 +331,72 @@ export default function AccentHome() {
                 stiffness {SPRING_LAYOUT.stiffness} · damping {SPRING_LAYOUT.damping}
               </p>
               <p className="text-[var(--a-muted)]">Active episode bar &amp; tab underline</p>
+            </div>
+          </div>
+        </section>
+      </FadeUp>
+
+      {/* Two Sides of Accént: Engineering Craft & Design Philosophy */}
+      <FadeUp>
+        <section aria-labelledby="two-sides-heading" className="mt-16 border-y border-[var(--a-rule)] py-12">
+          <div className="space-y-2 mb-8">
+            <p className="font-mono text-[13px] font-semibold uppercase tracking-[0.14em] text-[var(--a-accent-text)]">
+              &gt; Two Complementary Sides of One Sovereign System
+            </p>
+            <h2 id="two-sides-heading" className="font-serif text-3xl sm:text-4xl font-semibold text-[var(--a-ink)]">
+              Built for Engineers &amp; Thinkers Alike
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-[var(--a-rule)] border-t border-[var(--a-rule)]">
+            <div className="py-6 md:pr-8 space-y-4">
+              <div className="flex items-baseline justify-between gap-2">
+                <span className="font-serif text-3xl font-bold tabular-nums text-[var(--a-accent-text)]">01</span>
+                <span className="font-mono text-[13px] uppercase tracking-wider text-[var(--a-muted)]">Side A · Build</span>
+              </div>
+              <h3 className="font-serif text-2xl font-semibold text-[var(--a-ink)]">
+                Engineering Craft, Patterns &amp; MCP
+              </h3>
+              <p className="text-base leading-relaxed text-[var(--a-muted)]">
+                Six MIT-licensed Human–AI primitives (from 0ms tier switches and self-healing Markdown streams to jsdiff revision ledgers), 6 lifecycle pattern groupings, and 4 live JSON-RPC MCP tools for coding agents.
+              </p>
+              <div className="flex flex-wrap gap-x-5 gap-y-2 pt-2">
+                <Link href="/design-system/patterns" className="inline-flex min-h-[44px] items-center gap-1.5 font-mono text-[13px] font-bold text-[var(--a-ink)] hover:text-[var(--a-accent-text)] underline underline-offset-4">
+                  <span>01–06 AI Patterns Hub</span>
+                  <ArrowRight className="h-3.5 w-3.5" aria-hidden />
+                </Link>
+                <Link href="/design-system/components" className="inline-flex min-h-[44px] items-center gap-1.5 font-mono text-[13px] font-semibold text-[var(--a-muted)] hover:text-[var(--a-ink)]">
+                  <span>Component Gallery →</span>
+                </Link>
+                <Link href="/design-system/mcp" className="inline-flex min-h-[44px] items-center gap-1.5 font-mono text-[13px] font-semibold text-[var(--a-accent-text)] hover:text-[var(--a-ink)]">
+                  <span>Live MCP Server →</span>
+                </Link>
+              </div>
+            </div>
+
+            <div className="py-6 md:pl-8 space-y-4">
+              <div className="flex items-baseline justify-between gap-2">
+                <span className="font-serif text-3xl font-bold tabular-nums text-[var(--a-accent-text)]">02</span>
+                <span className="font-mono text-[13px] uppercase tracking-wider text-[var(--a-muted)]">Side B · Think</span>
+              </div>
+              <h3 className="font-serif text-2xl font-semibold text-[var(--a-ink)]">
+                Philosophy, Approach &amp; Theory
+              </h3>
+              <p className="text-base leading-relaxed text-[var(--a-muted)]">
+                Four founding theses explaining paper over glass, typography and CHB punctuation over sparkle icon soup, the 49-pair AAA cross-chromatic matrix, and seven 1,500+ word essays bridging theory to implementation.
+              </p>
+              <div className="flex flex-wrap gap-x-5 gap-y-2 pt-2">
+                <Link href="/design-system/insights" className="inline-flex min-h-[44px] items-center gap-1.5 font-mono text-[13px] font-bold text-[var(--a-ink)] hover:text-[var(--a-accent-text)] underline underline-offset-4">
+                  <span>Insights &amp; Color Matrix</span>
+                  <ArrowRight className="h-3.5 w-3.5" aria-hidden />
+                </Link>
+                <Link href="/design-system/philosophy" className="inline-flex min-h-[44px] items-center gap-1.5 font-mono text-[13px] font-semibold text-[var(--a-muted)] hover:text-[var(--a-ink)]">
+                  <span>Approach Manifesto →</span>
+                </Link>
+                <Link href="/design-system/essays/dont-make-people-prompt" className="inline-flex min-h-[44px] items-center gap-1.5 font-mono text-[13px] font-semibold text-[var(--a-accent-text)] hover:text-[var(--a-ink)]">
+                  <span>Read Theory Essay →</span>
+                </Link>
+              </div>
             </div>
           </div>
         </section>

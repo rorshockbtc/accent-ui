@@ -22,29 +22,31 @@ A single-brand design system forces every product to look like the same app. Acr
 
 We call this **Engineered Drift**: the **Brand Profile** (surface hexes, display font, CTA radius, punctuation mark) is designed to drift per product, while the **Mathematical Invariants** never budge.
 
+> **Why:** Every imprint in an ecosystem has its own editorial personality, yet forcing shared infrastructure through hardcoded styles creates brittle forks or sterile uniformity.
+
+::demo:theming-drift-matrix::
+
 ## Layer 1 vs. Layer 2: What never drifts vs. what adapts
 
 | Layer | Governed By | Can Projects Override? | Examples |
 |---|---|---|---|
-| **Layer 1: Invariants** | \`@rorshockbtc/accent-ui\` Core | **Never** | 8pt spatial grid, \`13px\` (\`0.8125rem\`) minimum type floor, \`44×44px\` tap targets, zero \`box-shadow\` in editorial mode, WCAG AA (\`4.5:1\`) / AAA (\`7.0:1\`) contrast, two-tier motion physics (\`[0.16, 1, 0.3, 1]\` & \`[0.22, 1, 0.36, 1]\`), \`prefers-reduced-motion\` compliance |
+| **Layer 1: Invariants** | \`accent-ui\` Core | **Never** | 8pt spatial grid, \`13px\` (\`0.8125rem\`) minimum type floor, \`44×44px\` tap targets, zero \`box-shadow\` in editorial mode, WCAG AA (\`4.5:1\`) / AAA (\`7.0:1\`) contrast, two-tier motion physics (\`[0.16, 1, 0.3, 1]\` & \`[0.22, 1, 0.36, 1]\`), \`prefers-reduced-motion\` compliance |
 | **Layer 2: Brand Adapter** | \`defineAccentTheme()\` / \`src/styles/themes.ts\` | **Yes (Encouraged)** | \`--a-bg\`, \`--a-surface\`, \`--a-ink\`, \`--a-accent\`, \`--a-sky\`, \`--a-radius-cta\`, display/serif/sans font stacks, signature punctuation mark (\`´\`, \`: - ]\`, \`>\`, \`01 /\`) |`,
 
     guidelines: `## How to create or adapt a Brand Profile with \`defineAccentTheme()\`
 
-Instead of hardcoding rogue hex values inside component files, define your project's aesthetic drift in a single \`accent.config.ts\` (or register it upstream in \`src/styles/themes.ts\`) using \`defineAccentTheme()\`.
+Instead of hardcoding rogue hex values inside component files, define your project's aesthetic drift in a single \`accent.config.ts\` using \`defineAccentTheme()\`.
 
-\`defineAccentTheme()\` automatically:
-1. Inherits any un-overridden tokens from your chosen base preset (\`editorial-sandstone\` by default).
-2. Runs \`validateThemeContrast()\` against both light and dark modes to verify that body ink (\`>= 7.0:1\` AAA), muted copy (\`>= 4.5:1\` AA), and CTA button fills (\`>= 4.5:1\` AA) pass WCAG 2.1 math.
-3. Generates both Accént \`--a-*\` variables **and** shadcn/ui bridge variables (\`--background\`, \`--foreground\`, \`--card\`, \`--primary\`, \`--muted\`, \`--border\`, \`--ring\`, \`--radius\`) via \`getShadcnBridgeVars()\`.
+::demo:theming-define-builder::
+
+\`defineAccentTheme()\` inherits base tokens, runs \`validateThemeContrast()\` in both light and dark modes, and populates \`getShadcnBridgeVars()\` without disturbing Layer 1 mathematical invariants.
+
+::demo:theming-layer-boundary::
 
 ## How to adopt and govern Accént via \`STYLES.md\` (Zero PRs Required)
 
-To separate operational agent workflows from design-system governance:
-
 1. **\`STYLES.md\` is the Design System Control Plane**: Keep \`AGENTS.md\` strictly for operational agent instructions (test runners, database safety, deployment workflows). Place your project's design contract in \`STYLES.md\` at the repository root.
-2. **Self-Service Brand Studio & Optional Code Injection (\`design.pipes.pink\`)**: Non-technical founders, designers, and AI agents can customize all 5 axes on \`design.pipes.pink\`—including optional live CSS overrides and custom component rules (\`customExtension\`)—and export a ready-to-commit \`STYLES.md\` in one click without opening a single GitHub Pull Request.
-3. **Downstream Projects Consume via Adapter**: Each project (\`chb-corporate-site\`, \`portfolio\`, \`chicuinaco\`, \`marigold\`, \`greater-than\`, \`pipes\`) declares its official \`BrandProfileId\` in \`STYLES.md\` and \`accent.config.ts\`, mapping its root CSS variables through \`getShadcnBridgeVars(brandId, mode)\` and \`deriveAccessibleAccent()\`.`,
+2. **Self-Service Brand Studio & Optional Code Injection (\`design.pipes.pink\`)**: Designers and AI agents can customize all 5 axes—including optional live CSS overrides (\`customExtension\`)—and export a ready-to-commit \`STYLES.md\` in one click without opening cross-repo Pull Requests.`,
 
     specs: `## Official Ecosystem Brand Profiles (\`src/styles/themes.ts\`)
 
@@ -61,7 +63,7 @@ To separate operational agent workflows from design-system governance:
 ## Code: Defining a Custom Theme Adapter (\`accent.config.ts\`)
 
 \`\`\`ts
-import { defineAccentTheme } from '@rorshockbtc/accent-ui';
+import { defineAccentTheme } from 'accent-ui';
 
 export const myBrandTheme = defineAccentTheme({
   id: 'hacienda-emerald',
@@ -87,22 +89,21 @@ export const myBrandTheme = defineAccentTheme({
     },
   },
 });
+\`\`\`
 
-// Fail CI if any semantic contrast pair drops below WCAG AA (4.5:1) / AAA (7.0:1):
-if (!myBrandTheme.contrastReport.valid) {
-  console.error('WCAG Contrast Violation:', myBrandTheme.contrastReport.audits);
-}
-\`\`\``,
+::demo:theming-profile-specimen::`,
 
     accessibility: `## Automated WCAG Contrast Governance for Custom Themes
 
-Every time you or an AI agent defines a new theme with \`defineAccentTheme()\`, \`validateThemeContrast()\` audits 10 semantic foreground/background pairs across both Light and Dark modes:
+Every time you or an AI agent defines a new theme with \`defineAccentTheme()\`, \`validateThemeContrast()\` audits 5 semantic foreground/background pairs across both Light and Dark modes:
 
 1. **\`body-ink-on-bg\`** (\`--a-ink\` on \`--a-bg\`): Must be **\`>= 7.0:1\` (WCAG AAA)**.
 2. **\`muted-on-bg\`** (\`--a-muted\` on \`--a-bg\`): Must be **\`>= 4.5:1\` (WCAG AA)**.
 3. **\`primary-cta-fill\`** (\`--a-accent-fg\` on \`--a-accent-fill\`): Must be **\`>= 4.5:1\` (WCAG AA)**.
 4. **\`accent-text-on-bg\`** (\`--a-accent-text\` on \`--a-bg\`): Must be **\`>= 4.5:1\` (WCAG AA)**.
 5. **\`sky-text-on-bg\`** (\`--a-sky-text\` on \`--a-bg\`): Must be **\`>= 4.5:1\` (WCAG AA)**.
+
+::demo:theming-contrast-pairs::
 
 > **Why we separate \`--a-accent\` (mark) from \`--a-accent-fill\` (button background) and \`--a-accent-text\` (inline text):** Vibrant brand colors like CHB Hot Pink (\`#FE299E\`) or Marigold Terracotta (\`#E05B37\`) look electric as large punctuation marks or strike-through bars on light paper, but yield \`~3.4:1\` contrast with white button text. By pairing \`--a-accent: #FE299E\` with \`--a-accent-fill: #B81468\` (\`5.6:1\` with white), your brand keeps its signature electric pop while passing strict WCAG 2.1 AA audits.`,
   },

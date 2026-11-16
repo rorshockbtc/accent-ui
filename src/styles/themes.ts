@@ -24,6 +24,55 @@ export type BrandProfileId =
 
 export type StructuralPosture = 'pedestal-hairline' | 'archival-spine' | 'warm-well' | 'terminal-grid';
 
+export type SurfaceArchetypeId = 'threshold' | 'sanctuary' | 'gallery' | 'edition';
+
+export interface SurfaceArchetypeSpec {
+  id: SurfaceArchetypeId;
+  label: string;
+  scrollChoreography: boolean;
+  motionRule: string;
+  disclosureRule: string;
+  examples: string[];
+}
+
+export const SURFACE_ARCHETYPES: Record<SurfaceArchetypeId, SurfaceArchetypeSpec> = {
+  threshold: {
+    id: 'threshold',
+    label: 'Threshold (Marketing & Bridge)',
+    scrollChoreography: true,
+    motionRule:
+      'Choreographed scroll storytelling, shader or parallax horizons, and expressive focal CTAs (collapsed to final still painting under prefers-reduced-motion).',
+    disclosureRule: 'Lead with interactive demo or story beats; tuck secondary spec matrices into the footer or colophon.',
+    examples: ['asterisk.pipes.pink/', 'pipes.pink/asterisk', 'colonhyphenbracket.pink/'],
+  },
+  sanctuary: {
+    id: 'sanctuary',
+    label: 'Sanctuary (Active Working Studio)',
+    scrollChoreography: false,
+    motionRule:
+      'Zero scroll-jacking or continuous decorative motion. Motion responds strictly to user actions (typing, tab focus, validation, publishing).',
+    disclosureRule:
+      'One calm reading/writing sheet on open canvas; move drafts into native <dialog> drawers and fold passing checks behind AccentWeatherBand.',
+    examples: ['asterisk.pipes.pink/studio', 'pipes.pink/write'],
+  },
+  gallery: {
+    id: 'gallery',
+    label: 'Gallery (Plates & Rooms)',
+    scrollChoreography: false,
+    motionRule: 'Generous negative space, full-bleed or multiply-glazed imagery, and gentle pointer-reactive hover.',
+    disclosureRule: 'Pair each visual plate with 3 crisp rules and 1 clear action; tuck full comparison matrices inside <details>.',
+    examples: ['asterisk.pipes.pink/studio/rooms', 'pipes.pink/sign-up?ref=asterisk'],
+  },
+  edition: {
+    id: 'edition',
+    label: 'Edition (Archival Long-Form)',
+    scrollChoreography: false,
+    motionRule: 'Calm 60–70ch reading column, opacity/hairline reveals only, zero jarring horizontal jumps.',
+    disclosureRule: '3-column micro-site spine with left navigation rail, centered reading well, and margin outline.',
+    examples: ['pipes.pink/explore/*', 'design.pipes.pink/*'],
+  },
+};
+
 export interface ProductColorSlot {
   mark: string;
   name: string;
@@ -61,6 +110,7 @@ export interface BrandProfile<TId extends string = BrandProfileId> {
     posture: StructuralPosture;
     summary: string;
   };
+  accentFillContrastMode?: 'aa-small-text' | 'large-cta-aa';
   productSlots?: ProductColorSlot[];
   customExtension?: CustomStyleExtension;
   tokens: {
@@ -170,21 +220,29 @@ export const BRAND_PROFILES: Record<BrandProfileId, BrandProfile> = {
         ...getAccentThemeVars('light'),
         '--a-radius-cta': '6px',
         '--a-font-display': "'Fraunces', Georgia, serif",
+        '--a-font-serif': "'Fraunces', Georgia, serif",
+        '--a-font-sans': "'Inter', ui-sans-serif, system-ui, sans-serif",
+        '--a-font-mono': "'JetBrains Mono', ui-monospace, monospace",
+        '--a-leading-body': '1.65',
         '--a-tracking-display': '-0.02em',
       },
       dark: {
         ...getAccentThemeVars('dark'),
         '--a-radius-cta': '6px',
         '--a-font-display': "'Fraunces', Georgia, serif",
+        '--a-font-serif': "'Fraunces', Georgia, serif",
+        '--a-font-sans': "'Inter', ui-sans-serif, system-ui, sans-serif",
+        '--a-font-mono': "'JetBrains Mono', ui-monospace, monospace",
+        '--a-leading-body': '1.65',
         '--a-tracking-display': '-0.02em',
       },
     },
   },
   'playful-principal': {
     id: 'playful-principal',
-    name: 'Playful-Principal (CHB Corporate)',
-    tagline: 'Crisp Alabaster paper (#FAF8F5), Bricolage Grotesque (-0.035em), Sovereign Hot Pink (#FE299E) marks, 7 product colors, de-cardified pedestals, and pill CTAs.',
-    usedBy: 'colonhyphenbracket.pink',
+    name: 'Playful-Principal (CHB Corporate & Asterisk)',
+    tagline: 'Crisp Alabaster paper (#FAF8F5), Bricolage Grotesque (-0.035em), Sovereign Hot Pink (#FE299E) pills, 7 product colors, and de-cardified pedestals.',
+    usedBy: 'colonhyphenbracket.pink · asterisk.pipes.pink',
     productionUrl: 'https://colonhyphenbracket.pink',
     repoUrl: 'https://github.com/rorshockbtc/chb-corporate-site',
     mark: ': - ]',
@@ -201,12 +259,13 @@ export const BRAND_PROFILES: Record<BrandProfileId, BrandProfile> = {
       posture: 'pedestal-hairline',
       summary: 'De-cardified open architectural pedestals (border-t and border-l hairlines instead of boxy cards) with full-pill CTAs (9999px).',
     },
+    accentFillContrastMode: 'large-cta-aa',
     productSlots: CHB_SEVEN_PRODUCT_SLOTS,
     customExtension: {
       css: `.accent-pedestal { border-top: 1px solid rgba(17, 24, 39, 0.15); padding-top: 1.5rem; }`,
       rules: [
-        'Preserve Sovereign Hot Pink (#FE299E) on all punctuation marks (: - ]), <Smile /> winks, <ScaryHeadline /> strike bars, and hover links.',
-        'Use --a-accent-fill (#B81468, 5.6:1 WCAG AA) strictly for filled primary CTA buttons carrying white text.',
+        'Preserve Sovereign Hot Pink (#FE299E) on primary filled pill CTAs (>= 18.67px / bold large-CTA >= 3.0:1 AA, hover Ink #111827), punctuation marks (: - ]), <Smile /> winks, and hover links.',
+        'Use --a-accent-fill-aa (#B81468, 5.6:1) when rendering compact small-text badges or sub-18px filled buttons with white text.',
         'Maintain the 7 non-repeating product signature colors (Pipes #EAB308, BANG! #16A34A, Hash #C2410C, Semi #FE299E, Greater #0284C7, Accént #E11D48, Marigold #D97706).',
         'Prefer open architectural pedestals (border-l / border-t hairlines) over boxed, shadowed cards.',
       ],
@@ -221,7 +280,8 @@ export const BRAND_PROFILES: Record<BrandProfileId, BrandProfile> = {
         '--a-muted': '#4B5563',
         '--a-rule': 'rgba(17, 24, 39, 0.12)',
         '--a-accent': '#FE299E',
-        '--a-accent-fill': '#B81468',
+        '--a-accent-fill': '#FE299E',
+        '--a-accent-fill-aa': '#B81468',
         '--a-accent-fill-hover': '#111827',
         '--a-accent-fg': '#FFFFFF',
         '--a-accent-text': '#B81468',
@@ -236,6 +296,10 @@ export const BRAND_PROFILES: Record<BrandProfileId, BrandProfile> = {
         '--a-emerald': '#3FA535',
         '--a-radius-cta': '9999px',
         '--a-font-display': "var(--font-bricolage), 'Bricolage Grotesque', 'Inter', system-ui, sans-serif",
+        '--a-font-serif': "var(--font-newsreader), 'Newsreader', Georgia, serif",
+        '--a-font-sans': "var(--font-inter), 'Inter', ui-sans-serif, system-ui, sans-serif",
+        '--a-font-mono': "var(--font-mono), 'JetBrains Mono', ui-monospace, monospace",
+        '--a-leading-body': '1.55',
         '--a-tracking-display': '-0.035em',
       },
       dark: {
@@ -248,6 +312,7 @@ export const BRAND_PROFILES: Record<BrandProfileId, BrandProfile> = {
         '--a-rule': 'rgba(250, 248, 245, 0.14)',
         '--a-accent': '#FF5CB8',
         '--a-accent-fill': '#FF5CB8',
+        '--a-accent-fill-aa': '#FF5CB8',
         '--a-accent-fill-hover': '#FAF8F5',
         '--a-accent-fg': '#111827',
         '--a-accent-text': '#FF7AC6',
@@ -262,6 +327,10 @@ export const BRAND_PROFILES: Record<BrandProfileId, BrandProfile> = {
         '--a-emerald': '#4ADE80',
         '--a-radius-cta': '9999px',
         '--a-font-display': "var(--font-bricolage), 'Bricolage Grotesque', 'Inter', system-ui, sans-serif",
+        '--a-font-serif': "var(--font-newsreader), 'Newsreader', Georgia, serif",
+        '--a-font-sans': "var(--font-inter), 'Inter', ui-sans-serif, system-ui, sans-serif",
+        '--a-font-mono': "var(--font-mono), 'JetBrains Mono', ui-monospace, monospace",
+        '--a-leading-body': '1.55',
         '--a-tracking-display': '-0.035em',
       },
     },
@@ -312,6 +381,10 @@ export const BRAND_PROFILES: Record<BrandProfileId, BrandProfile> = {
         '--a-emerald': '#1B6346',
         '--a-radius-cta': '10px',
         '--a-font-display': "var(--font-newsreader), 'Newsreader', Georgia, serif",
+        '--a-font-serif': "var(--font-eb-garamond), 'EB Garamond', Georgia, serif",
+        '--a-font-sans': "var(--font-inter), 'Inter', ui-sans-serif, system-ui, sans-serif",
+        '--a-font-mono': "var(--font-mono), 'JetBrains Mono', ui-monospace, monospace",
+        '--a-leading-body': '1.65',
         '--a-tracking-display': '-0.02em',
       },
       dark: {
@@ -338,6 +411,10 @@ export const BRAND_PROFILES: Record<BrandProfileId, BrandProfile> = {
         '--a-emerald': '#34D399',
         '--a-radius-cta': '10px',
         '--a-font-display': "var(--font-newsreader), 'Newsreader', Georgia, serif",
+        '--a-font-serif': "var(--font-eb-garamond), 'EB Garamond', Georgia, serif",
+        '--a-font-sans': "var(--font-inter), 'Inter', ui-sans-serif, system-ui, sans-serif",
+        '--a-font-mono': "var(--font-mono), 'JetBrains Mono', ui-monospace, monospace",
+        '--a-leading-body': '1.65',
         '--a-tracking-display': '-0.02em',
       },
     },
@@ -388,6 +465,10 @@ export const BRAND_PROFILES: Record<BrandProfileId, BrandProfile> = {
         '--a-emerald': '#2D8A4E',
         '--a-radius-cta': '6px',
         '--a-font-display': "var(--font-eb-garamond), 'Cormorant Garamond', Georgia, serif",
+        '--a-font-serif': "var(--font-newsreader), 'Newsreader', Georgia, serif",
+        '--a-font-sans': "var(--font-inter), 'Inter', ui-sans-serif, system-ui, sans-serif",
+        '--a-font-mono': "var(--font-mono), 'JetBrains Mono', ui-monospace, monospace",
+        '--a-leading-body': '1.7',
         '--a-tracking-display': '-0.025em',
       },
       dark: {
@@ -414,6 +495,10 @@ export const BRAND_PROFILES: Record<BrandProfileId, BrandProfile> = {
         '--a-emerald': '#4ADE80',
         '--a-radius-cta': '6px',
         '--a-font-display': "var(--font-eb-garamond), 'Cormorant Garamond', Georgia, serif",
+        '--a-font-serif': "var(--font-newsreader), 'Newsreader', Georgia, serif",
+        '--a-font-sans': "var(--font-inter), 'Inter', ui-sans-serif, system-ui, sans-serif",
+        '--a-font-mono': "var(--font-mono), 'JetBrains Mono', ui-monospace, monospace",
+        '--a-leading-body': '1.7',
         '--a-tracking-display': '-0.025em',
       },
     },
@@ -463,6 +548,10 @@ export const BRAND_PROFILES: Record<BrandProfileId, BrandProfile> = {
         '--a-emerald': '#1B5E3A',
         '--a-radius-cta': '4px',
         '--a-font-display': "'Fraunces', Georgia, serif",
+        '--a-font-serif': "'Fraunces', Georgia, serif",
+        '--a-font-sans': "'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif",
+        '--a-font-mono': "'JetBrains Mono', ui-monospace, monospace",
+        '--a-leading-body': '1.65',
         '--a-tracking-display': '-0.025em',
       },
       dark: {
@@ -489,6 +578,10 @@ export const BRAND_PROFILES: Record<BrandProfileId, BrandProfile> = {
         '--a-emerald': '#B8E986',
         '--a-radius-cta': '4px',
         '--a-font-display': "'Fraunces', Georgia, serif",
+        '--a-font-serif': "'Fraunces', Georgia, serif",
+        '--a-font-sans': "'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif",
+        '--a-font-mono': "'JetBrains Mono', ui-monospace, monospace",
+        '--a-leading-body': '1.65',
         '--a-tracking-display': '-0.025em',
       },
     },
@@ -539,6 +632,10 @@ export const BRAND_PROFILES: Record<BrandProfileId, BrandProfile> = {
         '--a-emerald': '#15803D',
         '--a-radius-cta': '12px',
         '--a-font-display': "'Fraunces', Georgia, serif",
+        '--a-font-serif': "'Newsreader', Georgia, serif",
+        '--a-font-sans': "'Inter', ui-sans-serif, system-ui, sans-serif",
+        '--a-font-mono': "'JetBrains Mono', ui-monospace, monospace",
+        '--a-leading-body': '1.8',
         '--a-tracking-display': '-0.02em',
       },
       dark: {
@@ -565,6 +662,10 @@ export const BRAND_PROFILES: Record<BrandProfileId, BrandProfile> = {
         '--a-emerald': '#4ADE80',
         '--a-radius-cta': '12px',
         '--a-font-display': "'Fraunces', Georgia, serif",
+        '--a-font-serif': "'Newsreader', Georgia, serif",
+        '--a-font-sans': "'Inter', ui-sans-serif, system-ui, sans-serif",
+        '--a-font-mono': "'JetBrains Mono', ui-monospace, monospace",
+        '--a-leading-body': '1.8',
         '--a-tracking-display': '-0.02em',
       },
     },
@@ -614,7 +715,11 @@ export const BRAND_PROFILES: Record<BrandProfileId, BrandProfile> = {
         '--a-link': '#0A0A0A',
         '--a-emerald': '#15803D',
         '--a-radius-cta': '4px',
-        '--a-font-display': "'JetBrains Mono', monospace",
+        '--a-font-display': "'Major Mono Display', 'JetBrains Mono', monospace",
+        '--a-font-serif': "'Fraunces', Georgia, serif",
+        '--a-font-sans': "'Inter', ui-sans-serif, system-ui, sans-serif",
+        '--a-font-mono': "'JetBrains Mono', ui-monospace, monospace",
+        '--a-leading-body': '1.65',
         '--a-tracking-display': '-0.01em',
       },
       dark: {
@@ -640,7 +745,11 @@ export const BRAND_PROFILES: Record<BrandProfileId, BrandProfile> = {
         '--a-link': '#F5F5F4',
         '--a-emerald': '#4ADE80',
         '--a-radius-cta': '4px',
-        '--a-font-display': "'JetBrains Mono', monospace",
+        '--a-font-display': "'Major Mono Display', 'JetBrains Mono', monospace",
+        '--a-font-serif': "'Fraunces', Georgia, serif",
+        '--a-font-sans': "'Inter', ui-sans-serif, system-ui, sans-serif",
+        '--a-font-mono': "'JetBrains Mono', ui-monospace, monospace",
+        '--a-leading-body': '1.65',
         '--a-tracking-display': '-0.01em',
       },
     },
@@ -715,13 +824,23 @@ export function validateThemeContrast(profile: BrandProfile<string>): {
 
   for (const mode of ['light', 'dark'] as const) {
     const t = profile.tokens[mode];
+    const fillMin =
+      mode === 'light' && profile.accentFillContrastMode === 'large-cta-aa' ? 3.0 : 4.5;
     const checks: Array<{ pair: string; fg: string; bg: string; min: number }> = [
       { pair: 'body-ink-on-bg', fg: t['--a-ink'], bg: t['--a-bg'], min: 7.0 },
       { pair: 'muted-on-bg', fg: t['--a-muted'], bg: t['--a-bg'], min: 4.5 },
-      { pair: 'primary-cta-fill', fg: t['--a-accent-fg'], bg: t['--a-accent-fill'], min: 4.5 },
+      { pair: 'primary-cta-fill', fg: t['--a-accent-fg'], bg: t['--a-accent-fill'], min: fillMin },
       { pair: 'accent-text-on-bg', fg: t['--a-accent-text'], bg: t['--a-bg'], min: 4.5 },
       { pair: 'sky-text-on-bg', fg: t['--a-sky-text'], bg: t['--a-bg'], min: 4.5 },
     ];
+    if (t['--a-accent-fill-aa']) {
+      checks.push({
+        pair: 'primary-cta-fill-aa-small',
+        fg: t['--a-accent-fg'],
+        bg: t['--a-accent-fill-aa'],
+        min: 4.5,
+      });
+    }
 
     for (const c of checks) {
       if (!c.fg?.startsWith('#') || !c.bg?.startsWith('#')) continue;
@@ -1063,9 +1182,9 @@ export function generateFigmaVariablesJson(
  */
 export function generateFigmaCodeConnectManifest(profile: BrandProfile<string>): string {
   return `// ${profile.id}.figma.tsx — Accént 3.0 Figma Code Connect Manifest (${profile.name})
-// Connect Figma Dev Mode components directly to @rorshockbtc/accent-ui & STYLES.md
+// Connect Figma Dev Mode components directly to accent-ui & STYLES.md
 import figma from '@figma/code-connect';
-import { AccentButton, AccentBadge, ScaryHeadline, Smile } from '@rorshockbtc/accent-ui';
+import { AccentButton, AccentBadge, ScaryHeadline, Smile } from 'accent-ui';
 
 // 1. Primary Action Button (bound to --a-accent-fill & --a-radius-cta: ${profile.structure?.ctaRadius ?? '6px'})
 figma.connect(AccentButton, 'https://www.figma.com/design/accent-ui-v3?node-id=101-1', {

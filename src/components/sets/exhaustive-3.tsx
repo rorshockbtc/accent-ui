@@ -7,7 +7,6 @@ import {
   Copy,
   Search,
   Sliders,
-  Sparkles,
   Terminal,
   ShieldCheck,
   Code2,
@@ -393,7 +392,7 @@ function CommandPaletteDemo() {
 /* -------------------------------------------------------------------------- */
 function CodeBlockDemo() {
   const [copied, setCopied] = useState(false);
-  const snippet = `import { defineAccentTheme, validateBrandAdapter } from '@rorshockbtc/accent-ui';
+  const snippet = `import { defineAccentTheme, validateBrandAdapter } from 'accent-ui';
 
 export const STUDIO_THEME = defineAccentTheme({
   id: 'playful-principal',
@@ -746,14 +745,14 @@ function McpEndpointTesterDemo() {
       }
       caption="Coding agents query Accént deterministically over HTTP or MCP without scraping HTML."
     >
-      <pre className="p-4 rounded bg-[#111827] text-[#F3EFE9] font-mono text-xs leading-relaxed overflow-x-auto">
+      <pre className="p-4 rounded bg-[#111827] text-[#F3EFE9] font-mono text-[13px] leading-relaxed overflow-x-auto">
         <code>
           {endpoint === 'rules' &&
-            `// GET https://accent.design.pipes.pink/rules.json\n{\n  "system": "Accént (Pipes Design System)",\n  "version": "3.0.0",\n  "totalRules": 223,\n  "sampleRule": {\n    "id": "type.floor-13",\n    "statement": "Never render any text smaller than 13px (0.8125rem).",\n    "violationPattern": "text-\\\\[(8|9|10|11|12)px\\\\]"\n  }\n}`}
+            `// GET https://accent.design.pipes.pink/rules.json\n{\n  "system": "Accént (Pipes Design System)",\n  "version": "3.1.0",\n  "totalRules": 250,\n  "sampleRule": {\n    "id": "type.floor-13",\n    "statement": "Never render any text smaller than 13px (0.8125rem).",\n    "violationPattern": "text-\\\\[(8|9|10|11|12)px\\\\]"\n  }\n}`}
           {endpoint === 'styles' &&
             `# GET https://accent.design.pipes.pink/styles.md?brand=playful-principal\n# Returns text/markdown (Cache-Control: public, max-age=3600)\ncurl -sL "https://accent.design.pipes.pink/styles.md?brand=playful-principal" > STYLES.md`}
           {endpoint === 'mcp' &&
-            `// MCP Tool Call: get_accent_brand_contract({ brand: "playful-principal" })\n// Returns verified W3C tokens, 223 regex rules, and stepwise prompt instructions.`}
+            `// MCP Tool Call: accent_get_brand_contract({ brand: "playful-principal" })\n// Also exposed via /api/mcp: accent_search_patterns, accent_get_spec, accent_lint_code`}
         </code>
       </pre>
     </Stage>

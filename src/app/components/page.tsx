@@ -2,12 +2,13 @@
 
 import React, { useState, useMemo } from 'react';
 import Link from 'next/link';
-import { Search, ArrowRight, Sparkles, Terminal } from 'lucide-react';
+import { Search, ArrowRight, Terminal } from 'lucide-react';
 import { ACCENT_PAGES } from '@/content/accent/registry';
 import { AccentButton, AccentBadge } from '@/components/ui';
 import { Smile } from '@/components/editorial-motion/AccentBrandMotion';
+import { AccentAppLayouts } from '@/components/AccentAppLayouts';
 
-type FilterId = 'all' | 'components' | 'foundations' | 'patterns' | 'ai';
+type FilterId = 'all' | 'components' | 'foundations' | 'patterns' | 'ai' | 'layouts';
 
 export default function AccentComponentsGalleryPage() {
   const [query, setQuery] = useState('');
@@ -38,7 +39,7 @@ export default function AccentComponentsGalleryPage() {
           Components, Foundations &amp; AI Contracts
         </h1>
         <p className="text-base sm:text-lg text-[var(--a-muted)] max-w-[65ch] leading-relaxed">
-          Every component, foundation primitive, and agent rule in Accént—with Overview, Guidelines, Specs, Accessibility, and machine-enforced <code className="font-mono text-xs">violationPattern</code> regexes.
+          Every component, foundation primitive, and agent rule in Accént—with Overview, Guidelines, Specs, Accessibility, and machine-enforced <code className="font-mono text-[13px]">violationPattern</code> regexes.
         </p>
 
         {/* Single-Row Filter + Search Bar */}
@@ -50,6 +51,7 @@ export default function AccentComponentsGalleryPage() {
               { id: 'foundations', label: 'Foundations (16)' },
               { id: 'patterns', label: 'Patterns (7)' },
               { id: 'ai', label: 'Building with AI (4)' },
+              { id: 'layouts', label: 'App & SaaS Layouts (7)' },
             ].map((tab) => {
               const active = filter === tab.id;
               return (
@@ -57,7 +59,7 @@ export default function AccentComponentsGalleryPage() {
                   key={tab.id}
                   type="button"
                   onClick={() => setFilter(tab.id as FilterId)}
-                  className={`px-3.5 py-1.5 rounded-full text-xs font-mono font-semibold uppercase tracking-wider transition-colors cursor-pointer ${
+                  className={`min-h-[40px] px-3.5 py-2 rounded-full text-[13px] font-mono font-semibold uppercase tracking-wider transition-colors cursor-pointer ${
                     active
                       ? 'bg-[var(--a-ink)] text-[var(--a-bg)]'
                       : 'border border-[var(--a-rule)] bg-[var(--a-surface)] text-[var(--a-muted)] hover:text-[var(--a-ink)]'
@@ -77,7 +79,7 @@ export default function AccentComponentsGalleryPage() {
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Search components & specs…"
               aria-label="Search components"
-              className="w-full h-10 pl-9 pr-3 rounded-full border border-[var(--a-rule)] bg-[var(--a-surface)] text-xs text-[var(--a-ink)] outline-none focus:border-[var(--a-accent)]"
+              className="w-full h-10 pl-9 pr-3 rounded-full border border-[var(--a-rule)] bg-[var(--a-surface)] text-[13px] text-[var(--a-ink)] outline-none focus:border-[var(--a-accent)]"
             />
           </div>
         </div>
@@ -87,7 +89,7 @@ export default function AccentComponentsGalleryPage() {
       <section className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="rounded-xl border border-[var(--a-rule)] bg-[var(--a-surface)] p-5 flex flex-col justify-between">
           <div>
-            <span className="font-mono text-xs uppercase tracking-wider text-[var(--a-accent-text)] font-bold">
+            <span className="font-mono text-[13px] uppercase tracking-wider text-[var(--a-accent-text)] font-bold">
               Live Primitive · Button &amp; Badge
             </span>
             <div className="my-5 flex flex-wrap items-center gap-2.5">
@@ -98,7 +100,7 @@ export default function AccentComponentsGalleryPage() {
           </div>
           <Link
             href="/design-system/components/button"
-            className="font-mono text-xs font-bold uppercase tracking-wider text-[var(--a-ink)] hover:text-[var(--a-accent)] inline-flex items-center gap-1"
+            className="font-mono text-[13px] font-bold uppercase tracking-wider text-[var(--a-ink)] hover:text-[var(--a-accent)] inline-flex items-center gap-1"
           >
             <span>Button Spec</span>
             <ArrowRight className="w-3.5 h-3.5" />
@@ -107,11 +109,11 @@ export default function AccentComponentsGalleryPage() {
 
         <div className="rounded-xl border border-[var(--a-rule)] bg-[var(--a-surface)] p-5 flex flex-col justify-between">
           <div>
-            <span className="font-mono text-xs uppercase tracking-wider text-[var(--a-accent-text)] font-bold">
+            <span className="font-mono text-[13px] uppercase tracking-wider text-[var(--a-accent-text)] font-bold">
               Live Primitive · Open Pedestal
             </span>
             <div className="my-4 pt-3 border-t-2 border-[var(--a-accent)]">
-              <span className="font-mono text-xs font-bold text-[var(--a-accent)]">
+              <span className="font-mono text-[13px] font-bold text-[var(--a-accent)]">
                 pipe\website-design
               </span>
               <p className="font-serif text-lg text-[var(--a-ink)] mt-0.5">
@@ -121,7 +123,7 @@ export default function AccentComponentsGalleryPage() {
           </div>
           <Link
             href="/design-system/components/pedestal"
-            className="font-mono text-xs font-bold uppercase tracking-wider text-[var(--a-ink)] hover:text-[var(--a-accent)] inline-flex items-center gap-1"
+            className="font-mono text-[13px] font-bold uppercase tracking-wider text-[var(--a-ink)] hover:text-[var(--a-accent)] inline-flex items-center gap-1"
           >
             <span>Pedestal Spec</span>
             <ArrowRight className="w-3.5 h-3.5" />
@@ -130,7 +132,7 @@ export default function AccentComponentsGalleryPage() {
 
         <div className="rounded-xl border border-[var(--a-rule)] bg-[var(--a-surface)] p-5 flex flex-col justify-between">
           <div>
-            <span className="font-mono text-xs uppercase tracking-wider text-[var(--a-accent-text)] font-bold">
+            <span className="font-mono text-[13px] uppercase tracking-wider text-[var(--a-accent-text)] font-bold">
               Live Primitive · Tier-2 Motion
             </span>
             <div className="my-4 flex items-center justify-between">
@@ -142,7 +144,7 @@ export default function AccentComponentsGalleryPage() {
           </div>
           <Link
             href="/design-system/foundations/motion"
-            className="font-mono text-xs font-bold uppercase tracking-wider text-[var(--a-ink)] hover:text-[var(--a-accent)] inline-flex items-center gap-1"
+            className="font-mono text-[13px] font-bold uppercase tracking-wider text-[var(--a-ink)] hover:text-[var(--a-accent)] inline-flex items-center gap-1"
           >
             <span>Motion Spec</span>
             <ArrowRight className="w-3.5 h-3.5" />
@@ -151,37 +153,62 @@ export default function AccentComponentsGalleryPage() {
       </section>
 
       {/* Exhaustive Specification Grid */}
-      <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-10 pt-4">
-        {items.map((page) => (
-          <Link
-            key={page.slug}
-            href={`/design-system/${page.slug}`}
-            className="group pt-5 border-t-2 border-[var(--a-ink)] hover:border-[var(--a-accent)] flex flex-col justify-between transition-colors"
-          >
-            <div className="space-y-2.5">
-              <div className="flex items-center justify-between font-mono text-xs">
-                <span className="font-bold uppercase tracking-wider text-[var(--a-accent-text)]">
-                  {page.section}
-                </span>
-                <span className="text-[var(--a-muted)]">
-                  {page.rules.length} {page.rules.length === 1 ? 'rule' : 'rules'}
-                </span>
+      {filter !== 'layouts' && (
+        <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-10 pt-4">
+          {items.map((page) => (
+            <Link
+              key={page.slug}
+              href={`/design-system/${page.slug}`}
+              className="group pt-5 border-t-2 border-[var(--a-ink)] hover:border-[var(--a-accent)] flex flex-col justify-between transition-colors"
+            >
+              <div className="space-y-2.5">
+                <div className="flex items-center justify-between font-mono text-[13px]">
+                  <span className="font-bold uppercase tracking-wider text-[var(--a-accent-text)]">
+                    {page.section}
+                  </span>
+                  <span className="text-[var(--a-muted)]">
+                    {page.rules.length} {page.rules.length === 1 ? 'rule' : 'rules'}
+                  </span>
+                </div>
+                <h2 className="font-serif text-2xl font-medium text-[var(--a-ink)] group-hover:text-[var(--a-accent)] transition-colors leading-snug">
+                  {page.title}
+                </h2>
+                <p className="text-sm text-[var(--a-muted)] leading-relaxed line-clamp-3">
+                  {page.summary}
+                </p>
               </div>
-              <h2 className="font-serif text-2xl font-medium text-[var(--a-ink)] group-hover:text-[var(--a-accent)] transition-colors leading-snug">
-                {page.title}
-              </h2>
-              <p className="text-sm text-[var(--a-muted)] leading-relaxed line-clamp-3">
-                {page.summary}
-              </p>
-            </div>
 
-            <div className="pt-5 mt-5 border-t border-[var(--a-rule)] flex items-center justify-between font-mono text-xs font-bold uppercase tracking-wider text-[var(--a-ink)] group-hover:text-[var(--a-accent)]">
-              <span>Read 4-Tab Spec</span>
-              <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
+              <div className="pt-5 mt-5 border-t border-[var(--a-rule)] flex items-center justify-between font-mono text-[13px] font-bold uppercase tracking-wider text-[var(--a-ink)] group-hover:text-[var(--a-accent)]">
+                <span>Read 4-Tab Spec</span>
+                <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
+              </div>
+            </Link>
+          ))}
+        </section>
+      )}
+
+      {(filter === 'all' || filter === 'layouts') && (
+        <section className="space-y-6 pt-8 border-t border-[var(--a-rule)]" aria-label="App and SaaS page layouts">
+          <div className="flex flex-wrap items-end justify-between gap-4">
+            <div className="space-y-1">
+              <div className="font-mono text-[13px] font-bold uppercase tracking-wider text-[var(--a-accent-text)]">
+                Cross-Linked Layouts
+              </div>
+              <h2 className="font-serif text-2xl sm:text-3xl font-semibold text-[var(--a-ink)]">
+                SaaS Dashboards, Client Ledgers &amp; App Page Layouts
+              </h2>
             </div>
-          </Link>
-        ))}
-      </section>
+            <Link
+              href="/design-system/templates#layouts"
+              className="inline-flex min-h-[44px] items-center gap-1.5 font-mono text-[13px] font-semibold text-[var(--a-accent-text)] hover:underline"
+            >
+              <span>View in Templates</span>
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+          <AccentAppLayouts />
+        </section>
+      )}
     </div>
   );
 }

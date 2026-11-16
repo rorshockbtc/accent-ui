@@ -6,15 +6,16 @@ import {
   Download,
   Copy,
   Check,
-  Sparkles,
-  ExternalLink,
-  Code2,
   Sliders,
   ShieldCheck,
   ArrowRight,
-  Zap,
   Terminal,
   Search,
+  Monitor,
+  Smartphone,
+  ExternalLink,
+  Layers,
+  ArrowLeftRight,
 } from 'lucide-react';
 import {
   BRAND_PROFILES,
@@ -26,39 +27,240 @@ import {
   type BrandProfile,
 } from '@/styles/themes';
 import {
-  ScaryHeadline,
-  Smile,
-  DESIGN_SYSTEM_SCARY_PAIRS,
-  HOME_SCARY_PAIRS,
-} from '@/components/editorial-motion/AccentBrandMotion';
+  ACCENT_WEBSITE_THEMES,
+  FINCA_MIRADOR_BASE_CONTENT,
+  generateThemeStylesMarkdown,
+  renderStandaloneThemeBundle,
+  type SiteContentContract,
+  type WebsiteThemeId,
+  type WebsiteThemeSpec,
+} from '@/styles/website-themes';
+import { AccentBadge } from '@/components/ui';
+import { AnimatePresence, m } from 'framer-motion';
+import { Maximize2 } from 'lucide-react';
+import { THEME_FONT_VAR } from '@/components/showcase/theme-fonts';
+
+/** Real theme engine preview: every theme renders its own layout, hero, fonts, and section order. */
+function RealThemeStage({
+  theme,
+  content,
+  device,
+  compact = false,
+}: {
+  theme: WebsiteThemeSpec;
+  content: SiteContentContract;
+  device: 'desktop' | 'mobile';
+  compact?: boolean;
+}) {
+  const html = useMemo(
+    () => renderStandaloneThemeBundle(content, theme.id, { includePreviewBridge: true }).html,
+    [content, theme]
+  );
+
+  const openFull = () => {
+    const withBase = html.replace('<head>', `<head><base href="${window.location.origin}/">`);
+    const url = URL.createObjectURL(new Blob([withBase], { type: 'text/html' }));
+    window.open(url, '_blank', 'noopener');
+  };
+
+  return (
+    <div className="space-y-3">
+      <div className="flex justify-center">
+        <div
+          className="relative overflow-hidden rounded-2xl border border-[var(--a-rule)] bg-white shadow-sm"
+          style={{ width: device === 'mobile' ? 390 : '100%', maxWidth: '100%', height: compact ? 620 : 780 }}
+        >
+          <AnimatePresence mode="popLayout" initial={false}>
+            <m.div
+              key={`${theme.id}-${content.slug}`}
+              className="absolute inset-0"
+              initial={{ opacity: 0, scale: 0.985 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+            >
+              <iframe
+                title={`${theme.name} live preview`}
+                srcDoc={html}
+                className="h-full w-full border-0"
+                data-theme-preview={theme.id}
+              />
+            </m.div>
+          </AnimatePresence>
+        </div>
+      </div>
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <p className="text-[13px] text-[var(--a-muted)]">
+          Showing <strong className="font-semibold text-[var(--a-ink)]">{theme.shortName}</strong> with{' '}
+          <strong className="font-semibold text-[var(--a-ink)]">{content.businessName}</strong>. Scroll inside the preview.
+        </p>
+        <button
+          type="button"
+          onClick={openFull}
+          className="inline-flex min-h-[44px] items-center gap-2 rounded-full border border-[var(--a-ink)] px-4 text-[13px] font-semibold text-[var(--a-ink)] cursor-pointer hover:bg-[var(--a-surface)]"
+        >
+          <Maximize2 className="h-4 w-4" /> Open full screen
+        </button>
+      </div>
+    </div>
+  );
+}
+
+/** Side-by-side live comparison of any two Accént website themes. */
+function CompareThemesStage({
+  leftTheme,
+  rightTheme,
+  onSelectLeft,
+  onSelectRight,
+  contentMode,
+  device,
+}: {
+  leftTheme: WebsiteThemeSpec;
+  rightTheme: WebsiteThemeSpec;
+  onSelectLeft: (theme: WebsiteThemeSpec) => void;
+  onSelectRight: (id: WebsiteThemeId) => void;
+  contentMode: 'native' | 'same-business';
+  device: 'desktop' | 'mobile';
+}) {
+  const columns = [
+    {
+      slotLabel: 'Theme A',
+      theme: leftTheme,
+      onChange: (id: WebsiteThemeId) => {
+        const found = ACCENT_WEBSITE_THEMES.find((t) => t.id === id);
+        if (found) onSelectLeft(found);
+      },
+    },
+    {
+      slotLabel: 'Theme B',
+      theme: rightTheme,
+      onChange: (id: WebsiteThemeId) => onSelectRight(id),
+    },
+  ];
+
+  return (
+    <div className="grid grid-cols-1 xl:grid-cols-2 gap-5 items-start">
+      {columns.map((col) => {
+        const content: SiteContentContract =
+          contentMode === 'same-business'
+            ? { ...FINCA_MIRADOR_BASE_CONTENT, themeId: col.theme.id }
+            : col.theme.domainExample;
+        return (
+          <div
+            key={col.slotLabel}
+            className="rounded-2xl border border-[var(--a-rule)] bg-[var(--a-surface)] p-4 space-y-3 min-w-0"
+          >
+            <div className="flex flex-wrap items-center justify-between gap-2 pb-2 border-b border-[var(--a-rule)]">
+              <span className="font-mono text-[13px] font-bold uppercase tracking-wider text-[var(--a-muted)]">
+                {col.slotLabel}
+              </span>
+              <label className="min-w-0 flex-1 max-w-[260px]">
+                <span className="sr-only">Choose {col.slotLabel}</span>
+                <select
+                  value={col.theme.id}
+                  onChange={(e) => col.onChange(e.target.value as WebsiteThemeId)}
+                  className="w-full min-h-[44px] rounded-lg border border-[var(--a-rule)] bg-[var(--a-bg)] px-3 text-[13px] font-semibold text-[var(--a-ink)]"
+                >
+                  {ACCENT_WEBSITE_THEMES.map((item) => (
+                    <option key={item.id} value={item.id}>
+                      {item.name}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            </div>
+            <p className="text-[13px] leading-snug text-[var(--a-muted)]">
+              <strong className="text-[var(--a-ink)]">{col.theme.archetypeLabel}</strong>
+              {contentMode === 'same-business' ? ` — ${col.theme.sameBusinessNote}` : ''}
+            </p>
+            <RealThemeStage theme={col.theme} content={content} device={device} compact />
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+/** Plain-English "personality" summary of a website theme (replaces color pickers on this page). */
+function ThemePersonality({ theme, playgroundHref }: { theme: WebsiteThemeSpec; playgroundHref: string }) {
+  const rows: [string, string][] = [
+    ['Best for', theme.bestFor],
+    ['Not ideal for', theme.avoidFor],
+    ['Page layout', theme.archetypeLabel],
+    ['First screen', theme.geometry.heroStyle],
+    ['Buttons & corners', theme.personality.buttonShapeLabel],
+    ['Voice & feel', theme.personality.voice],
+    ['Motion rule', theme.personality.motionProfile],
+    ['Fonts', `${theme.typography.displayLabel} headings · ${theme.typography.bodyLabel} text`],
+  ];
+  return (
+    <div className="space-y-4">
+      <div className="space-y-2">
+        <div className="font-mono text-[13px] font-bold uppercase tracking-wider text-[var(--a-muted)]">About this theme</div>
+        <div className="text-[26px] font-semibold leading-tight text-[var(--a-ink)]" style={{ fontFamily: THEME_FONT_VAR[theme.typography.displayLabel] }}>
+          {theme.name}
+        </div>
+        <p className="text-[14px] leading-relaxed text-[var(--a-muted)]">{theme.summary}</p>
+        <p
+          className="border-l-2 pl-3 text-[15px] italic text-[var(--a-ink)]"
+          style={{ borderColor: theme.palette.accent, fontFamily: THEME_FONT_VAR[theme.typography.displayLabel] }}
+        >
+          “{theme.personality.sampleHeadline}”
+        </p>
+        <div className="flex gap-1.5 pt-1" aria-label="Theme colors">
+          {[theme.palette.bg, theme.palette.ink, theme.palette.accent, theme.palette.focalSurface].map((c, i) => (
+            <span key={`${c}-${i}`} className="h-7 w-10 rounded border border-black/15" style={{ backgroundColor: c }} title={c} />
+          ))}
+        </div>
+      </div>
+      <dl className="divide-y divide-[var(--a-rule)] border-y border-[var(--a-rule)]">
+        {rows.map(([k, v]) => (
+          <div key={k} className="py-2.5">
+            <dt className="text-[13px] font-semibold text-[var(--a-ink)]">{k}</dt>
+            <dd className="text-[13px] leading-snug text-[var(--a-muted)]">{v}</dd>
+          </div>
+        ))}
+      </dl>
+      <Link
+        href={playgroundHref}
+        className="flex w-full min-h-[46px] items-center justify-center gap-2 rounded-full bg-[var(--a-accent-fill,var(--a-accent))] text-sm font-semibold text-white hover:opacity-90"
+      >
+        Use this theme in Playground →
+      </Link>
+      <p className="text-[13px] leading-snug text-[var(--a-muted)]">
+        Want different colors or fonts? Fine-tune them in Playground after you add your own words.
+      </p>
+    </div>
+  );
+}
 
 const DISPLAY_FONT_OPTIONS = [
   {
-    label: 'Fraunces (Archival Serif)',
-    value: 'Fraunces',
-    css: "var(--font-serif), 'Fraunces', Georgia, serif",
-    tracking: '-0.02em',
-  },
-  {
-    label: 'Bricolage Grotesque (Playful Principal)',
-    value: 'Bricolage Grotesque',
-    css: "var(--font-bricolage), 'Bricolage Grotesque', 'Inter', system-ui, sans-serif",
-    tracking: '-0.035em',
-  },
-  {
-    label: 'Newsreader (Editorial Classical)',
+    label: 'Newsreader (Editorial Serif)',
     value: 'Newsreader',
     css: "var(--font-newsreader), 'Newsreader', Georgia, serif",
     tracking: '-0.02em',
   },
   {
-    label: 'Cormorant Garamond (Cassandra Noir)',
+    label: 'Fraunces (Warm Craft Serif)',
+    value: 'Fraunces',
+    css: "var(--font-serif), 'Fraunces', Georgia, serif",
+    tracking: '-0.02em',
+  },
+  {
+    label: 'Bricolage Grotesque (Bold Studio Sans)',
+    value: 'Bricolage Grotesque',
+    css: "var(--font-bricolage), 'Bricolage Grotesque', system-ui, sans-serif",
+    tracking: '-0.035em',
+  },
+  {
+    label: 'Cormorant Garamond (Classic Book Serif)',
     value: 'Cormorant Garamond',
     css: "var(--font-eb-garamond), 'Cormorant Garamond', Georgia, serif",
     tracking: '-0.025em',
   },
   {
-    label: 'JetBrains Mono (Terminal Grid)',
+    label: 'JetBrains Mono (Technical Mono)',
     value: 'JetBrains Mono',
     css: "var(--font-mono), 'JetBrains Mono', monospace",
     tracking: '-0.01em',
@@ -66,69 +268,124 @@ const DISPLAY_FONT_OPTIONS = [
 ] as const;
 
 const CTA_RADIUS_OPTIONS = [
-  { label: '9999px · Full Pill + Pedestals', radius: '9999px', posture: 'pedestal-hairline' as const },
-  { label: '6px · Archival Spine', radius: '6px', posture: 'archival-spine' as const },
-  { label: '12px · Warm Tactile Well', radius: '12px', posture: 'warm-well' as const },
-  { label: '4px · Crisp Terminal Grid', radius: '4px', posture: 'terminal-grid' as const },
+  { label: 'Full Pill (9999px)', radius: '9999px', posture: 'pedestal-hairline' as const },
+  { label: 'Classic Soft Corners (8px)', radius: '8px', posture: 'warm-well' as const },
+  { label: 'Archival Hairline (6px)', radius: '6px', posture: 'archival-spine' as const },
+  { label: 'Sharp Trade Edge (4px)', radius: '4px', posture: 'terminal-grid' as const },
 ] as const;
 
+const BRAND_PLAIN_SUBTITLES: Record<BrandProfileId, string> = {
+  'editorial-sandstone': 'Warm paper & crimson for libraries and publications',
+  'playful-principal': 'Chalk & hot pink :-] for modern creative studios',
+  'albers-perspectives': 'Balanced grid & cobalt blue for daily briefings',
+  'cassandra-noir': 'Deep bookplate ink & forest green for long essays',
+  'hacienda-emerald': 'Warm plaster & pine for hospitality and retreats',
+  'terracotta-civic': 'Clay & terracotta for civic ledgers and reports',
+  'greater-terminal': 'High-contrast workspace for research & comparisons',
+};
+
+function mapFontLabelToValue(label: string): string {
+  const lower = label.toLowerCase();
+  if (lower.includes('bricolage') || lower.includes('inter') || lower.includes('grotesk')) {
+    return 'Bricolage Grotesque';
+  }
+  if (lower.includes('fraunces')) return 'Fraunces';
+  if (lower.includes('cormorant') || lower.includes('garamond') || lower.includes('literata')) {
+    return 'Cormorant Garamond';
+  }
+  if (lower.includes('mono') || lower.includes('jetbrains')) return 'JetBrains Mono';
+  return 'Newsreader';
+}
+
+function mapWebsiteRadius(raw: string): string {
+  if (raw.includes('999')) return '9999px';
+  if (raw.includes('8')) return '8px';
+  if (raw.includes('6')) return '6px';
+  return '4px';
+}
+
 export default function AccentThemesStudioPage() {
-  const [activeBrand, setActiveBrand] = useState<BrandProfileId>('playful-principal');
-  const [customName, setCustomName] = useState(BRAND_PROFILES['playful-principal'].name);
-  const [customMark, setCustomMark] = useState(BRAND_PROFILES['playful-principal'].mark);
-  const [customBg, setCustomBg] = useState('#FAF8F5');
-  const [customSurface, setCustomSurface] = useState('#F3EEE6');
-  const [customInk, setCustomInk] = useState('#111827');
-  const [customAccent, setCustomAccent] = useState('#FE299E');
-  const [customSky, setCustomSky] = useState('#0A9BE0');
-  const [customDisplayFont, setCustomDisplayFont] = useState<string>('Bricolage Grotesque');
-  const [customCtaRadius, setCustomCtaRadius] = useState<string>('9999px');
+  const [catalogTab, setCatalogTab] = useState<'websites' | 'brands'>('websites');
+  const [selectedWebsiteId, setSelectedWebsiteId] = useState<WebsiteThemeId>('hacienda-hospitality');
+  const [compareThemeId, setCompareThemeId] = useState<WebsiteThemeId>('case-study-studio');
+  const [stageMode, setStageMode] = useState<'single' | 'compare'>('single');
+  const [contentMode, setContentMode] = useState<'native' | 'same-business'>('native');
+  const [activeBrand, setActiveBrand] = useState<BrandProfileId>('editorial-sandstone');
+  const [previewSurface, setPreviewSurface] = useState<'website' | 'app'>('website');
+  const [previewDevice, setPreviewDevice] = useState<'desktop' | 'mobile'>('desktop');
+
+  // Customizer token state
+  const [customName, setCustomName] = useState<string>(ACCENT_WEBSITE_THEMES[0].name);
+  const [customMark, setCustomMark] = useState<string>(': - ]');
+  const [customBg, setCustomBg] = useState<string>(ACCENT_WEBSITE_THEMES[0].palette.bg);
+  const [customSurface, setCustomSurface] = useState<string>(ACCENT_WEBSITE_THEMES[0].palette.focalSurface);
+  const [customInk, setCustomInk] = useState<string>(ACCENT_WEBSITE_THEMES[0].palette.ink);
+  const [customAccent, setCustomAccent] = useState<string>(ACCENT_WEBSITE_THEMES[0].palette.accent);
+  const [customDisplayFont, setCustomDisplayFont] = useState<string>('Fraunces');
+  const [customCtaRadius, setCustomCtaRadius] = useState<string>('8px');
+
   const [copied, setCopied] = useState<'none' | 'styles' | 'prompt'>('none');
-
-  // Interactive states inside the live multi-app preview
-  const [followedPipes, setFollowedPipes] = useState<string[]>(['cubby', 'chb', 'bitcoin']);
-  const [paymentMethod, setPaymentMethod] = useState<'lightning' | 'card'>('lightning');
   const [ledgerFilter, setLedgerFilter] = useState('');
-  const [activePromptIdx, setActivePromptIdx] = useState(0);
+  const [activeQaIdx, setActiveQaIdx] = useState(0);
 
-  const syncFromBrand = (id: BrandProfileId) => {
-    const p = BRAND_PROFILES[id];
-    if (!p) return;
-    setCustomName(p.name);
+  const selectedWebsiteTheme: WebsiteThemeSpec = useMemo(
+    () => ACCENT_WEBSITE_THEMES.find((t) => t.id === selectedWebsiteId) ?? ACCENT_WEBSITE_THEMES[0],
+    [selectedWebsiteId]
+  );
+
+  const compareWebsiteTheme: WebsiteThemeSpec = useMemo(
+    () => ACCENT_WEBSITE_THEMES.find((t) => t.id === compareThemeId) ?? ACCENT_WEBSITE_THEMES[6],
+    [compareThemeId]
+  );
+
+  const applyWebsiteTheme = (t: WebsiteThemeSpec) => {
+    setCatalogTab('websites');
+    setSelectedWebsiteId(t.id);
+    setCustomName(t.name);
+    setCustomMark(t.shortName);
+    setCustomBg(t.palette.bg);
+    setCustomSurface(t.palette.focalSurface || t.palette.surface);
+    setCustomInk(t.palette.ink);
+    setCustomAccent(t.palette.accent);
+    setCustomDisplayFont(mapFontLabelToValue(t.typography.displayLabel));
+    setCustomCtaRadius(mapWebsiteRadius(t.geometry.radius));
+  };
+
+  const applyBrandProfile = (p: BrandProfile) => {
+    setCatalogTab('brands');
+    setActiveBrand(p.id);
+    setCustomName(p.name.split('(')[0].trim());
     setCustomMark(p.mark);
     setCustomBg(p.tokens.light['--a-bg']);
     setCustomSurface(p.tokens.light['--a-surface']);
     setCustomInk(p.tokens.light['--a-ink']);
     setCustomAccent(p.tokens.light['--a-accent']);
-    setCustomSky(p.tokens.light['--a-sky']);
-    setCustomDisplayFont(p.typography.display);
+    setCustomDisplayFont(mapFontLabelToValue(p.typography.display));
     setCustomCtaRadius(p.structure?.ctaRadius ?? '6px');
+    window.localStorage.setItem('accent-brand', p.id);
+    document.documentElement.setAttribute('data-accent-brand', p.id);
+    window.dispatchEvent(new CustomEvent('accent-brand-change', { detail: p.id }));
   };
 
   useEffect(() => {
-    const saved = window.localStorage.getItem('accent-brand') as BrandProfileId | null;
-    if (saved && saved in BRAND_PROFILES) {
-      setActiveBrand(saved);
-      syncFromBrand(saved);
-    }
-    const onBrandChange = (e: Event) => {
-      const custom = e as CustomEvent<BrandProfileId>;
-      if (custom.detail && custom.detail in BRAND_PROFILES) {
-        setActiveBrand(custom.detail);
-        syncFromBrand(custom.detail);
-      }
-    };
-    window.addEventListener('accent-brand-change', onBrandChange);
-    return () => window.removeEventListener('accent-brand-change', onBrandChange);
-  }, []);
+    const params = new URLSearchParams(window.location.search);
+    const urlTheme = params.get('theme') as WebsiteThemeId | null;
+    const urlBrand = params.get('brand') as BrandProfileId | null;
 
-  const selectBrand = (id: BrandProfileId) => {
-    setActiveBrand(id);
-    syncFromBrand(id);
-    window.localStorage.setItem('accent-brand', id);
-    document.documentElement.setAttribute('data-accent-brand', id);
-    window.dispatchEvent(new CustomEvent('accent-brand-change', { detail: id }));
-  };
+    if (urlTheme) {
+      const match = ACCENT_WEBSITE_THEMES.find((t) => t.id === urlTheme);
+      if (match) {
+        applyWebsiteTheme(match);
+        setPreviewSurface('website');
+        return;
+      }
+    }
+    if (urlBrand && urlBrand in BRAND_PROFILES) {
+      applyBrandProfile(BRAND_PROFILES[urlBrand]);
+      setPreviewSurface('app');
+      return;
+    }
+  }, []);
 
   const derivedAccent = useMemo(
     () => deriveAccessibleAccent(customAccent, customBg),
@@ -154,7 +411,7 @@ export default function AccentThemesStudioPage() {
       structure: {
         ctaRadius: customCtaRadius,
         posture: radiusMeta.posture,
-        summary: `Adaptive ${radiusMeta.posture} layout with ${customCtaRadius} CTA geometry.`,
+        summary: `${radiusMeta.label} layout with ${customCtaRadius} buttons.`,
       },
       tokens: {
         ...base.tokens,
@@ -168,7 +425,6 @@ export default function AccentThemesStudioPage() {
           '--a-accent-fill': derivedAccent.fillHex,
           '--a-accent-text': derivedAccent.inlineTextHex,
           '--a-accent-fg': derivedAccent.fillForegroundHex,
-          '--a-sky': customSky,
           '--a-radius-cta': customCtaRadius,
           '--a-font-display': fontMeta.css,
           '--a-tracking-display': fontMeta.tracking,
@@ -177,9 +433,15 @@ export default function AccentThemesStudioPage() {
     };
   };
 
+  const activeStylesMd = () => {
+    if (catalogTab === 'websites') {
+      return generateThemeStylesMarkdown(selectedWebsiteTheme);
+    }
+    return generateStylesMarkdown(buildActiveProfile());
+  };
+
   const handleDownloadStylesMd = () => {
-    const md = generateStylesMarkdown(buildActiveProfile());
-    const blob = new Blob([md], { type: 'text/markdown;charset=utf-8' });
+    const blob = new Blob([activeStylesMd()], { type: 'text/markdown;charset=utf-8' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
@@ -196,252 +458,297 @@ export default function AccentThemesStudioPage() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `${activeBrand}.figma-tokens.json`;
+    a.download = `${catalogTab === 'websites' ? selectedWebsiteId : activeBrand}.figma-tokens.json`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
   };
 
-  const handleCopyStylesMd = async () => {
-    const md = generateStylesMarkdown(buildActiveProfile());
-    await navigator.clipboard.writeText(md);
-    setCopied('styles');
-    window.setTimeout(() => setCopied('none'), 2200);
-  };
-
-  const handleCopyAgentPrompt = async () => {
-    const prompt = `Adopt the Accént "${customName}" (${activeBrand}) dialect for this repository.
-1. Fetch the machine-readable rules and style contract:
-   - curl -s "https://design.pipes.pink/design-system/styles.md?brand=${activeBrand}" > STYLES.md
-   - curl -s "https://design.pipes.pink/design-system/rules.json" > .accent-rules.json
-2. Apply our 5-Axis Tokens:
-   - Canvas (--a-bg): ${customBg} | Surface (--a-surface): ${customSurface} | Ink (--a-ink): ${customInk}
-   - Signature Mark (--a-accent): ${customAccent} (${customMark}) | Accessible CTA Fill (--a-accent-fill): ${derivedAccent.fillHex} (${derivedAccent.fillContrastRatio}:1 WCAG AA)
-   - Display Font: ${customDisplayFont} (${fontMeta.tracking}) | CTA Geometry: ${customCtaRadius} (${radiusMeta.posture})
-3. Keep AGENTS.md strictly for operational workflows; write all project-specific style or motion extensions into Section 5 (customExtension) of STYLES.md.`;
+  const handleCopyPrompt = async () => {
+    const prompt = `Use the "${customName}" Accént theme:
+- Page Background: ${customBg}
+- Section Tint: ${customSurface}
+- Text Color: ${customInk}
+- Accent Color: ${customAccent} (accessible button fill: ${derivedAccent.fillHex}, contrast ${derivedAccent.fillContrastRatio}:1)
+- Heading Font: ${customDisplayFont}
+- Button Corner Radius: ${customCtaRadius}
+- Rules: Keep body text >= 13px, interactive buttons >= 44px tall, zero background gradients, and 1px hairline dividers instead of nested cards.`;
     await navigator.clipboard.writeText(prompt);
     setCopied('prompt');
-    window.setTimeout(() => setCopied('none'), 2200);
+    window.setTimeout(() => setCopied('none'), 2000);
   };
 
-  const previewStyle: React.CSSProperties = {
-    backgroundColor: customBg,
-    color: customInk,
-    ['--a-bg' as string]: customBg,
-    ['--a-surface' as string]: customSurface,
-    ['--a-ink' as string]: customInk,
-    ['--a-accent' as string]: customAccent,
-    ['--a-accent-fill' as string]: derivedAccent.fillHex,
-    ['--a-accent-text' as string]: derivedAccent.inlineTextHex,
-    ['--a-sky' as string]: customSky,
-    ['--a-radius-cta' as string]: customCtaRadius,
-    ['--a-font-display' as string]: fontMeta.css,
-  };
+  const exampleSite = selectedWebsiteTheme.domainExample;
+  const playgroundHref =
+    catalogTab === 'websites'
+      ? `/design-system/playground?theme=${selectedWebsiteTheme.id}`
+      : `/design-system/playground?brand=${activeBrand}`;
 
-  const LEDGER_ITEMS = [
-    { id: '01', path: 'pipe\\cubby', title: 'Kyle (Cubby) Studio Notebook', kind: 'Personal', notes: 372, yield: '+$1,420' },
-    { id: '02', path: 'pipe\\chb', title: 'Colon-Hyphen-Bracket :-]', kind: 'Business', notes: 48, yield: '+$2,890' },
-    { id: '03', path: 'pipe\\optimization', title: 'Trim (~) Context & Token Compiler', kind: 'Utility', notes: 34, yield: '−90% Tokens' },
-    { id: '04', path: 'pipe\\bitcoin', title: 'Bitcoin Protocol & Sound Money', kind: 'Topic', notes: 57, yield: '+$980' },
-    { id: '05', path: 'pipe\\stoicism', title: 'Classical Stoic Primary Canon', kind: 'Topic', notes: 38, yield: '+$640' },
-    { id: '06', path: 'pipe\\website-design', title: 'Accént & Anti-Slop Web Codex', kind: 'Topic', notes: 44, yield: 'MIT FOSS' },
-  ].filter(
-    (item) =>
-      !ledgerFilter.trim() ||
-      item.title.toLowerCase().includes(ledgerFilter.toLowerCase()) ||
-      item.path.toLowerCase().includes(ledgerFilter.toLowerCase())
-  );
-
-  const AGENT_PROMPTS = [
+  const QA_SAMPLES = [
     {
-      q: 'How do we adopt Accént motion in highdraw without manual PRs?',
-      a: 'Drop STYLES.md in the repo root, wrap the app in <LazyMotion features={domAnimation}>, and declare custom spring curves in Section 5 (customExtension). Zero upstream PRs required.',
-      cited: ['pipe\\website-design', 'pipe\\chb', 'STYLES.md'],
+      q: 'What actually changes when I pick a new theme?',
+      a: 'Everything adjusts together—background warmth, heading font, button corners, and spacing—while Accént locks readable dark/light contrast so text never washes out.',
+      tags: ['Accessible Contrast', 'Mobile Ready'],
     },
     {
-      q: 'Why does Accént split --a-accent (#FE299E) from --a-accent-fill (#B81468)?',
-      a: 'Electric Hot Pink (#FE299E) makes punctuation marks (: - ]), <Smile /> winks, and strike-through bars pop, while auto-derived #B81468 guarantees 5.6:1 WCAG 2.1 AA contrast with white button text.',
-      cited: ['deriveAccessibleAccent()', 'WCAG 2.1 AA'],
+      q: 'Can I bring my own business colors and still stay readable?',
+      a: 'Yes. Pick any brand color under “Accent Color” on the left. Accént automatically darkens button fills slightly when needed so white button labels remain crisp and easy to read.',
+      tags: ['Auto Contrast Check', 'Your Brand Colors'],
     },
     {
-      q: 'How does Trim (~) cut Claude & Cursor prompt spend by 90%?',
-      a: 'It strips conversational filler, pins frozen project invariants at byte-0 for a 90% repeat-read cache discount, and attaches only the top 3 SHA-256 verified Pipe notes.',
-      cited: ['pipe\\optimization', 'MCP Bridge'],
+      q: 'What is STYLES.md and where do I put it?',
+      a: 'STYLES.md is a plain text checklist telling Pipes Desktop (BANG!), Claude, Cursor, or any developer the exact colors, fonts, and rules to follow for your site.',
+      tags: ['Pipes Desktop', 'Claude / Cursor'],
     },
   ];
 
+  const SAMPLE_DIRECTORY = [
+    { id: '01', name: 'Cypress Creek Coffee & Inn', type: 'Hospitality', pages: '4 Sections', status: 'Live POC' },
+    { id: '02', name: 'Hearth & Rye Bakery', type: 'Neighborhood Shop', pages: 'Menu + Pre-Order', status: 'Included' },
+    { id: '03', name: 'Barton Creek Plumbing', type: 'Home Trades', pages: 'Dispatch + Prices', status: 'Included' },
+    { id: '04', name: 'Colon Hyphen Bracket :-]', type: 'Custom Studio', pages: 'Bespoke Sprint', status: 'Studio Tier' },
+  ].filter(
+    (item) =>
+      !ledgerFilter.trim() ||
+      item.name.toLowerCase().includes(ledgerFilter.toLowerCase()) ||
+      item.type.toLowerCase().includes(ledgerFilter.toLowerCase())
+  );
+
   return (
-    <div className="py-8 sm:py-10">
-      <div className="grid grid-cols-1 lg:grid-cols-[360px_minmax(0,1fr)] gap-8 items-start">
-        {/* ================= LEFT STICKY RAIL: VISUAL THEME SELECTOR + 5-AXIS TUNER ================= */}
-        <aside className="lg:sticky lg:top-20 lg:max-h-[calc(100vh-96px)] lg:overflow-y-auto rounded-2xl border border-[var(--a-rule)] bg-[var(--a-surface)] p-5 space-y-6">
-          <div>
-            <div className="flex items-center justify-between gap-2">
-              <span className="font-mono text-xs uppercase tracking-[0.18em] text-[var(--a-accent-text)] font-bold">
-                /// 5-Axis Theme Studio
-              </span>
-              <span className="font-mono text-xs text-[var(--a-muted)]">7 Dialects</span>
-            </div>
-            <h1 className="mt-1 font-serif text-2xl font-semibold tracking-tight text-[var(--a-ink)]">
-              Themes &amp; Dialects
-            </h1>
-            <p className="mt-1.5 text-xs leading-5 text-[var(--a-muted)]">
-              Accént ships with 7 sovereign brand dialects. Click any dialect below to watch the live multi-app canvas transform its palette, display typography, CTA geometry, and structural posture—then export your <code className="font-mono">STYLES.md</code>.
+    <div className="py-10 sm:py-14 space-y-10">
+      {/* PLAIN-ENGLISH HEADER + 3-STEP HOW-TO STRIP */}
+      <header className="space-y-6">
+        <div className="space-y-3 max-w-3xl">
+          <div className="flex flex-wrap items-center gap-2">
+            <AccentBadge tone="pink">15 Ready Themes</AccentBadge>
+            <AccentBadge tone="sky">Built-In Readability Check</AccentBadge>
+          </div>
+          <h1 className="font-serif text-4xl sm:text-5xl font-semibold tracking-tight text-[var(--a-ink)]">
+            Themes: Pick a Starting Look for Your Site or App
+          </h1>
+          <p className="text-base sm:text-lg text-[var(--a-muted)] leading-relaxed">
+            A theme is the whole personality of a site: page layout, first screen, fonts, colors, and pacing. Pick one on the left and the preview on the right rebuilds the entire site, not just the colors.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 border-y border-[var(--a-rule)] py-5">
+          <div className="space-y-1">
+            <span className="font-mono text-[13px] font-bold text-[var(--a-accent-text)]">
+              Step 01 · Pick a Preset
+            </span>
+            <p className="text-sm font-semibold text-[var(--a-ink)]">
+              8 Business Website Themes + 7 App Voices
+            </p>
+            <p className="text-[13px] text-[var(--a-muted)] leading-relaxed">
+              Start with an industry match (coffee shop, bakery, plumber, clinic, studio) or a publication palette.
             </p>
           </div>
+          <div className="space-y-1">
+            <span className="font-mono text-[13px] font-bold text-[var(--a-accent-text)]">
+              Step 02 · Compare Whole Sites
+            </span>
+            <p className="text-sm font-semibold text-[var(--a-ink)]">
+              See the Real Layout, Full Size
+            </p>
+            <p className="text-[13px] text-[var(--a-muted)] leading-relaxed">
+              Each theme changes the layout, hero, fonts, and section order. Open any theme full screen to scroll it like a real site.
+            </p>
+          </div>
+          <div className="space-y-1">
+            <span className="font-mono text-[13px] font-bold text-[var(--a-accent-text)]">
+              Step 03 · Build or Commission
+            </span>
+            <p className="text-sm font-semibold text-[var(--a-ink)]">
+              Free Style Sheet or Full :-] Sprint
+            </p>
+            <p className="text-[13px] text-[var(--a-muted)] leading-relaxed">
+              Test your own text in the Playground, drop <code className="font-mono">STYLES.md</code> into BANG!, or hire Colon Hyphen Bracket.
+            </p>
+          </div>
+        </div>
+      </header>
 
-          {/* Primary Action Stack (Astryx "Use this theme" / "Try in Playground" + Agent Prompt) */}
-          <div className="space-y-2">
-            <button
-              type="button"
-              onClick={handleDownloadStylesMd}
-              className="w-full min-h-[44px] inline-flex items-center justify-center gap-2 rounded-full bg-[var(--a-ink)] text-[var(--a-bg)] hover:opacity-90 font-sans text-xs font-bold uppercase tracking-wider transition-all cursor-pointer"
-            >
-              <Download className="h-3.5 w-3.5" />
-              <span>Use This Theme (STYLES.md)</span>
-            </button>
+      {/* MAIN TWO-COLUMN STUDIO */}
+      <div className="grid grid-cols-1 lg:grid-cols-[380px_minmax(0,1fr)] gap-8 items-start">
+        {/* LEFT CONTROL RAIL */}
+        <aside className="rounded-2xl border border-[var(--a-rule)] bg-[var(--a-surface)] p-5 space-y-6">
+          {/* Category Switcher: 8 Websites vs 7 App Brands */}
+          <div className="space-y-3">
+            <div className="flex items-center justify-between">
+              <span className="font-mono text-[13px] font-bold uppercase tracking-wider text-[var(--a-ink)]">
+                Choose Starting Preset
+              </span>
+              <span className="font-mono text-[13px] text-[var(--a-muted)]">15 Total</span>
+            </div>
 
-            <button
-              type="button"
-              onClick={handleDownloadFigmaJson}
-              className="w-full min-h-[40px] inline-flex items-center justify-center gap-2 rounded-full border border-[var(--a-accent)]/40 bg-[var(--a-bg)] text-[var(--a-ink)] hover:border-[var(--a-accent)] hover:text-[var(--a-accent)] font-sans text-xs font-bold uppercase tracking-wider transition-all cursor-pointer"
-            >
-              <Download className="h-3.5 w-3.5 text-[var(--a-accent)]" />
-              <span>Export Figma Variables (.json)</span>
-            </button>
-
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-2 rounded-lg border border-[var(--a-rule)] bg-[var(--a-bg)] p-1 gap-1">
               <button
                 type="button"
-                onClick={handleCopyAgentPrompt}
-                className="min-h-[40px] inline-flex items-center justify-center gap-1.5 rounded-full border border-[var(--a-rule)] bg-[var(--a-bg)] px-3 font-mono text-[11px] font-semibold text-[var(--a-ink)] hover:border-[var(--a-accent)] transition-colors cursor-pointer"
+                onClick={() => {
+                  setCatalogTab('websites');
+                  setPreviewSurface('website');
+                }}
+                className={`min-h-[42px] px-2.5 rounded-md text-[13px] font-semibold cursor-pointer ${
+                  catalogTab === 'websites'
+                    ? 'bg-[var(--a-ink)] text-[var(--a-bg)]'
+                    : 'text-[var(--a-ink)] hover:bg-black/5'
+                }`}
               >
-                {copied === 'prompt' ? (
-                  <>
-                    <Check className="h-3.5 w-3.5 text-[var(--a-emerald)]" />
-                    <span>Copied!</span>
-                  </>
-                ) : (
-                  <>
-                    <Sparkles className="h-3.5 w-3.5 text-[var(--a-accent)]" />
-                    <span>Agent Prompt</span>
-                  </>
-                )}
+                Websites (8)
               </button>
-
-              <Link
-                href={`/design-system/playground?brand=${activeBrand}`}
-                className="min-h-[40px] inline-flex items-center justify-center gap-1.5 rounded-full border border-[var(--a-rule)] bg-[var(--a-bg)] px-3 font-mono text-[11px] font-semibold text-[var(--a-ink)] hover:border-[var(--a-accent)] transition-colors"
+              <button
+                type="button"
+                onClick={() => {
+                  setCatalogTab('brands');
+                  setPreviewSurface('app');
+                }}
+                className={`min-h-[42px] px-2.5 rounded-md text-[13px] font-semibold cursor-pointer ${
+                  catalogTab === 'brands'
+                    ? 'bg-[var(--a-ink)] text-[var(--a-bg)]'
+                    : 'text-[var(--a-ink)] hover:bg-black/5'
+                }`}
               >
-                <Code2 className="h-3.5 w-3.5 text-[var(--a-accent)]" />
-                <span>Playground →</span>
-              </Link>
+                Apps &amp; Docs (7)
+              </button>
             </div>
           </div>
 
-          {/* Visual Dialect Cards */}
-          <div className="space-y-2.5 pt-2 border-t border-[var(--a-rule)]">
-            <span className="block font-mono text-[11px] font-bold uppercase tracking-wider text-[var(--a-muted)]">
-              Select Sovereign Dialect
-            </span>
-            {BRAND_PROFILE_LIST.map((profile) => {
-              const selected = activeBrand === profile.id;
-              const lt = profile.tokens.light;
-              return (
-                <button
-                  key={profile.id}
-                  type="button"
-                  onClick={() => selectBrand(profile.id)}
-                  aria-pressed={selected}
-                  className={`w-full text-left rounded-xl p-3.5 border transition-all cursor-pointer ${
-                    selected
-                      ? 'border-[var(--a-accent)] ring-2 ring-[var(--a-accent)]/25 bg-[var(--a-bg)]'
-                      : 'border-[var(--a-rule)] bg-[var(--a-bg)]/60 hover:border-[var(--a-ink)]'
-                  }`}
-                >
-                  <div
-                    className="rounded-lg p-3 mb-2.5 border border-black/10 flex items-center justify-between"
-                    style={{ backgroundColor: lt['--a-bg'], color: lt['--a-ink'] }}
-                  >
-                    <div>
-                      <span
-                        className="font-mono text-xs font-bold block"
-                        style={{ color: lt['--a-accent'] }}
-                      >
-                        {profile.mark}
-                      </span>
-                      <span
-                        className="text-base font-semibold tracking-tight block mt-0.5"
-                        style={{ fontFamily: lt['--a-font-display'] }}
-                      >
-                        {profile.name.split('(')[0].trim()}
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      {[lt['--a-surface'], lt['--a-ink'], lt['--a-accent'], lt['--a-sky']].map(
-                        (hex, i) => (
+          {/* Preset Selector List — Clean Single-Level Hairline Rows (Zero Nested Cards) */}
+          <div className="divide-y divide-[var(--a-rule)] border-y border-[var(--a-rule)] max-h-[340px] overflow-y-auto">
+            {catalogTab === 'websites'
+              ? ACCENT_WEBSITE_THEMES.map((t) => {
+                  const selected = selectedWebsiteId === t.id;
+                  return (
+                    <button
+                      key={t.id}
+                      type="button"
+                      onClick={() => applyWebsiteTheme(t)}
+                      aria-pressed={selected}
+                      className={`w-full min-h-[56px] py-3 px-2.5 text-left transition-colors cursor-pointer flex items-center justify-between gap-3 ${
+                        selected ? 'bg-[var(--a-bg)]' : 'hover:bg-[var(--a-bg)]/60'
+                      }`}
+                    >
+                      <div className="min-w-0">
+                        <div className="flex items-center gap-2">
                           <span
-                            key={i}
-                            className="h-4 w-4 rounded-full border border-black/20"
-                            style={{ backgroundColor: hex }}
+                            className="h-3.5 w-3.5 rounded-full border border-black/20 shrink-0"
+                            style={{ backgroundColor: t.palette.accent }}
+                            aria-hidden
                           />
-                        )
-                      )}
-                    </div>
-                  </div>
-                  <div className="flex items-center justify-between text-[11px] font-mono text-[var(--a-muted)]">
-                    <span>{profile.typography.display}</span>
-                    <span>CTA {profile.structure?.ctaRadius ?? '6px'}</span>
-                  </div>
-                </button>
-              );
-            })}
+                          <span className="font-semibold text-sm text-[var(--a-ink)] truncate">
+                            {t.name}
+                          </span>
+                        </div>
+                        <div className="text-[13px] text-[var(--a-muted)] truncate pl-5.5 mt-0.5">
+                          {t.bestFor}
+                        </div>
+                      </div>
+                      <span
+                        className="h-6 w-6 rounded border border-black/15 shrink-0"
+                        style={{ backgroundColor: t.palette.bg }}
+                        title={`Paper background ${t.palette.bg}`}
+                        aria-hidden
+                      />
+                    </button>
+                  );
+                })
+              : BRAND_PROFILE_LIST.map((p) => {
+                  const selected = activeBrand === p.id;
+                  const lt = p.tokens.light;
+                  return (
+                    <button
+                      key={p.id}
+                      type="button"
+                      onClick={() => applyBrandProfile(p)}
+                      aria-pressed={selected}
+                      className={`w-full min-h-[56px] py-3 px-2.5 text-left transition-colors cursor-pointer flex items-center justify-between gap-3 ${
+                        selected ? 'bg-[var(--a-bg)]' : 'hover:bg-[var(--a-bg)]/60'
+                      }`}
+                    >
+                      <div className="min-w-0">
+                        <div className="flex items-center gap-2">
+                          <span
+                            className="font-mono text-[13px] font-bold shrink-0"
+                            style={{ color: lt['--a-accent'] }}
+                          >
+                            {p.mark}
+                          </span>
+                          <span className="font-semibold text-sm text-[var(--a-ink)] truncate">
+                            {p.name.split('(')[0].trim()}
+                          </span>
+                        </div>
+                        <div className="text-[13px] text-[var(--a-muted)] truncate mt-0.5">
+                          {BRAND_PLAIN_SUBTITLES[p.id]}
+                        </div>
+                      </div>
+                      <span
+                        className="h-6 w-6 rounded border border-black/15 shrink-0"
+                        style={{ backgroundColor: lt['--a-bg'] }}
+                        aria-hidden
+                      />
+                    </button>
+                  );
+                })}
           </div>
 
-          {/* Live 5-Axis Customizer Controls */}
-          <div className="pt-4 border-t border-[var(--a-rule)] space-y-3 text-xs">
-            <div className="flex items-center gap-1.5 font-mono text-[11px] font-bold uppercase tracking-wider text-[var(--a-ink)]">
-              <Sliders className="h-3.5 w-3.5 text-[var(--a-accent)]" />
-              <span>Customize Active Dialect Live</span>
+          {catalogTab === 'websites' && (
+            <ThemePersonality theme={selectedWebsiteTheme} playgroundHref={playgroundHref} />
+          )}
+
+          {/* PLAIN-ENGLISH VISUAL CUSTOMIZER (app & publication voices only) */}
+          {catalogTab === 'brands' && (
+          <div className="space-y-4">
+            <div className="flex items-center gap-2 font-mono text-[13px] font-bold uppercase tracking-wider text-[var(--a-ink)]">
+              <Sliders className="h-4 w-4 text-[var(--a-accent)]" />
+              <span>Customize Selected Look</span>
             </div>
 
-            <div className="grid grid-cols-3 gap-2">
-              <label className="space-y-1">
-                <span className="font-mono text-[11px] text-[var(--a-muted)] block">Canvas</span>
+            <div className="grid grid-cols-2 gap-3">
+              <label className="space-y-1 block">
+                <span className="text-[13px] font-medium text-[var(--a-muted)] block">Page Background</span>
                 <input
                   type="color"
                   value={customBg}
                   onChange={(e) => setCustomBg(e.target.value)}
-                  className="h-9 w-full cursor-pointer rounded border border-[var(--a-rule)]"
+                  className="h-10 w-full cursor-pointer rounded border border-[var(--a-rule)]"
                 />
               </label>
-              <label className="space-y-1">
-                <span className="font-mono text-[11px] text-[var(--a-muted)] block">Ink</span>
+              <label className="space-y-1 block">
+                <span className="text-[13px] font-medium text-[var(--a-muted)] block">Section Tint</span>
+                <input
+                  type="color"
+                  value={customSurface}
+                  onChange={(e) => setCustomSurface(e.target.value)}
+                  className="h-10 w-full cursor-pointer rounded border border-[var(--a-rule)]"
+                />
+              </label>
+              <label className="space-y-1 block">
+                <span className="text-[13px] font-medium text-[var(--a-muted)] block">Text Color</span>
                 <input
                   type="color"
                   value={customInk}
                   onChange={(e) => setCustomInk(e.target.value)}
-                  className="h-9 w-full cursor-pointer rounded border border-[var(--a-rule)]"
+                  className="h-10 w-full cursor-pointer rounded border border-[var(--a-rule)]"
                 />
               </label>
-              <label className="space-y-1">
-                <span className="font-mono text-[11px] text-[var(--a-muted)] block">Accent</span>
+              <label className="space-y-1 block">
+                <span className="text-[13px] font-medium text-[var(--a-muted)] block">Accent Color</span>
                 <input
                   type="color"
                   value={customAccent}
                   onChange={(e) => setCustomAccent(e.target.value)}
-                  className="h-9 w-full cursor-pointer rounded border border-[var(--a-rule)]"
+                  className="h-10 w-full cursor-pointer rounded border border-[var(--a-rule)]"
                 />
               </label>
             </div>
 
             <label className="space-y-1 block">
-              <span className="font-mono text-[11px] text-[var(--a-muted)] block">Display Font</span>
+              <span className="text-[13px] font-medium text-[var(--a-muted)] block">Heading Font</span>
               <select
                 value={customDisplayFont}
                 onChange={(e) => setCustomDisplayFont(e.target.value)}
-                className="w-full min-h-[38px] rounded-md border border-[var(--a-rule)] bg-[var(--a-bg)] px-2.5 text-xs text-[var(--a-ink)]"
+                className="w-full min-h-[44px] rounded-md border border-[var(--a-rule)] bg-[var(--a-bg)] px-3 text-sm text-[var(--a-ink)]"
               >
                 {DISPLAY_FONT_OPTIONS.map((o) => (
                   <option key={o.value} value={o.value}>
@@ -452,13 +759,13 @@ export default function AccentThemesStudioPage() {
             </label>
 
             <label className="space-y-1 block">
-              <span className="font-mono text-[11px] text-[var(--a-muted)] block">
-                CTA Geometry &amp; Structural Posture
+              <span className="text-[13px] font-medium text-[var(--a-muted)] block">
+                Button &amp; Corner Shape
               </span>
               <select
                 value={customCtaRadius}
                 onChange={(e) => setCustomCtaRadius(e.target.value)}
-                className="w-full min-h-[38px] rounded-md border border-[var(--a-rule)] bg-[var(--a-bg)] px-2.5 text-xs text-[var(--a-ink)]"
+                className="w-full min-h-[44px] rounded-md border border-[var(--a-rule)] bg-[var(--a-bg)] px-3 text-sm text-[var(--a-ink)]"
               >
                 {CTA_RADIUS_OPTIONS.map((o) => (
                   <option key={o.radius} value={o.radius}>
@@ -468,498 +775,531 @@ export default function AccentThemesStudioPage() {
               </select>
             </label>
 
-            <div className="rounded-lg border border-[var(--a-rule)] bg-[var(--a-bg)] p-2.5 flex items-center justify-between">
-              <span className="font-mono text-[11px] text-[var(--a-muted)] flex items-center gap-1">
-                <ShieldCheck className="h-3.5 w-3.5 text-[var(--a-emerald)]" />
-                Auto-WCAG Fill:
+            <div className="pt-2 border-t border-[var(--a-rule)] flex items-center justify-between gap-2 text-[13px]">
+              <span className="flex items-center gap-1.5 text-[var(--a-muted)]">
+                <ShieldCheck className="h-4 w-4 text-[var(--a-emerald)] shrink-0" />
+                <span>Button Readability Check:</span>
               </span>
-              <span className="font-mono text-[11px] font-bold text-[var(--a-ink)]">
-                {derivedAccent.fillHex} ({derivedAccent.fillContrastRatio}:1 AA)
+              <span className="font-mono font-bold text-[var(--a-ink)]">
+                {derivedAccent.fillContrastRatio}:1 Pass
               </span>
+            </div>
+          </div>
+          )}
+
+          {/* PLAIN-ENGLISH NEXT ACTIONS */}
+          <div className="space-y-2.5 pt-2 border-t border-[var(--a-rule)]">
+            {catalogTab === 'brands' && (
+            <Link
+              href={playgroundHref}
+              className="w-full min-h-[46px] inline-flex items-center justify-center gap-2 rounded-full bg-[var(--a-ink)] text-[var(--a-bg)] hover:opacity-90 text-sm font-semibold transition-all"
+            >
+              <span>Test Your Business Name &amp; Copy →</span>
+            </Link>
+            )}
+
+            <button
+              type="button"
+              onClick={handleDownloadStylesMd}
+              className="w-full min-h-[44px] inline-flex items-center justify-center gap-2 rounded-full border border-[var(--a-ink)] bg-[var(--a-bg)] text-[var(--a-ink)] hover:border-[var(--a-accent)] text-[13px] font-semibold cursor-pointer"
+            >
+              <Download className="h-4 w-4 text-[var(--a-accent)]" />
+              <span>Download Style Sheet (STYLES.md)</span>
+            </button>
+
+            <div className="grid grid-cols-2 gap-2">
+              <button
+                type="button"
+                onClick={handleCopyPrompt}
+                className="min-h-[44px] inline-flex items-center justify-center gap-1.5 rounded-full border border-[var(--a-rule)] bg-[var(--a-bg)] px-3 text-[13px] font-medium text-[var(--a-ink)] hover:border-[var(--a-ink)] cursor-pointer"
+              >
+                {copied === 'prompt' ? (
+                  <>
+                    <Check className="h-4 w-4 text-[var(--a-emerald)]" />
+                    <span>Copied!</span>
+                  </>
+                ) : (
+                  <>
+                    <Copy className="h-4 w-4 text-[var(--a-accent)]" />
+                    <span>Copy AI Prompt</span>
+                  </>
+                )}
+              </button>
+
+              <button
+                type="button"
+                onClick={handleDownloadFigmaJson}
+                className="min-h-[44px] inline-flex items-center justify-center gap-1.5 rounded-full border border-[var(--a-rule)] bg-[var(--a-bg)] px-3 text-[13px] font-medium text-[var(--a-ink)] hover:border-[var(--a-ink)] cursor-pointer"
+              >
+                <Terminal className="h-4 w-4 text-[var(--a-accent)]" />
+                <span>Figma Tokens</span>
+              </button>
             </div>
           </div>
         </aside>
 
-        {/* ================= RIGHT FULL-CANVAS LIVE MULTI-SURFACE APPLICATION SUITE ================= */}
-        <div
-          style={previewStyle}
-          className="rounded-2xl border border-[var(--a-rule)] p-6 sm:p-10 space-y-14 transition-colors duration-200 shadow-xs"
-        >
-          {/* SURFACE 01 · Live Studio Top Bar & Editorial Hero */}
-          <section className="space-y-10">
-            <div
-              className="flex flex-wrap items-center justify-between gap-4 pb-5 border-b"
-              style={{ borderColor: 'rgba(17,24,39,0.14)' }}
-            >
-              <div className="flex items-center gap-3">
-                <span
-                  className="font-mono text-sm font-bold"
-                  style={{ color: customAccent }}
-                >
-                  {customMark}
-                </span>
-                <span
-                  className="text-lg font-semibold tracking-tight"
-                  style={{ fontFamily: fontMeta.css }}
-                >
-                  {customName.split('(')[0].trim()}
-                </span>
-              </div>
-
-              <div className="flex flex-wrap items-center gap-2 text-xs font-mono">
-                {['Personal Pipes', 'Business Pipes', 'Topic Pipes', 'Trim (~)'].map(
-                  (item, i) => (
-                    <span
-                      key={item}
-                      className="px-3 py-1.5"
-                      style={{
-                        borderRadius: customCtaRadius,
-                        backgroundColor: i === 0 ? customInk : 'transparent',
-                        color: i === 0 ? customBg : customInk,
-                      }}
-                    >
-                      {item}
-                    </span>
-                  )
-                )}
-              </div>
-
-              <div className="flex items-center gap-2">
-                <button
-                  type="button"
-                  onClick={handleCopyStylesMd}
-                  style={{
-                    borderRadius: customCtaRadius,
-                    backgroundColor: customAccent,
-                    color: '#FFFFFF',
-                  }}
-                  className="px-4 py-2 text-xs font-mono font-bold uppercase tracking-wider cursor-pointer"
-                >
-                  {copied === 'styles' ? '✓ Copied STYLES.md' : 'Export STYLES.md'}
-                </button>
-              </div>
-            </div>
-
-            {/* Hero Stage with Live ScaryHeadline & Morphing CTAs */}
-            <div className="max-w-3xl mx-auto text-center space-y-5 py-4">
-              <div className="inline-flex items-center gap-2 text-xs font-mono font-bold uppercase tracking-[0.22em]">
-                <span style={{ color: customAccent }}>{customMark}</span>
-                <span>5-Axis Live Brand Adaptation · {radiusMeta.posture}</span>
-                <Smile className="text-sm" color={customAccent} winkEvery={3000} />
-              </div>
-
-              <div
-                className="text-4xl sm:text-5xl lg:text-[54px] font-semibold leading-[1.06]"
-                style={{
-                  fontFamily: fontMeta.css,
-                  letterSpacing: fontMeta.tracking,
-                }}
+        {/* RIGHT STAGE: LIVE MULTI-MODE PREVIEW */}
+        <div className="space-y-4 min-w-0">
+          {/* Preview Mode Toolbar */}
+          <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-[var(--a-rule)] bg-[var(--a-surface)] px-4 py-2.5">
+            <div className="flex flex-wrap items-center gap-1.5">
+              <button
+                type="button"
+                onClick={() => setPreviewSurface('website')}
+                className={`min-h-[40px] px-3.5 rounded-md text-[13px] font-semibold cursor-pointer ${
+                  previewSurface === 'website'
+                    ? 'bg-[var(--a-ink)] text-[var(--a-bg)]'
+                    : 'text-[var(--a-ink)] hover:bg-black/5'
+                }`}
               >
-                <ScaryHeadline
-                  accent={customAccent}
-                  inkColor={customInk}
-                  struckColor="rgba(17,24,39,0.45)"
-                  pairs={
-                    activeBrand === 'playful-principal'
-                      ? HOME_SCARY_PAIRS
-                      : DESIGN_SYSTEM_SCARY_PAIRS
-                  }
-                />
-              </div>
-
-              <p className="text-base sm:text-lg opacity-80 max-w-2xl mx-auto leading-relaxed font-sans">
-                Unlike single-theme component libraries, Accént adapts its canvas, optical typography ({customDisplayFont}), button geometry ({customCtaRadius}), and structural posture simultaneously—while locking WCAG 2.1 AA/AAA math in place.
-              </p>
-
-              <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
-                <button
-                  type="button"
-                  onClick={handleDownloadStylesMd}
-                  style={{
-                    borderRadius: customCtaRadius,
-                    backgroundColor: derivedAccent.fillHex,
-                    color: '#FFFFFF',
-                  }}
-                  className="px-6 py-3 text-xs font-mono font-bold uppercase tracking-wider shadow-sm cursor-pointer"
-                >
-                  Download STYLES.md ({derivedAccent.fillContrastRatio}:1 AA)
-                </button>
-                <button
-                  type="button"
-                  onClick={handleCopyAgentPrompt}
-                  style={{
-                    borderRadius: customCtaRadius,
-                    borderColor: 'rgba(17,24,39,0.25)',
-                  }}
-                  className="px-6 py-3 text-xs font-mono font-bold uppercase tracking-wider border cursor-pointer"
-                >
-                  Copy Downstream Agent Prompt
-                </button>
-              </div>
-            </div>
-          </section>
-
-          {/* SURFACE 02 · 3-Archetype Open Pedestals (Personal, Business, Topic Pipes) */}
-          <section className="space-y-6">
-            <div className="flex items-baseline justify-between">
-              <span
-                className="font-mono text-xs font-bold uppercase tracking-[0.2em]"
-                style={{ color: customAccent }}
+                Business Website Preview
+              </button>
+              <button
+                type="button"
+                onClick={() => setPreviewSurface('app')}
+                className={`min-h-[40px] px-3.5 rounded-md text-[13px] font-semibold cursor-pointer ${
+                  previewSurface === 'app'
+                    ? 'bg-[var(--a-ink)] text-[var(--a-bg)]'
+                    : 'text-[var(--a-ink)] hover:bg-black/5'
+                }`}
               >
-                /// 01 · Open Architectural Pedestals (Zero Boxy Card Soup)
-              </span>
-              <span className="font-mono text-xs opacity-65">
-                Posture: {radiusMeta.posture}
-              </span>
+                App &amp; Directory Preview
+              </button>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {[
-                {
-                  id: 'cubby',
-                  archetype: '01 · Personal Pipe',
-                  path: 'pipe\\cubby',
-                  title: 'Kyle (Cubby)',
-                  desc: 'Personal working notebook, essays, and product architecture in one sovereign voice.',
-                  highlight: true,
-                },
-                {
-                  id: 'chb',
-                  archetype: '02 · Business Pipe',
-                  path: 'pipe\\chb',
-                  title: 'Colon-Hyphen-Bracket',
-                  desc: 'The studio source of truth—Accént Design System, Workshop, and verified product docs.',
-                  highlight: false,
-                },
-                {
-                  id: 'bitcoin',
-                  archetype: '03 · Topic Pipe',
-                  path: 'pipe\\bitcoin',
-                  title: 'Bitcoin & Sound Money',
-                  desc: 'Consensus rules, BIP specifications, and Lightning Network architecture curated by practitioners.',
-                  highlight: false,
-                },
-              ].map((item) => {
-                const isFollowed = followedPipes.includes(item.id);
-                return (
-                  <div
-                    key={item.id}
-                    style={{
-                      borderTopWidth: '2px',
-                      borderTopColor: item.highlight ? customAccent : customInk,
-                      backgroundColor:
-                        radiusMeta.posture === 'warm-well' ? customSurface : 'transparent',
-                      padding: radiusMeta.posture === 'warm-well' ? '1.25rem' : '1.25rem 0 0 0',
-                      borderRadius:
-                        radiusMeta.posture === 'warm-well' ? customCtaRadius : '0px',
-                    }}
-                    className="flex flex-col justify-between transition-all"
+            {catalogTab === 'websites' && previewSurface === 'website' && (
+              <div className="flex flex-wrap items-center gap-2">
+                <div className="inline-flex rounded-lg border border-[var(--a-rule)] bg-[var(--a-bg)] p-1">
+                  <button
+                    type="button"
+                    onClick={() => setStageMode('single')}
+                    className={`min-h-[38px] px-3 rounded text-[13px] font-semibold inline-flex items-center gap-1.5 cursor-pointer ${
+                      stageMode === 'single'
+                        ? 'bg-[var(--a-ink)] text-[var(--a-bg)]'
+                        : 'text-[var(--a-ink)] hover:bg-black/5'
+                    }`}
                   >
-                    <div className="space-y-3">
-                      <div className="flex items-center justify-between text-xs font-mono">
-                        <span className="font-bold" style={{ color: customAccent }}>
-                          {item.path}
-                        </span>
-                        <span className="opacity-60 uppercase">{item.archetype}</span>
-                      </div>
-                      <h3
-                        className="text-2xl font-normal"
-                        style={{
-                          fontFamily: fontMeta.css,
-                          letterSpacing: fontMeta.tracking,
-                        }}
+                    <Layers className="w-4 h-4" aria-hidden="true" />
+                    <span>Single Theme</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setStageMode('compare')}
+                    className={`min-h-[38px] px-3 rounded text-[13px] font-semibold inline-flex items-center gap-1.5 cursor-pointer ${
+                      stageMode === 'compare'
+                        ? 'bg-[var(--a-ink)] text-[var(--a-bg)]'
+                        : 'text-[var(--a-ink)] hover:bg-black/5'
+                    }`}
+                  >
+                    <ArrowLeftRight className="w-4 h-4" aria-hidden="true" />
+                    <span>Compare 2 Themes</span>
+                  </button>
+                </div>
+
+                <div className="inline-flex rounded-lg border border-[var(--a-rule)] bg-[var(--a-bg)] p-1">
+                  <button
+                    type="button"
+                    onClick={() => setContentMode('native')}
+                    className={`min-h-[38px] px-3 rounded text-[13px] font-semibold cursor-pointer ${
+                      contentMode === 'native'
+                        ? 'bg-[var(--a-ink)] text-[var(--a-bg)]'
+                        : 'text-[var(--a-ink)] hover:bg-black/5'
+                    }`}
+                  >
+                    Industry Example
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setContentMode('same-business')}
+                    className={`min-h-[38px] px-3 rounded text-[13px] font-semibold cursor-pointer ${
+                      contentMode === 'same-business'
+                        ? 'bg-[var(--a-ink)] text-[var(--a-bg)]'
+                        : 'text-[var(--a-ink)] hover:bg-black/5'
+                    }`}
+                  >
+                    Same Business
+                  </button>
+                </div>
+              </div>
+            )}
+
+            <div className="inline-flex rounded-lg border border-[var(--a-rule)] bg-[var(--a-bg)] p-1">
+              <button
+                type="button"
+                onClick={() => setPreviewDevice('desktop')}
+                className={`min-h-[38px] px-3 rounded text-[13px] font-semibold inline-flex items-center gap-1.5 cursor-pointer ${
+                  previewDevice === 'desktop'
+                    ? 'bg-[var(--a-ink)] text-[var(--a-bg)]'
+                    : 'text-[var(--a-ink)]'
+                }`}
+              >
+                <Monitor className="w-4 h-4" />
+                <span>Laptop</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setPreviewDevice('mobile')}
+                className={`min-h-[38px] px-3 rounded text-[13px] font-semibold inline-flex items-center gap-1.5 cursor-pointer ${
+                  previewDevice === 'mobile'
+                    ? 'bg-[var(--a-ink)] text-[var(--a-bg)]'
+                    : 'text-[var(--a-ink)]'
+                }`}
+              >
+                <Smartphone className="w-4 h-4" />
+                <span>Phone 390px</span>
+              </button>
+            </div>
+          </div>
+
+          {/* LIVE RENDERED CANVAS */}
+          {catalogTab === 'websites' && previewSurface === 'website' ? (
+            stageMode === 'compare' ? (
+              <CompareThemesStage
+                leftTheme={selectedWebsiteTheme}
+                rightTheme={compareWebsiteTheme}
+                onSelectLeft={applyWebsiteTheme}
+                onSelectRight={setCompareThemeId}
+                contentMode={contentMode}
+                device={previewDevice}
+              />
+            ) : (
+              <RealThemeStage
+                theme={selectedWebsiteTheme}
+                content={
+                  contentMode === 'same-business'
+                    ? { ...FINCA_MIRADOR_BASE_CONTENT, themeId: selectedWebsiteTheme.id }
+                    : selectedWebsiteTheme.domainExample
+                }
+                device={previewDevice}
+              />
+            )
+          ) : (
+          <div className="flex justify-center">
+            <div
+              style={{
+                width: previewDevice === 'mobile' ? '390px' : '100%',
+                maxWidth: '100%',
+                backgroundColor: customBg,
+                color: customInk,
+              }}
+              className="rounded-2xl border border-[var(--a-rule)] p-5 sm:p-9 space-y-10 transition-colors duration-200 overflow-hidden"
+            >
+              {/* TOP BAR INSIDE LIVE PREVIEW */}
+              <div
+                className="flex flex-wrap items-center justify-between gap-4 pb-4 border-b"
+                style={{ borderColor: 'rgba(17,24,39,0.15)' }}
+              >
+                <div className="flex items-center gap-2.5">
+                  <span
+                    className="w-3 h-3 rounded-full shrink-0"
+                    style={{ backgroundColor: customAccent }}
+                    aria-hidden
+                  />
+                  <span
+                    className="text-lg font-semibold tracking-tight"
+                    style={{ fontFamily: fontMeta.css }}
+                  >
+                    {previewSurface === 'website' ? exampleSite.businessName : customName}
+                  </span>
+                </div>
+
+                <div className="flex flex-wrap items-center gap-3 text-[13px]">
+                  <span className="opacity-75">About</span>
+                  <span className="opacity-75">Services</span>
+                  <button
+                    type="button"
+                    onClick={handleDownloadStylesMd}
+                    style={{
+                      borderRadius: customCtaRadius,
+                      backgroundColor: derivedAccent.fillHex,
+                      color: '#FFFFFF',
+                    }}
+                    className="min-h-[40px] px-4 text-[13px] font-semibold cursor-pointer"
+                  >
+                    {previewSurface === 'website' ? exampleSite.ctaLabel : 'Use This Look'}
+                  </button>
+                </div>
+              </div>
+
+              {previewSurface === 'website' ? (
+                <>
+                  {/* BUSINESS HERO + PHOTOGRAPHY */}
+                  <section
+                    className={`grid gap-8 items-center ${
+                      previewDevice === 'mobile' ? 'grid-cols-1' : 'md:grid-cols-12'
+                    }`}
+                  >
+                    <div className={`${previewDevice === 'mobile' ? '' : 'md:col-span-6'} space-y-4`}>
+                      <div
+                        className="font-mono text-[13px] font-bold uppercase tracking-wider"
+                        style={{ color: derivedAccent.inlineTextHex }}
                       >
-                        {item.title}
-                      </h3>
-                      <p className="text-sm opacity-80 leading-relaxed font-sans">
-                        {item.desc}
+                        {exampleSite.cityState} · {selectedWebsiteTheme.name}
+                      </div>
+                      <h2
+                        className="text-3xl sm:text-4xl font-semibold leading-tight"
+                        style={{ fontFamily: fontMeta.css, letterSpacing: fontMeta.tracking }}
+                      >
+                        {exampleSite.storyHeading}
+                      </h2>
+                      <p className="text-sm sm:text-base opacity-80 leading-relaxed">
+                        {exampleSite.tagline}
+                      </p>
+                      <div className="flex flex-wrap gap-3 pt-1">
+                        <span
+                          style={{
+                            borderRadius: customCtaRadius,
+                            backgroundColor: derivedAccent.fillHex,
+                            color: '#FFFFFF',
+                          }}
+                          className="min-h-[44px] px-5 inline-flex items-center text-sm font-semibold"
+                        >
+                          {exampleSite.ctaLabel} →
+                        </span>
+                        <span
+                          style={{
+                            borderRadius: customCtaRadius,
+                            borderColor: 'rgba(17,24,39,0.22)',
+                          }}
+                          className="min-h-[44px] px-5 inline-flex items-center text-sm font-semibold border"
+                        >
+                          {exampleSite.secondaryCtaLabel}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className={previewDevice === 'mobile' ? '' : 'md:col-span-6'}>
+                      <img
+                        src={exampleSite.heroImageUrl}
+                        alt={exampleSite.heroImageAlt}
+                        className="w-full h-60 object-cover rounded-xl border border-black/10"
+                      />
+                    </div>
+                  </section>
+
+                  {/* 3-COLUMN SERVICES STRIP (OPEN TOP-RULE PEDESTALS) */}
+                  <section className="space-y-4">
+                    <div
+                      className="font-mono text-[13px] font-bold uppercase tracking-wider"
+                      style={{ color: derivedAccent.inlineTextHex }}
+                    >
+                      {exampleSite.offeringsTitle}
+                    </div>
+                    <div
+                      className={`grid gap-6 ${
+                        previewDevice === 'mobile' ? 'grid-cols-1' : 'md:grid-cols-3'
+                      }`}
+                    >
+                      {exampleSite.offerings.slice(0, 3).map((item, idx) => (
+                        <article
+                          key={item.name}
+                          style={{
+                            borderTopWidth: '2px',
+                            borderTopColor: idx === 0 ? customAccent : customInk,
+                          }}
+                          className="pt-4 space-y-2"
+                        >
+                          <div className="flex items-baseline justify-between gap-2">
+                            <span
+                              className="font-mono text-[13px] font-bold"
+                              style={{ color: derivedAccent.inlineTextHex }}
+                            >
+                              {item.priceOrSpec}
+                            </span>
+                            {item.badge && (
+                              <span className="text-[13px] opacity-65">{item.badge}</span>
+                            )}
+                          </div>
+                          <h3
+                            className="text-xl font-semibold"
+                            style={{ fontFamily: fontMeta.css }}
+                          >
+                            {item.name}
+                          </h3>
+                          <p className="text-sm opacity-80 leading-relaxed">{item.detail}</p>
+                        </article>
+                      ))}
+                    </div>
+                  </section>
+
+                  {/* FACTS & SCHEDULE TABLE */}
+                  <section className="space-y-3">
+                    <h3 className="text-xl font-semibold" style={{ fontFamily: fontMeta.css }}>
+                      {exampleSite.scheduleOrSpecsTitle}
+                    </h3>
+                    <div className="divide-y border-y border-black/15">
+                      {exampleSite.scheduleOrSpecs.slice(0, 4).map((row) => (
+                        <div
+                          key={row.label}
+                          className="py-3 flex flex-wrap items-baseline justify-between gap-3 text-sm"
+                        >
+                          <span className="font-semibold">{row.label}</span>
+                          <span className="font-mono text-[13px] opacity-85">{row.value}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </section>
+                </>
+              ) : (
+                <>
+                  {/* APP & DIRECTORY PREVIEW */}
+                  <section className="space-y-6">
+                    <div className="max-w-2xl space-y-3">
+                      <span
+                        className="font-mono text-[13px] font-bold uppercase tracking-wider"
+                        style={{ color: derivedAccent.inlineTextHex }}
+                      >
+                        {customMark} · Active App Palette
+                      </span>
+                      <h2
+                        className="text-3xl sm:text-4xl font-semibold leading-tight"
+                        style={{ fontFamily: fontMeta.css, letterSpacing: fontMeta.tracking }}
+                      >
+                        Clear headlines, calm paper surfaces, and readable data tables.
+                      </h2>
+                      <p className="text-base opacity-80 leading-relaxed">
+                        This preview shows how your selected colors and heading font look across a 3-column directory, a guided Q&amp;A helper, and a searchable schedule table.
                       </p>
                     </div>
 
-                    <div className="pt-5 mt-5 border-t border-black/10 flex items-center justify-between">
-                      <a
-                        href={`/explore/${item.id}`}
-                        className="font-mono text-xs font-bold uppercase tracking-wider inline-flex items-center gap-1"
-                      >
-                        <span>Open Pipe</span>
-                        <ArrowRight className="w-3.5 h-3.5" style={{ color: customAccent }} />
-                      </a>
-                      <button
-                        type="button"
-                        onClick={() =>
-                          setFollowedPipes((prev) =>
-                            prev.includes(item.id)
-                              ? prev.filter((x) => x !== item.id)
-                              : [...prev, item.id]
-                          )
-                        }
-                        style={{
-                          borderRadius: customCtaRadius,
-                          backgroundColor: isFollowed ? customAccent : 'transparent',
-                          color: isFollowed ? '#FFFFFF' : customInk,
-                          borderColor: isFollowed ? customAccent : 'rgba(17,24,39,0.25)',
-                        }}
-                        className="px-3.5 py-1 text-[11px] font-mono font-bold uppercase tracking-wider border cursor-pointer"
-                      >
-                        {isFollowed ? '✓ Following' : '+ Follow'}
-                      </button>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </section>
-
-          {/* SURFACE 03 & 05 · Split Stage: Semi (; - ]) AI Agent Workbench + 70/30 Checkout Well */}
-          <section className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-            {/* Semi AI Agent & MCP Workbench (7 Cols) */}
-            <div
-              style={{
-                backgroundColor: customSurface,
-                borderRadius: customCtaRadius === '9999px' ? '20px' : customCtaRadius,
-              }}
-              className="lg:col-span-7 border border-black/12 p-6 space-y-5"
-            >
-              <div className="flex items-center justify-between border-b border-black/10 pb-3.5">
-                <div className="flex items-center gap-2">
-                  <span
-                    className="font-mono text-sm font-bold"
-                    style={{ color: customAccent }}
-                  >
-                    ; - ]
-                  </span>
-                  <span
-                    className="font-semibold text-lg"
-                    style={{ fontFamily: fontMeta.css }}
-                  >
-                    Semi Socratic Agent &amp; Trim (~) MCP
-                  </span>
-                </div>
-                <span
-                  style={{
-                    borderRadius: customCtaRadius,
-                    backgroundColor: customAccent,
-                    color: '#FFFFFF',
-                  }}
-                  className="px-2.5 py-0.5 font-mono text-[11px] font-bold uppercase"
-                >
-                  −90% Token Spend
-                </span>
-              </div>
-
-              <div className="flex flex-wrap gap-2">
-                {AGENT_PROMPTS.map((p, idx) => (
-                  <button
-                    key={idx}
-                    type="button"
-                    onClick={() => setActivePromptIdx(idx)}
-                    style={{
-                      borderRadius: customCtaRadius,
-                      backgroundColor: activePromptIdx === idx ? customInk : customBg,
-                      color: activePromptIdx === idx ? customBg : customInk,
-                    }}
-                    className="px-3 py-1.5 text-xs font-mono border border-black/15 cursor-pointer text-left"
-                  >
-                    0{idx + 1} · {p.q.slice(0, 42)}…
-                  </button>
-                ))}
-              </div>
-
-              <div
-                style={{ backgroundColor: customBg }}
-                className="rounded-xl p-4 border border-black/10 space-y-3"
-              >
-                <p className="font-mono text-xs opacity-65">
-                  Q: {AGENT_PROMPTS[activePromptIdx].q}
-                </p>
-                <p className="text-sm leading-relaxed font-sans">
-                  {AGENT_PROMPTS[activePromptIdx].a}
-                </p>
-                <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-black/10">
-                  <span className="font-mono text-[11px] opacity-60 uppercase">
-                    Verified Citations:
-                  </span>
-                  {AGENT_PROMPTS[activePromptIdx].cited.map((c) => (
-                    <span
-                      key={c}
-                      style={{ color: customAccent }}
-                      className="font-mono text-xs font-bold"
+                    <div
+                      className={`grid gap-6 ${
+                        previewDevice === 'mobile' ? 'grid-cols-1' : 'md:grid-cols-3'
+                      }`}
                     >
-                      [{c}]
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </div>
+                      {[
+                        { tag: '01 · Overview', title: 'Clear Story', desc: 'Open columns separated by thin 2px top lines instead of stacked boxes.' },
+                        { tag: '02 · Offer', title: 'Direct Actions', desc: 'Primary buttons adjust automatically to stay high-contrast on any shade.' },
+                        { tag: '03 · Facts', title: 'Aligned Tables', desc: 'Prices, times, and metrics line up cleanly down every column.' },
+                      ].map((col, idx) => (
+                        <div
+                          key={col.tag}
+                          style={{
+                            borderTopWidth: '2px',
+                            borderTopColor: idx === 0 ? customAccent : customInk,
+                          }}
+                          className="pt-4 space-y-2"
+                        >
+                          <div
+                            className="font-mono text-[13px] font-bold"
+                            style={{ color: derivedAccent.inlineTextHex }}
+                          >
+                            {col.tag}
+                          </div>
+                          <h3 className="text-xl font-semibold" style={{ fontFamily: fontMeta.css }}>
+                            {col.title}
+                          </h3>
+                          <p className="text-sm opacity-80 leading-relaxed">{col.desc}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </section>
 
-            {/* Superstar 70/30 Royalty & Checkout Well (5 Cols) */}
-            <div
-              style={{
-                backgroundColor: customSurface,
-                borderRadius: customCtaRadius === '9999px' ? '20px' : customCtaRadius,
-              }}
-              className="lg:col-span-5 border border-black/12 p-6 space-y-4"
-            >
-              <div className="flex items-center justify-between border-b border-black/10 pb-3">
-                <h3
-                  className="text-lg font-semibold"
-                  style={{ fontFamily: fontMeta.css }}
-                >
-                  70/30 Curator Settlement
-                </h3>
-                <span className="font-mono text-xs font-bold" style={{ color: customAccent }}>
-                  $5 Comma / $21 Period
+                  {/* PLAIN-ENGLISH INTERACTIVE Q&A */}
+                  <section
+                    style={{ backgroundColor: customSurface }}
+                    className="rounded-xl border border-black/12 p-5 space-y-4"
+                  >
+                    <div className="flex flex-wrap gap-2">
+                      {QA_SAMPLES.map((item, idx) => (
+                        <button
+                          key={item.q}
+                          type="button"
+                          onClick={() => setActiveQaIdx(idx)}
+                          style={{
+                            borderRadius: customCtaRadius,
+                            backgroundColor: activeQaIdx === idx ? customInk : customBg,
+                            color: activeQaIdx === idx ? customBg : customInk,
+                          }}
+                          className="min-h-[40px] px-3.5 text-[13px] font-medium border border-black/15 cursor-pointer text-left"
+                        >
+                          {item.q}
+                        </button>
+                      ))}
+                    </div>
+                    <p className="text-sm leading-relaxed">{QA_SAMPLES[activeQaIdx].a}</p>
+                  </section>
+
+                  {/* SEARCHABLE DIRECTORY TABLE */}
+                  <section className="space-y-3">
+                    <div className="flex flex-wrap items-center justify-between gap-3">
+                      <h3 className="text-xl font-semibold" style={{ fontFamily: fontMeta.css }}>
+                        Sample Project Directory
+                      </h3>
+                      <div className="relative w-64">
+                        <Search
+                          className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2"
+                          style={{ color: customAccent }}
+                        />
+                        <input
+                          type="search"
+                          value={ledgerFilter}
+                          onChange={(e) => setLedgerFilter(e.target.value)}
+                          placeholder="Filter examples…"
+                          aria-label="Filter examples"
+                          style={{
+                            borderRadius: customCtaRadius,
+                            backgroundColor: customSurface,
+                          }}
+                          className="w-full min-h-[40px] pl-9 pr-3 text-[13px] border border-black/15 outline-none"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="overflow-x-auto">
+                      <table className="w-full text-left border-collapse text-sm">
+                        <thead>
+                          <tr className="border-b-2 border-current text-[13px] font-mono uppercase opacity-70">
+                            <th className="py-2.5 pr-4">#</th>
+                            <th className="py-2.5 px-3">Project</th>
+                            <th className="py-2.5 px-3">Category</th>
+                            <th className="py-2.5 px-3">Structure</th>
+                            <th className="py-2.5 pl-3 text-right">Status</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-black/10">
+                          {SAMPLE_DIRECTORY.map((row) => (
+                            <tr key={row.id}>
+                              <td className="py-3 pr-4 font-mono text-[13px] opacity-65 tabular-nums">{row.id}</td>
+                              <td className="py-3 px-3 font-medium" style={{ fontFamily: fontMeta.css }}>
+                                {row.name}
+                              </td>
+                              <td className="py-3 px-3 text-[13px] opacity-80">{row.type}</td>
+                              <td className="py-3 px-3 font-mono text-[13px] opacity-80">{row.pages}</td>
+                              <td
+                                className="py-3 pl-3 font-mono text-[13px] font-bold text-right"
+                                style={{ color: derivedAccent.inlineTextHex }}
+                              >
+                                {row.status}
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </section>
+                </>
+              )}
+
+              {/* PREVIEW FOOTER */}
+              <div className="pt-4 border-t border-black/15 flex flex-wrap items-center justify-between gap-3 text-[13px]">
+                <span className="font-mono opacity-75">
+                  Theme: {customName} · Background {customBg} · Accent {customAccent}
                 </span>
-              </div>
-
-              <div className="grid grid-cols-2 gap-2">
-                <button
-                  type="button"
-                  onClick={() => setPaymentMethod('lightning')}
-                  style={{
-                    borderRadius: customCtaRadius,
-                    backgroundColor: paymentMethod === 'lightning' ? customInk : customBg,
-                    color: paymentMethod === 'lightning' ? customBg : customInk,
-                  }}
-                  className="py-2 px-3 font-mono text-xs font-bold uppercase border border-black/15 cursor-pointer flex items-center justify-center gap-1.5"
+                <a
+                  href="https://colonhyphenbracket.pink"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 font-semibold underline underline-offset-4"
+                  style={{ color: derivedAccent.inlineTextHex }}
                 >
-                  <Zap className="w-3.5 h-3.5" style={{ color: customAccent }} />
-                  <span>Lightning</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setPaymentMethod('card')}
-                  style={{
-                    borderRadius: customCtaRadius,
-                    backgroundColor: paymentMethod === 'card' ? customInk : customBg,
-                    color: paymentMethod === 'card' ? customBg : customInk,
-                  }}
-                  className="py-2 px-3 font-mono text-xs font-bold uppercase border border-black/15 cursor-pointer"
-                >
-                  USD Card
-                </button>
-              </div>
-
-              <div
-                style={{ backgroundColor: customBg }}
-                className="rounded-xl p-3.5 border border-black/10 space-y-2 text-xs font-mono"
-              >
-                <div className="flex justify-between">
-                  <span className="opacity-70">Curator Royalty (70%)</span>
-                  <span className="font-bold tabular-nums">$14.70 / mo</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="opacity-70">Protocol &amp; Custody (30%)</span>
-                  <span className="tabular-nums">$6.30 / mo</span>
-                </div>
-                <div className="pt-2 border-t border-black/10 flex justify-between font-bold">
-                  <span>Period Full Tier</span>
-                  <span style={{ color: customAccent }} className="tabular-nums">
-                    $21.00 / mo
-                  </span>
-                </div>
-              </div>
-
-              <button
-                type="button"
-                style={{
-                  borderRadius: customCtaRadius,
-                  backgroundColor: derivedAccent.fillHex,
-                  color: '#FFFFFF',
-                }}
-                className="w-full py-3 font-mono text-xs font-bold uppercase tracking-wider cursor-pointer"
-              >
-                {paymentMethod === 'lightning'
-                  ? 'Settle via Lightning Invoice →'
-                  : 'Subscribe with USD Card →'}
-              </button>
-            </div>
-          </section>
-
-          {/* SURFACE 04 · Live Tabular Canon & Royalty Ledger */}
-          <section className="space-y-4">
-            <div className="flex flex-wrap items-center justify-between gap-4">
-              <div>
-                <span
-                  className="font-mono text-xs font-bold uppercase tracking-[0.2em] block"
-                  style={{ color: customAccent }}
-                >
-                  /// 02 · High-Density Tabular Ledger (tabular-nums)
-                </span>
-                <h3
-                  className="text-2xl font-normal mt-0.5"
-                  style={{ fontFamily: fontMeta.css }}
-                >
-                  Sovereign Canon &amp; Utility Index
-                </h3>
-              </div>
-
-              <div className="relative w-64">
-                <Search
-                  className="w-3.5 h-3.5 absolute left-3.5 top-1/2 -translate-y-1/2"
-                  style={{ color: customAccent }}
-                />
-                <input
-                  type="search"
-                  value={ledgerFilter}
-                  onChange={(e) => setLedgerFilter(e.target.value)}
-                  placeholder="Filter canons…"
-                  aria-label="Filter canons"
-                  style={{
-                    borderRadius: customCtaRadius,
-                    backgroundColor: customSurface,
-                  }}
-                  className="w-full h-9 pl-9 pr-3 text-xs border border-black/15 outline-none"
-                />
+                  <span>Want Colon Hyphen Bracket (:-]) to build &amp; launch yours?</span>
+                  <ExternalLink className="w-3.5 h-3.5" />
+                </a>
               </div>
             </div>
-
-            <div className="overflow-x-auto">
-              <table className="w-full text-left border-collapse text-sm">
-                <thead>
-                  <tr className="border-b-2 border-current text-xs font-mono uppercase opacity-70">
-                    <th className="py-2.5 pr-4">#</th>
-                    <th className="py-2.5 px-3">Namespace</th>
-                    <th className="py-2.5 px-3">Canon Title</th>
-                    <th className="py-2.5 px-3">Archetype</th>
-                    <th className="py-2.5 px-3 text-right">Notes</th>
-                    <th className="py-2.5 pl-3 text-right">Royalty / Impact</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-black/10">
-                  {LEDGER_ITEMS.map((row) => (
-                    <tr key={row.id} className="hover:bg-black/5 transition-colors">
-                      <td className="py-3 pr-4 font-mono text-xs opacity-60 tabular-nums">
-                        {row.id}
-                      </td>
-                      <td
-                        className="py-3 px-3 font-mono text-xs font-bold"
-                        style={{ color: customAccent }}
-                      >
-                        {row.path}
-                      </td>
-                      <td
-                        className="py-3 px-3 font-medium"
-                        style={{ fontFamily: fontMeta.css }}
-                      >
-                        {row.title}
-                      </td>
-                      <td className="py-3 px-3 font-mono text-xs opacity-75">{row.kind}</td>
-                      <td className="py-3 px-3 font-mono text-xs text-right tabular-nums">
-                        {row.notes}
-                      </td>
-                      <td
-                        className="py-3 pl-3 font-mono text-xs font-bold text-right tabular-nums"
-                        style={{ color: customAccent }}
-                      >
-                        {row.yield}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </section>
+          </div>
+          )}
         </div>
       </div>
     </div>

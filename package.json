@@ -1,7 +1,7 @@
 {
   "name": "accent-ui",
-  "version": "1.0.0",
-  "description": "Accént (`´ Accént`) Design System: Typographic Restraint, W3C Tokens, and Two-Tier Motion for Modern Web & Local AI Workflows",
+  "version": "1.1.0",
+  "description": "Accént (`´ Accént`) 3.1 Design System: Typographic Restraint, Surface Archetypes, W3C Tokens, and Watercolor/Print Motion",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
@@ -16,11 +16,27 @@
       "import": "./dist/tokens.mjs",
       "require": "./dist/tokens.js"
     },
+    "./themes": {
+      "types": "./dist/themes.d.ts",
+      "import": "./dist/themes.mjs",
+      "require": "./dist/themes.js"
+    },
     "./motion": {
       "types": "./dist/motion.d.ts",
       "import": "./dist/motion.mjs",
       "require": "./dist/motion.js"
-    }
+    },
+    "./ui": {
+      "types": "./dist/ui.d.ts",
+      "import": "./dist/ui.mjs",
+      "require": "./dist/ui.js"
+    },
+    "./art": {
+      "types": "./dist/art.d.ts",
+      "import": "./dist/art.mjs",
+      "require": "./dist/art.js"
+    },
+    "./styles.css": "./dist/styles.css"
   },
   "files": [
     "dist"
@@ -32,7 +48,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "build:lib": "tsup",
+    "build:lib": "rm -rf dist && tsup",
     "typecheck": "tsc --noEmit",
     "lint": "next lint",
     "contribute": "node scripts/accent-contribute.js"
@@ -49,23 +65,46 @@
   ],
   "author": "Kendall Kyle Cyree <rorshock@protonmail.com>",
   "license": "MIT",
+  "peerDependencies": {
+    "@orama/orama": "^3.0.0",
+    "diff": "^8.0.0 || ^9.0.0",
+    "framer-motion": "^12.0.0 || ^13.0.0",
+    "lucide-react": "^0.400.0 || ^1.0.0",
+    "next": "^15.0.0 || ^16.0.0",
+    "react": "^18.0.0 || ^19.0.0",
+    "react-dom": "^18.0.0 || ^19.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@orama/orama": {
+      "optional": true
+    },
+    "diff": {
+      "optional": true
+    },
+    "next": {
+      "optional": true
+    }
+  },
   "dependencies": {
     "@base-ui/react": "^1.9.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
-    "framer-motion": "^12.4.7",
-    "lucide-react": "^1.16.0",
-    "next": "^16.3.4",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
     "tailwind-merge": "^2.3.0"
   },
   "devDependencies": {
+    "@orama/orama": "^3.1.18",
     "@tailwindcss/postcss": "^4",
+    "@types/diff": "^7.0.2",
     "@types/node": "^20.14.9",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
+    "diff": "^9.0.0",
+    "framer-motion": "^12.4.7",
+    "lucide-react": "^1.16.0",
+    "next": "^16.3.4",
     "postcss": "^8.4.38",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
     "tailwindcss": "^4",
     "tsup": "^8.0.2",
     "typescript": "^5.5.3"

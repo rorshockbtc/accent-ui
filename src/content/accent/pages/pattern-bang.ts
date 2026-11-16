@@ -4,6 +4,9 @@ export const page: AccentPage = {
   slug: 'patterns/bang-templates',
   section: 'patterns',
   title: '! Bang Site Templates',
+  aiPhase: 'architecture',
+  subPatterns: ['Fixed Small-Business Skeleton', 'Pipe-Backed Copy', 'Zero Grid Breakage'],
+  liveInPipes: [{ label: 'Bang Site Builder', href: '/bang' }],
   summary: 'How ! Bang builds small-business websites from Accent: a fixed page skeleton, one room, and copy written by the owner.',
   readingMinutes: 5,
   kind: 'doc',
@@ -42,6 +45,16 @@ Bang asks plain questions instead of showing empty text boxes: "What do regulars
 ## States
 
 Every section has an empty state that shows the owner what to add and hides the section from the public until it is filled. A Bang site never ships a lorem ipsum.
+
+## From single-page draft to Studio Crafted multi-page sites
+
+A ! Bang draft gets a business online in one afternoon using one fixed skeleton. When a business is ready for deeper trust and conversion—kitchen stories for a taco counter, treasury briefings and an FDIC calculator for a regional bank, chair-care essays and stylist formulas for a salon, CPA advisory memos and 2026 deadline tables for an accounting firm, or full case deep-dives for an independent studio—Accént scales the same brand tokens into a **domain-differentiated multi-page build**.
+
+- **Domain-specific interactive tools.** Replace generic contact forms with live pickup bags, CD/loan calculators, stylist matchers, flat-fee estimators, or sprint scope builders.
+- **Editorial-to-tool handoffs.** Every article, memo, or case deep-dive closes with a button that routes straight back into the home tool pre-configured with that topic (for example, adding a brisket taco or loading a $75k CD term).
+- **Calibrated motion & opaque chrome.** Match motion physics to the trade (tactile springs for counter pickup, 600ms editorial curtains for lookbooks, zero-bounce calm for banks and CPAs) under solid opaque sticky headers.
+
+Compare both tiers side by side across all five trades in the [Draft vs. Studio Comparison](/design-system/templates/compare).
 
 ## When to use
 

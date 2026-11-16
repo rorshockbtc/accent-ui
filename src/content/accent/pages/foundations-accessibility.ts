@@ -12,6 +12,8 @@ export const page: AccentPage = {
 
 In Accént, accessibility is not a post-launch audit checklist—it is baked into the token math, component primitives, and regex CI ratchet. Whether a human engineer or a 7B local model writes a screen, five mechanical guarantees must hold:
 
+> **Why:** Treating luminance math, focus rings, and 44×44px targets as compile-time constraints ensures no autonomous agent can ship an inaccessible surface.
+
 1. **WCAG 2.1 AAA Body Contrast (\`>= 7.0:1\`)**: All prose and primary headings (\`--a-ink\` on \`--a-bg\`) meet AAA contrast across every official Brand Profile and all 49 cross-chromatic room pairs.
 2. **WCAG 2.1 AA UI & Muted Contrast (\`>= 4.5:1\`)**: Secondary captions (\`--a-muted\`), inline links (\`--a-accent-text\`), and filled buttons (\`--a-accent-fg\` on \`--a-accent-fill\`) never drop below \`4.5:1\`.
 3. **\`44×44px\` Minimum Hit Area**: Every interactive control (buttons, icon toggles, filter pills, pagination links) enforces \`min-h-[44px]\` or an equivalent touch target.
@@ -24,9 +26,20 @@ In Accént, accessibility is not a post-launch audit checklist—it is baked int
 
 - **Never strip focus outlines without a high-contrast replacement**: Use \`focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--a-accent)]\` so keyboard users always see where focus is.
 - **Skip-to-content link**: Every shell layout includes a \`Skip to content\` link as the first focusable DOM node.
-- **Senior-accessible typography mode**: For civic and public-health products (such as Marigold \`terracotta-civic\`), body line-height expands to \`1.8\` and minimum prose size steps up to \`17px\` (\`1.0625rem\`).`,
 
-    specs: `## Relative Luminance & Contrast Formula (\`getContrastRatio\`)
+::demo:a11y-focus-ring::
+
+- **Senior-accessible typography mode**: For civic and public-health products (such as Marigold \`terracotta-civic\`), body line-height expands to \`1.8\` and minimum prose size steps up to \`17px\` (\`1.0625rem\`).
+
+::demo:a11y-senior-mode::`,
+
+    specs: `## Relative Luminance & Contrast Specification
+
+| Threshold | Target Luminance | Enforcement Scope |
+|---|---|---|
+| **AAA Primary Prose** | \`>= 7.0:1\` | \`--a-ink\` on \`--a-bg\` and \`--a-surface\` |
+| **AA Muted Metadata** | \`>= 4.5:1\` | \`--a-muted\` and inline \`--a-accent-text\` |
+| **AA Solid CTAs** | \`>= 4.5:1\` | \`--a-accent-fg\` on \`--a-accent-fill\` |
 
 \`\`\`ts
 export function getRelativeLuminance(hex: string): number {
@@ -42,9 +55,11 @@ export function getContrastRatio(fg: string, bg: string): number {
   const l2 = getRelativeLuminance(bg);
   return (Math.max(l1, l2) + 0.05) / (Math.min(l1, l2) + 0.05);
 }
-\`\`\``,
+\`\`\`
 
-    accessibility: `## Automated CI Ratchet Checks
+::demo:a11y-wcag-math::`,
+
+    accessibility: `## Automated CI Ratchet Checks & Landmarks
 
 | Check | Requirement | Enforced By |
 |---|---|---|
@@ -52,7 +67,11 @@ export function getContrastRatio(fg: string, bg: string): number {
 | Muted Copy vs. Canvas | \`>= 4.5:1\` (AA) | \`validateThemeContrast()\` |
 | Minimum Font Size | \`>= 13px\` (\`0.8125rem\`) | \`design-system-spec.test.ts\` |
 | Interactive Hit Area | \`>= 44×44px\` | \`button.hit-area-44\` |
-| Nested Interactive Tags | Forbidden (\`<Link><button>\`) | \`design-system-spec.test.ts\` |`,
+| Nested Interactive Tags | Forbidden (\`<Link><button>\`) | \`design-system-spec.test.ts\` |
+
+Semantic landmark hierarchy ensures screen-reader users jump effortlessly between header navigation, main essay prose, and side callouts:
+
+::demo:a11y-landmark-tree::`,
   },
   rules: [
     {

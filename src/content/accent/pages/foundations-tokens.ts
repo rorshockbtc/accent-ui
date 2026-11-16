@@ -20,6 +20,8 @@ Most design systems use a single \`--primary\` variable for everything—forcing
 
 Accént solves this mathematically with \`deriveAccessibleAccent(rawHex, canvasHex)\`, splitting every brand's signature color into three distinct semantic tokens:
 
+> **Why:** Splitting signature hues into raw mark, filled button, and inline text tokens prevents vibrant accents like Hot Pink from failing WCAG AA button contrast while keeping brand marks unmistakable.
+
 1. **\`--a-accent\` (Raw Signature Mark)**: Used for large punctuation marks (\`: - ]\`, \`|||\`, \`>\`), \`<Smile />\` winks, \`<ScaryHeadline />\` strike bars, and active focus rings (e.g., Sovereign Hot Pink \`#FE299E\`).
 2. **\`--a-accent-fill\` (WCAG AA Button Fill)**: Automatically darkened until contrast with \`#FFFFFF\` is \`>= 4.6:1\` (e.g., \`#B81468\` at \`5.6:1\`), used for solid primary CTA buttons when strict AA text contrast is required.
 3. **\`--a-accent-text\` (WCAG AA Inline Text)**: Automatically calibrated against the active canvas \`--a-bg\` (\`>= 4.6:1\`) for inline kickers, badges, and prose links.
@@ -30,7 +32,12 @@ Accént solves this mathematically with \`deriveAccessibleAccent(rawHex, canvasH
 
 - **Always reference semantic \`--a-*\` tokens** in reusable components instead of raw hex literals so switching \`data-accent-brand\` adapts the component immediately.
 - **Bridge shadcn/ui & Tailwind variables automatically**: Call \`getShadcnBridgeVars(brandId, mode)\` at the root container to populate \`--background\`, \`--foreground\`, \`--card\`, \`--primary\`, \`--muted\`, \`--border\`, \`--ring\`, and \`--radius\` from the active Accént Brand Profile.
-- **Never set typography below the \`13px\` (\`0.8125rem\`) floor**: The smallest legal token in \`design-tokens.json\` is \`font.size.xs\` (\`0.8125rem\` / \`13px\`).`,
+
+::demo:tokens-shadcn-bridge::
+
+- **Never set typography below the \`13px\` (\`0.8125rem\`) floor**: The smallest legal token in \`design-tokens.json\` is \`font.size.xs\` (\`0.8125rem\` / \`13px\`).
+
+::demo:tokens-floor-guard::`,
 
     specs: `## Complete Semantic CSS Custom Property Table
 
@@ -47,12 +54,19 @@ Accént solves this mathematically with \`deriveAccessibleAccent(rawHex, canvasH
 | \`--a-accent-text\` | Accessible inline accent text | \`#9B1B56\` | \`#B81468\` | \`#E8959C\` |
 | \`--a-sky\` | Secondary Dual-Accent Sky | \`#02A7F1\` | \`#0A9BE0\` | \`#38BDF8\` |
 | \`--a-radius-cta\` | Primary button corner radius | \`6px\` | \`9999px\` | \`6px\` |
-| \`--a-font-display\` | Display headline font stack | \`Fraunces\` | \`Bricolage Grotesque\` | \`Cormorant Garamond\` |`,
+| \`--a-font-display\` | Display headline font stack | \`Fraunces\` | \`Bricolage Grotesque\` | \`Cormorant Garamond\` |
+
+Inspect the W3C DTCG JSON schema and compiled stylesheet emission side-by-side:
+
+::demo:tokens-dtcg-inspector::`,
 
     accessibility: `## Compile-Time & Runtime Token Verification
 
 - Every token pair in \`src/styles/design-tokens.json\` is tested on every commit by \`src/lib/__tests__/design-system-spec.test.ts\`.
-- Body ink (\`--a-ink\` on \`--a-bg\`) is locked to **WCAG 2.1 AAA (\`>= 7.0:1\`)** across all 7 official Brand Profiles in both Light and Dark modes.`,
+- Body ink (\`--a-ink\` on \`--a-bg\`) is locked to **WCAG 2.1 AAA (\`>= 7.0:1\`)** across all 7 official Brand Profiles in both Light and Dark modes.
+- Secondary metadata (\`--a-muted\`) and button label contrast never drop below **WCAG 2.1 AA (\`>= 4.5:1\`)**.
+
+::demo:tokens-luminance-ladder::`,
   },
   rules: [
     {

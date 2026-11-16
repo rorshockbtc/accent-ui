@@ -234,7 +234,7 @@ export function Eyebrow({
 }: EyebrowProps) {
   return (
     <div
-      className={`flex items-center gap-3 font-mono text-xs uppercase tracking-[0.18em] text-[var(--a-muted)] ${className}`}
+      className={`flex items-center gap-3 font-mono text-[13px] uppercase tracking-[0.18em] text-[var(--a-muted)] ${className}`}
     >
       <span className="font-bold text-[15px]" style={{ color }} aria-hidden="true">
         {mark}

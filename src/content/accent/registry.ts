@@ -8,6 +8,8 @@ import { page as essayShadcn } from './pages/essay-shadcn';
 import { page as essayReliefFocus } from './pages/essay-relief-focus';
 import { page as essayMixingType } from './pages/essay-mixing-type';
 import { page as essayStepwise } from './pages/essay-stepwise';
+import { page as essayDontMakePeoplePrompt } from './pages/essay-dont-make-people-prompt';
+import { page as essayPerceivedSpeedAndProvenance } from './pages/essay-perceived-speed-and-provenance';
 
 import { page as foundationsGrid } from './pages/foundations-grid';
 import { page as foundationsTypography } from './pages/foundations-typography';
@@ -32,6 +34,13 @@ import { page as patternPortfolio } from './pages/pattern-portfolio';
 import { page as patternMobile } from './pages/pattern-mobile';
 import { page as patternStates } from './pages/pattern-states';
 import { page as patternBang } from './pages/pattern-bang';
+import { page as patternSurfaceArchetypes } from './pages/pattern-surface-archetypes';
+import { page as patternAiDiscovering } from './pages/pattern-ai-discovering';
+import { page as patternAiInstructing } from './pages/pattern-ai-instructing';
+import { page as patternAiObserving } from './pages/pattern-ai-observing';
+import { page as patternAiEvaluating } from './pages/pattern-ai-evaluating';
+import { page as patternAiRefining } from './pages/pattern-ai-refining';
+import { page as patternAiFlows } from './pages/pattern-ai-flows';
 
 import { page as aiRules } from './pages/ai-rules';
 import { page as aiStylesMd } from './pages/ai-styles-md';
@@ -83,6 +92,8 @@ export const ACCENT_PAGES: AccentPage[] = [
   essayReliefFocus,
   essayMixingType,
   essayStepwise,
+  essayDontMakePeoplePrompt,
+  essayPerceivedSpeedAndProvenance,
   foundationsTokens,
   foundationsGrid,
   foundationsTypography,
@@ -128,6 +139,13 @@ export const ACCENT_PAGES: AccentPage[] = [
   patternCrossPlatform,
   patternStates,
   patternBang,
+  patternSurfaceArchetypes,
+  patternAiDiscovering,
+  patternAiInstructing,
+  patternAiObserving,
+  patternAiEvaluating,
+  patternAiRefining,
+  patternAiFlows,
   aiRules,
   aiStylesMd,
   aiAgentAdapters,

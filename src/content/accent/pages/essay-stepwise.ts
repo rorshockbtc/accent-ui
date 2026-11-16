@@ -8,6 +8,8 @@ export const page: AccentPage = {
   summary:
     'A frontier model can read a 2,500-word design spec in one go. A 7B model on a laptop cannot. Here is how we split the job into four small, checked steps.',
   readingMinutes: 10,
+  insightCategory: 'workflows',
+  relatedSlugs: ['ai/mcp-and-cli', 'patterns/instructing'],
   pipes: ['website-design', 'chb', 'cubby'],
   rules: [
     {
