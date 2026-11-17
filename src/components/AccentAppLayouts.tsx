@@ -87,6 +87,22 @@ export const APP_TEMPLATES = [
       'Right-aligned tabular figures',
     ],
   },
+  {
+    id: 'exhibition-stage',
+    number: '08',
+    title: 'Monumental Exhibition & Audio Atlas',
+    dialect: 'editorial-sandstone' as BrandProfileId,
+    usedOn: 'pipes.pink/thesis/* · /templates/exhibition',
+    previewKind: 'exhibition' as const,
+    templateHref: '/design-system/templates/exhibition',
+    summary:
+      'MoMA-scale 4-plane gallery template uniting an 80px display horizon, overlapping frosted vellum plinth over a double-matted classical canvas with 2.5x Curator Loupe, live audio cadence reeds, and a 4-lens interactive Synthesis Atlas.',
+    highlights: [
+      '4-Plane layered gallery stage + Salon Wall expansion',
+      'Subject-tailored WebGL pigments + WCAG 2.2.2 Pause switch',
+      'Trajectory, Pipe Loom, Chronology & Table twin + PNG export',
+    ],
+  },
 ];
 
 function AppTemplateVisualPreview({
@@ -97,7 +113,7 @@ function AppTemplateVisualPreview({
   accent,
   displayFont,
 }: {
-  kind: 'columns' | 'hero' | 'article' | 'workbench' | 'table' | 'briefing' | 'saas';
+  kind: 'columns' | 'hero' | 'article' | 'workbench' | 'table' | 'briefing' | 'saas' | 'exhibition';
   bg: string;
   surface: string;
   ink: string;
@@ -226,6 +242,34 @@ function AppTemplateVisualPreview({
               <span>Brightline CPA</span>
               <span style={{ color: accent }}>Review</span>
             </div>
+          </div>
+        </div>
+      )}
+
+      {kind === 'exhibition' && (
+        <div className="relative flex-1 pt-1 flex flex-col justify-between">
+          <div style={{ fontFamily: displayFont }} className="text-base font-bold leading-none tracking-tight">
+            Monumental Masthead
+          </div>
+          <div className="relative flex-1 my-1.5 grid grid-cols-12 items-end">
+            <div
+              className="col-start-5 col-end-13 row-start-1 h-16 border p-1 bg-[#141210]"
+              style={{ borderColor: ink }}
+            >
+              <div className="h-full w-full opacity-70" style={{ backgroundColor: accent }} />
+            </div>
+            <div
+              className="col-start-1 col-end-7 row-start-1 z-10 border p-1.5 shadow-sm"
+              style={{ backgroundColor: bg, borderColor: ruleColor }}
+            >
+              <div className="h-2 w-10 rounded-full mb-1" style={{ backgroundColor: accent }} />
+              <div className="h-1.5 w-full opacity-60" style={{ backgroundColor: ink }} />
+            </div>
+          </div>
+          <div className="grid grid-cols-4 gap-1 border-t pt-1" style={{ borderColor: ruleColor }}>
+            {[1, 2, 3, 4].map((n) => (
+              <div key={n} className="h-2.5" style={{ backgroundColor: n === 1 ? accent : surface }} />
+            ))}
           </div>
         </div>
       )}
@@ -527,11 +571,19 @@ export function AccentAppLayouts() {
 
                 <div className="pt-4 border-t border-[var(--a-rule)] flex flex-wrap items-center justify-between gap-3">
                   <Link
-                    href={`/design-system/playground?brand=${t.dialect}`}
+                    href={
+                      'templateHref' in t && t.templateHref
+                        ? t.templateHref
+                        : `/design-system/playground?brand=${t.dialect}`
+                    }
                     className="inline-flex min-h-[44px] items-center gap-1.5 rounded-full bg-[var(--a-ink)] text-[var(--a-bg)] px-5 font-mono text-[13px] font-bold uppercase tracking-wider hover:opacity-90"
                   >
                     <Code2 className="w-4 h-4" />
-                    <span>Open in Playground</span>
+                    <span>
+                      {'templateHref' in t && t.templateHref
+                        ? 'Open Live Template'
+                        : 'Open in Playground'}
+                    </span>
                     <ArrowRight className="w-4 h-4" />
                   </Link>
 

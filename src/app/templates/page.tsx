@@ -354,10 +354,29 @@ export default function AccentTemplatesPage() {
           <section id="layouts" className="scroll-mt-32 space-y-8">
             <ChapterHeader
               n="06"
-              eyebrow="SaaS & app layouts"
-              title="Page layouts for SaaS dashboards, data tables, and guides."
-              intro="Complex dashboards and filterable data tables are where Cloud AI + STYLES.md or a :-] Sprint really shine. Explore seven tested layouts below."
+              eyebrow="SaaS & Exhibition Layouts"
+              title="Page layouts for flagship exhibitions, SaaS dashboards, data tables, and guides."
+              intro="Pair a 4-plane museum exhibition stage and 4-lens synthesis atlas with tested SaaS ledgers and reading rooms. Launch Template 08 live in full screen or inspect all eight below."
             />
+            <div className="border-l-4 border-[var(--a-accent)] bg-[var(--a-surface)] p-5 sm:p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div className="space-y-1 max-w-[58ch]">
+                <p className="font-mono text-xs font-bold uppercase tracking-wider text-[var(--a-accent-text)]">
+                  New Flagship Template (Accént 3.2 · Exhibition)
+                </p>
+                <p className="font-serif text-xl sm:text-2xl font-semibold text-[var(--a-ink)]">
+                  Monumental Classical Stage, Overlapping Vellum Plinth &amp; 4-Lens Synthesis Atlas
+                </p>
+                <p className="text-sm text-[var(--a-muted)]">
+                  Drop-in React starter (`AccentExhibitionTemplate`) with dynamic domain shaders, 2.5× Curator Loupe, Full Salon Wall toggle, and 1200×630 PNG export.
+                </p>
+              </div>
+              <Link
+                href="/design-system/templates/exhibition"
+                className="inline-flex min-h-[48px] shrink-0 items-center gap-2 rounded-full bg-[var(--a-accent-fill)] px-6 text-sm font-semibold text-[var(--a-accent-fg)] hover:opacity-95"
+              >
+                Open Live Exhibition Template <ArrowRight className="h-4 w-4" />
+              </Link>
+            </div>
             <AccentAppLayouts />
           </section>
 

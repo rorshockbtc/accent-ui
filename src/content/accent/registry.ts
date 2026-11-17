@@ -35,6 +35,7 @@ import { page as patternMobile } from './pages/pattern-mobile';
 import { page as patternStates } from './pages/pattern-states';
 import { page as patternBang } from './pages/pattern-bang';
 import { page as patternSurfaceArchetypes } from './pages/pattern-surface-archetypes';
+import { page as patternExhibitionStage } from './pages/pattern-exhibition-stage';
 import { page as patternAiDiscovering } from './pages/pattern-ai-discovering';
 import { page as patternAiInstructing } from './pages/pattern-ai-instructing';
 import { page as patternAiObserving } from './pages/pattern-ai-observing';
@@ -140,6 +141,7 @@ export const ACCENT_PAGES: AccentPage[] = [
   patternStates,
   patternBang,
   patternSurfaceArchetypes,
+  patternExhibitionStage,
   patternAiDiscovering,
   patternAiInstructing,
   patternAiObserving,

@@ -808,6 +808,7 @@ import { DEMOS as EXHAUSTIVE_3 } from './sets/exhaustive-3';
 import { PASS3_AND_AI_DEMOS } from './sets/pass3-and-ai';
 import { AI_PATTERN_DEMOS } from './sets/ai-patterns';
 import { SURFACE_ARCHETYPE_DEMOS } from './sets/surface-archetypes';
+import { EXHIBITION_STAGE_DEMOS } from './sets/exhibition-stage';
 
 export const ACCENT_DEMOS: Record<string, React.ComponentType> = {
   ...COMPONENTS_A,
@@ -821,6 +822,7 @@ export const ACCENT_DEMOS: Record<string, React.ComponentType> = {
   ...PASS3_AND_AI_DEMOS,
   ...AI_PATTERN_DEMOS,
   ...SURFACE_ARCHETYPE_DEMOS,
+  ...EXHIBITION_STAGE_DEMOS,
   poster: Poster,
   'punctuation-family': PunctuationFamily,
   'grid-overlay': GridOverlay,

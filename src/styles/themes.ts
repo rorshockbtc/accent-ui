@@ -24,7 +24,7 @@ export type BrandProfileId =
 
 export type StructuralPosture = 'pedestal-hairline' | 'archival-spine' | 'warm-well' | 'terminal-grid';
 
-export type SurfaceArchetypeId = 'threshold' | 'sanctuary' | 'gallery' | 'edition';
+export type SurfaceArchetypeId = 'threshold' | 'sanctuary' | 'gallery' | 'edition' | 'exhibition';
 
 export interface SurfaceArchetypeSpec {
   id: SurfaceArchetypeId;
@@ -34,6 +34,29 @@ export interface SurfaceArchetypeSpec {
   disclosureRule: string;
   examples: string[];
 }
+
+export interface ArchivalChartSeriesToken {
+  id: string;
+  label: string;
+  lightHex: string;
+  darkHex: string;
+  markerShape: 'circle' | 'square' | 'diamond' | 'triangle' | 'ring' | 'cross';
+  dashArray?: string;
+}
+
+/**
+ * Color-blind-safe museum-grade categorical pigment tokens paired with distinct SVG shapes
+ * and dash patterns for multi-Pipe alluvial charts and epoch trajectories.
+ * Rests calmly in sandstone/ink/slate tones; escalates to --a-accent solely on hover/focus.
+ */
+export const ARCHIVAL_CHART_PALETTE: ArchivalChartSeriesToken[] = [
+  { id: 'slate-ink', label: 'Iron Gall Ink', lightHex: '#1F2937', darkHex: '#E5E7EB', markerShape: 'circle' },
+  { id: 'sienna-ochre', label: 'Burnt Sienna', lightHex: '#9A4A2E', darkHex: '#FDBA74', markerShape: 'square', dashArray: '6 3' },
+  { id: 'verdigris', label: 'Patina Verdigris', lightHex: '#1F6A5A', darkHex: '#6EE7B7', markerShape: 'diamond' },
+  { id: 'cobalt-ultramarine', label: 'Ultramarine', lightHex: '#24528A', darkHex: '#93C5FD', markerShape: 'triangle', dashArray: '3 3' },
+  { id: 'umber-bronze', label: 'Museum Umber', lightHex: '#6F5838', darkHex: '#FDE68A', markerShape: 'ring' },
+  { id: 'pipes-carmine', label: 'Pipes Carmine', lightHex: '#A3285C', darkHex: '#F472B6', markerShape: 'cross', dashArray: '8 3 2 3' },
+];
 
 export const SURFACE_ARCHETYPES: Record<SurfaceArchetypeId, SurfaceArchetypeSpec> = {
   threshold: {
@@ -70,6 +93,16 @@ export const SURFACE_ARCHETYPES: Record<SurfaceArchetypeId, SurfaceArchetypeSpec
     motionRule: 'Calm 60–70ch reading column, opacity/hairline reveals only, zero jarring horizontal jumps.',
     disclosureRule: '3-column micro-site spine with left navigation rail, centered reading well, and margin outline.',
     examples: ['pipes.pink/explore/*', 'design.pipes.pink/*'],
+  },
+  exhibition: {
+    id: 'exhibition',
+    label: 'Exhibition (Audio-Visual Edition & Atlas)',
+    scrollChoreography: true,
+    motionRule:
+      'Zoned choreography: pointer/shader atmosphere and 2.4x Curator Loupe in the upper stage (with explicit Live/Still pause toggle), Web Audio frequency cadence during playback, and calm paginated movement reading below.',
+    disclosureRule:
+      'One focal AccentBloomButton CTA + unboxed hairline folio strip above the fold; interactive SVG synthesis atlas paired with semantic table twins; chapter lists folded inside <details> colophons.',
+    examples: ['pipes.pink/thesis/*', 'pipes.pink/thesis/new'],
   },
 };
 

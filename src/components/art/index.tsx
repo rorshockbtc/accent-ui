@@ -192,12 +192,14 @@ export function AccentShaderBackdrop({
   fallbackSrc,
   fallbackAlt = '',
   progress = 0.28,
+  paused = false,
   className = '',
 }: {
   palette?: SkyPalette;
   fallbackSrc?: string;
   fallbackAlt?: string;
   progress?: number | MotionValue<number>;
+  paused?: boolean;
   className?: string;
 }) {
   const hostRef = useRef<HTMLDivElement>(null);
@@ -294,9 +296,9 @@ export function AccentShaderBackdrop({
 
     const tick = () => {
       raf = 0;
-      if (!inView) return;
+      if (!inView || paused) return;
       drawFrame((performance.now() - startMs) / 1000);
-      if (!isReduced) {
+      if (!isReduced && !paused) {
         raf = requestAnimationFrame(tick);
       }
     };
@@ -304,7 +306,7 @@ export function AccentShaderBackdrop({
     const io = new IntersectionObserver(
       ([entry]) => {
         inView = entry.isIntersecting;
-        if (inView && !raf) tick();
+        if (inView && !raf && !paused && !isReduced) tick();
       },
       { threshold: 0.01 }
     );
@@ -315,13 +317,16 @@ export function AccentShaderBackdrop({
       if (r.width > 0 && r.height > 0) {
         ptrX = (e.clientX - r.left) / r.width;
         ptrY = 1 - (e.clientY - r.top) / r.height;
+        if (paused || isReduced) {
+          drawFrame(0);
+        }
       }
     };
     window.addEventListener('pointermove', onMove, { passive: true });
     window.addEventListener('resize', resize, { passive: true });
 
     drawFrame(0);
-    if (!isReduced) tick();
+    if (!isReduced && !paused) tick();
 
     return () => {
       if (raf) cancelAnimationFrame(raf);
@@ -334,7 +339,7 @@ export function AccentShaderBackdrop({
       gl.deleteShader(vs);
       gl.deleteShader(fs);
     };
-  }, [isReduced, palette, progress]);
+  }, [isReduced, paused, palette, progress]);
 
   return (
     <div ref={hostRef} aria-hidden="true" className={`pointer-events-none absolute inset-0 overflow-hidden ${className}`}>
@@ -439,3 +444,8 @@ export function AccentWeatherBand({
     </section>
   );
 }
+
+export * from './classical-stage';
+export * from './synthesis-atlas';
+export * from './folio-reader';
+export * from './exhibition-template';
