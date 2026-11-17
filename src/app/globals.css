@@ -111,10 +111,13 @@
   --ease-accent: cubic-bezier(0.16, 1, 0.3, 1);
 
   /* Accént 3.0 5-Axis Structural & Typographic Dialect Tokens */
-  --a-font-display: var(--font-serif), Georgia, serif;
+  --a-font-display: var(--font-serif), 'Fraunces', Georgia, serif;
+  --font-accent-display: var(--font-serif), 'Fraunces', Georgia, serif;
+  --font-accent-serif: var(--font-newsreader, var(--font-serif)), Georgia, serif;
   --a-tracking-display: -0.02em;
   --a-radius-cta: 6px;
 
+  scroll-padding-bottom: calc(4.25rem + env(safe-area-inset-bottom, 0px));
   color-scheme: light;
 }
 
@@ -507,5 +510,42 @@ details.accent-disclosure[open] .accent-disclosure-marker {
     position-area: block-end span-inline-end;
     position-try-fallbacks: flip-block, flip-inline;
     margin-block-start: 0.5rem;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes accent-ken-burns {
+    0% {
+      transform: scale(1.03) translate3d(-1.2%, -0.8%, 0);
+    }
+    50% {
+      transform: scale(1.09) translate3d(0.6%, 0.4%, 0);
+    }
+    100% {
+      transform: scale(1.13) translate3d(1.6%, 1.1%, 0);
+    }
+  }
+  .accent-ken-burns {
+    animation: accent-ken-burns 22s ease-in-out infinite alternate;
+    will-change: transform;
+  }
+  .accent-ken-burns-paused {
+    animation-play-state: paused !important;
+  }
+
+  @keyframes accent-wave-breathe {
+    0% {
+      transform: scaleY(var(--reed-min, 0.35));
+    }
+    100% {
+      transform: scaleY(var(--reed-max, 0.72));
+    }
+  }
+  .accent-wave-breathe {
+    animation: accent-wave-breathe var(--reed-dur, 2.8s) ease-in-out var(--reed-delay, 0s) infinite alternate;
+    will-change: transform;
+  }
+  .accent-wave-paused {
+    animation-play-state: paused !important;
   }
 }

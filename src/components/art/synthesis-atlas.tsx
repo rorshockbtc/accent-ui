@@ -329,7 +329,7 @@ export function AccentSynthesisAtlas({
       <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-4 pb-5 border-b border-[var(--a-rule)]">
         <div className="max-w-[60ch]">
           {kicker && (
-            <p className="text-xs font-mono uppercase tracking-[0.12em] text-[var(--a-accent-text)] font-semibold">
+            <p className="text-xs font-sans uppercase tracking-[0.12em] text-[var(--a-accent-text)] font-semibold">
               {kicker}
             </p>
           )}
@@ -368,7 +368,7 @@ export function AccentSynthesisAtlas({
                 aria-selected={active}
                 data-testid={`atlas-lens-${item.id}`}
                 onClick={() => setLens(item.id)}
-                className={`relative min-h-[44px] px-3 font-mono text-xs cursor-pointer t-color whitespace-nowrap ${
+                className={`relative min-h-[44px] px-3 font-sans text-xs cursor-pointer t-color whitespace-nowrap ${
                   active
                     ? 'bg-[var(--a-surface)] font-semibold text-[var(--a-ink)]'
                     : 'text-[var(--a-muted)] hover:text-[var(--a-ink)]'
@@ -429,7 +429,7 @@ export function AccentSynthesisAtlas({
                           textAnchor="end"
                           fontSize="12"
                           fill="var(--a-muted)"
-                          fontFamily="var(--font-mono), monospace"
+                          fontFamily="var(--font-sans), system-ui, sans-serif"
                         >
                           {tick}%
                         </text>
@@ -552,7 +552,7 @@ export function AccentSynthesisAtlas({
                           fontSize="13"
                           fontWeight={active ? '700' : '500'}
                           fill={active ? 'var(--a-accent-text)' : 'var(--a-muted)'}
-                          fontFamily="var(--font-mono), monospace"
+                          fontFamily="var(--font-sans), system-ui, sans-serif"
                         >
                           Ep 0{pt.row.episodeNumber}
                         </text>
@@ -569,7 +569,7 @@ export function AccentSynthesisAtlas({
                         key={r.stage}
                         type="button"
                         onClick={() => setSelectedStageIdx(idx)}
-                        className={`min-h-[44px] px-2.5 text-xs font-mono border cursor-pointer t-color ${
+                        className={`min-h-[44px] px-2.5 text-xs font-sans border cursor-pointer t-color ${
                           selectedStageIdx === idx
                             ? 'border-[var(--a-accent)] bg-[var(--a-surface)] font-semibold text-[var(--a-ink)]'
                             : 'border-[var(--a-rule)] text-[var(--a-muted)] hover:text-[var(--a-ink)]'
@@ -579,7 +579,7 @@ export function AccentSynthesisAtlas({
                       </button>
                     ))}
                   </div>
-                  <div className="flex items-center gap-3 text-xs font-mono">
+                  <div className="flex items-center gap-3 text-xs font-sans">
                     {onPlayEpisode && selectedStagePoint && (
                       <button
                         type="button"
@@ -612,14 +612,14 @@ export function AccentSynthesisAtlas({
                     >
                       {selectedStagePoint.row.stage}
                     </h4>
-                    <span className="font-mono text-xs text-[var(--a-accent-text)] font-semibold">
+                    <span className="font-sans text-xs text-[var(--a-accent-text)] font-semibold">
                       Key Datum: {selectedStagePoint.pin}
                     </span>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4 border-t border-[var(--a-rule)] pt-3">
                     {columns.map((col, cIdx) => (
                       <div key={col} className="border-l-2 border-[var(--a-rule)] pl-3">
-                        <div className="font-mono text-xs uppercase tracking-wider text-[var(--a-muted)]">
+                        <div className="font-sans text-xs uppercase tracking-wider text-[var(--a-muted)]">
                           {col}
                         </div>
                         <p className="mt-1 text-sm leading-6 text-[var(--a-ink)]">
@@ -653,7 +653,7 @@ export function AccentSynthesisAtlas({
                     setFocusedPipeSlug(null);
                     setFocusedEpNum(null);
                   }}
-                  className={`min-h-[44px] px-3 text-xs font-mono border cursor-pointer ${
+                  className={`min-h-[44px] px-3 text-xs font-sans border cursor-pointer ${
                     !focusedPipeSlug && focusedEpNum === null
                       ? 'border-[var(--a-accent)] bg-[var(--a-bg)] font-semibold text-[var(--a-ink)]'
                       : 'border-[var(--a-rule)] text-[var(--a-muted)] hover:text-[var(--a-ink)]'
@@ -671,7 +671,7 @@ export function AccentSynthesisAtlas({
                         setFocusedEpNum(null);
                         setFocusedPipeSlug((cur) => (cur === p.slug ? null : p.slug));
                       }}
-                      className={`min-h-[44px] px-2.5 text-xs font-mono border cursor-pointer flex items-center gap-1.5 t-color ${
+                      className={`min-h-[44px] px-2.5 text-xs font-sans border cursor-pointer flex items-center gap-1.5 t-color ${
                         active
                           ? 'border-[var(--a-accent)] bg-[var(--a-bg)] font-semibold text-[var(--a-ink)]'
                           : 'border-[var(--a-rule)] text-[var(--a-muted)] hover:text-[var(--a-ink)]'
@@ -694,7 +694,7 @@ export function AccentSynthesisAtlas({
                   aria-label="Combined-Pipe Loom connecting Subject Pipes, Episodes, and Primary Sources"
                   className="w-full h-auto block max-w-full"
                 >
-                  <g fontSize="12" fontFamily="var(--font-mono), monospace" fill="var(--a-muted)">
+                  <g fontSize="12" fontFamily="var(--font-sans), system-ui, sans-serif" fill="var(--a-muted)">
                     <text x="224" y="18" textAnchor="end">SUBJECT PIPES</text>
                     <text x="468" y="18" textAnchor="middle">EPISODES</text>
                     <text x="706" y="18" textAnchor="start">PRIMARY WORKS</text>
@@ -783,7 +783,7 @@ export function AccentSynthesisAtlas({
                           fontSize="12"
                           fontWeight={active ? '700' : '500'}
                           fill={active ? 'var(--a-ink)' : 'var(--a-muted)'}
-                          fontFamily="var(--font-mono), monospace"
+                          fontFamily="var(--font-sans), system-ui, sans-serif"
                         >
                           {p.label.length > 28 ? `${p.label.slice(0, 26)}…` : p.label}
                         </text>
@@ -825,7 +825,7 @@ export function AccentSynthesisAtlas({
                           fontSize="13"
                           fontWeight="600"
                           fill="var(--a-ink)"
-                          fontFamily="var(--font-mono), monospace"
+                          fontFamily="var(--font-sans), system-ui, sans-serif"
                         >
                           Ep 0{ep.episodeNumber}
                         </text>
@@ -869,7 +869,7 @@ export function AccentSynthesisAtlas({
                       const p = pipes.find((x) => x.slug === focusedPipeSlug);
                       return p ? (
                         <p className="text-[var(--a-ink)]">
-                          <span className="font-mono font-semibold text-[var(--a-accent-text)]">
+                          <span className="font-sans font-semibold text-[var(--a-accent-text)]">
                             {p.label}
                           </span>
                           {p.discipline ? ` · ${p.discipline}` : ''} — {p.why}
@@ -877,11 +877,11 @@ export function AccentSynthesisAtlas({
                       ) : null;
                     })()
                   ) : (
-                    <p className="font-mono text-[var(--a-muted)]">
+                    <p className="font-sans text-[var(--a-muted)]">
                       Tap any Pipe, Episode, or primary work to isolate its citation threads.
                     </p>
                   )}
-                  <span className="font-mono text-[var(--a-muted)] tabular-nums">
+                  <span className="font-sans text-[var(--a-muted)] tabular-nums">
                     {pipes.length} Pipes · {episodes.length} Episodes · {bibliography.length} Works
                   </span>
                 </div>
@@ -912,13 +912,13 @@ export function AccentSynthesisAtlas({
                   <line x1="40" x2="800" y1="226" y2="226" stroke="var(--a-ink)" strokeOpacity="0.35" />
 
                   {chronologyNodes.hasAntiquity ? (
-                    <g fontSize="12" fontFamily="var(--font-mono), monospace" fill="var(--a-muted)">
+                    <g fontSize="12" fontFamily="var(--font-sans), system-ui, sans-serif" fill="var(--a-muted)">
                       <text x="52" y="250">Classical Antiquity</text>
                       <text x="315" y="250">1500 – 1900</text>
                       <text x="615" y="250">1900 – Present</text>
                     </g>
                   ) : (
-                    <g fontSize="12" fontFamily="var(--font-mono), monospace" fill="var(--a-muted)">
+                    <g fontSize="12" fontFamily="var(--font-sans), system-ui, sans-serif" fill="var(--a-muted)">
                       <text x="52" y="250">{chronologyNodes.minYear}</text>
                       <text x="788" y="250" textAnchor="end">{chronologyNodes.maxYear}</text>
                     </g>
@@ -981,7 +981,7 @@ export function AccentSynthesisAtlas({
                       href={activeBibItem.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="min-h-[44px] inline-flex items-center px-3 border border-[var(--a-rule)] bg-[var(--a-surface)] font-mono text-xs text-[var(--a-ink)] hover:border-[var(--a-ink)] shrink-0"
+                      className="min-h-[44px] inline-flex items-center px-3 border border-[var(--a-rule)] bg-[var(--a-surface)] font-sans text-xs text-[var(--a-ink)] hover:border-[var(--a-ink)] shrink-0"
                     >
                       Verify Primary Source ↗
                     </a>
@@ -1014,14 +1014,14 @@ export function AccentSynthesisAtlas({
                       >
                         {row.stage}
                       </button>
-                      <span className="font-mono text-xs text-[var(--a-muted)] shrink-0">
+                      <span className="font-sans text-xs text-[var(--a-muted)] shrink-0">
                         Ep 0{row.episodeNumber} →
                       </span>
                     </div>
                     <dl className="space-y-2.5 text-sm leading-6">
                       {columns.map((colLabel, colIdx) => (
                         <div key={colLabel} className="pl-3 border-l-2 border-[var(--a-rule)]">
-                          <dt className="font-mono text-xs uppercase tracking-wider text-[var(--a-muted)]">
+                          <dt className="font-sans text-xs uppercase tracking-wider text-[var(--a-muted)]">
                             {colLabel}
                           </dt>
                           <dd className="mt-0.5 text-[var(--a-ink)]">{row.cells[colIdx] || ''}</dd>
@@ -1079,7 +1079,7 @@ export function AccentSynthesisAtlas({
                           >
                             {row.stage}
                           </button>
-                          <div className="mt-1 text-xs font-mono text-[var(--a-muted)]">
+                          <div className="mt-1 text-xs font-sans text-[var(--a-muted)]">
                             Episode {row.episodeNumber}
                           </div>
                         </th>
@@ -1214,7 +1214,7 @@ export function AccentSharePlateDialog({
       ctx.fill();
 
       ctx.fillStyle = dark ? '#C9C2B6' : '#4B5563';
-      ctx.font = '600 15px ui-monospace, Menlo, monospace';
+      ctx.font = '600 15px system-ui, -apple-system, sans-serif';
       wrapCanvasText(
         ctx,
         `${seriesTitle.toUpperCase()} · ${episodeLabel.toUpperCase()}`,
@@ -1255,7 +1255,7 @@ export function AccentSharePlateDialog({
       ctx.stroke();
 
       ctx.fillStyle = dark ? '#C9C2B6' : '#4B5563';
-      ctx.font = '500 15px ui-monospace, Menlo, monospace';
+      ctx.font = '500 15px system-ui, -apple-system, sans-serif';
       wrapCanvasText(ctx, `Source: ${sourceAttribution}`, leftX, 544, colW, 20, 1);
       ctx.fillText(shareUrl.replace(/^https?:\/\//, ''), leftX, 578);
 
@@ -1375,7 +1375,7 @@ export function AccentSharePlateDialog({
       <div className="w-full max-w-3xl border border-[var(--a-rule)] bg-[var(--a-bg)] text-[var(--a-ink)] p-4 sm:p-6 shadow-2xl space-y-4">
         <div className="flex items-center justify-between gap-3 border-b border-[var(--a-rule)] pb-3">
           <div>
-            <p className="font-mono text-xs uppercase tracking-[0.12em] text-[var(--a-accent-text)] font-semibold">
+            <p className="font-sans text-xs uppercase tracking-[0.12em] text-[var(--a-accent-text)] font-semibold">
               Museum &amp; Evidence Postcard (1200×630)
             </p>
             <h3 className="font-serif text-lg sm:text-xl font-semibold">
@@ -1385,14 +1385,14 @@ export function AccentSharePlateDialog({
           <button
             type="button"
             onClick={onClose}
-            className="min-h-[44px] px-3 border border-[var(--a-rule)] font-mono text-xs cursor-pointer hover:border-[var(--a-ink)]"
+            className="min-h-[44px] px-3 border border-[var(--a-rule)] font-sans text-xs cursor-pointer hover:border-[var(--a-ink)]"
           >
             Close ✕
           </button>
         </div>
 
         {/* Mat Finish Selector */}
-        <div className="flex flex-wrap items-center justify-between gap-2 text-xs font-mono">
+        <div className="flex flex-wrap items-center justify-between gap-2 text-xs font-sans">
           <div className="inline-flex border border-[var(--a-rule)] divide-x divide-[var(--a-rule)]">
             <button
               type="button"
@@ -1429,14 +1429,14 @@ export function AccentSharePlateDialog({
             <button
               type="button"
               onClick={handleDownloadPng}
-              className="min-h-[44px] px-4 bg-[var(--a-accent-fill)] text-[var(--a-accent-fg)] font-mono text-xs font-semibold cursor-pointer"
+              className="min-h-[44px] px-4 bg-[var(--a-accent-fill)] text-[var(--a-accent-fg)] font-sans text-xs font-semibold cursor-pointer"
             >
               ↓ Download Postcard (.png)
             </button>
             <button
               type="button"
               onClick={handleNativeShare}
-              className="min-h-[44px] px-4 border border-[var(--a-rule)] bg-[var(--a-surface)] font-mono text-xs cursor-pointer hover:border-[var(--a-ink)]"
+              className="min-h-[44px] px-4 border border-[var(--a-rule)] bg-[var(--a-surface)] font-sans text-xs cursor-pointer hover:border-[var(--a-ink)]"
             >
               ↗ Share Image / Link
             </button>
@@ -1447,7 +1447,7 @@ export function AccentSharePlateDialog({
                 setCopiedLink(true);
                 setTimeout(() => setCopiedLink(false), 2000);
               }}
-              className="min-h-[44px] px-3 font-mono text-xs underline underline-offset-4 cursor-pointer text-[var(--a-muted)] hover:text-[var(--a-ink)]"
+              className="min-h-[44px] px-3 font-sans text-xs underline underline-offset-4 cursor-pointer text-[var(--a-muted)] hover:text-[var(--a-ink)]"
             >
               {copiedLink ? '✓ Copied Deep Link' : 'Copy Link'}
             </button>
@@ -1455,7 +1455,7 @@ export function AccentSharePlateDialog({
           {asteriskShareUrl && (
             <a
               href={asteriskShareUrl}
-              className="min-h-[44px] inline-flex items-center px-3 font-mono text-xs font-semibold text-[var(--a-accent-text)] hover:underline underline-offset-4"
+              className="min-h-[44px] inline-flex items-center px-3 font-sans text-xs font-semibold text-[var(--a-accent-text)] hover:underline underline-offset-4"
             >
               * Post Quote &amp; Link to Asterisk ↗
             </a>

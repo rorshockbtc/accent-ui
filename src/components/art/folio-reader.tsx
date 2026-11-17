@@ -206,7 +206,7 @@ export function AccentFolioReader({
       {/* Folio Pagination Toolbar */}
       {canPaginate && (
         <div className="my-6 py-3 border-y border-[var(--a-rule)] space-y-2.5">
-          <div className="flex flex-wrap items-center justify-between gap-2 text-xs font-mono">
+          <div className="flex flex-wrap items-center justify-between gap-2 text-xs font-sans">
             <span className="text-[var(--a-accent-text)] font-semibold uppercase tracking-[0.12em]">
               {readerMode === 'folio'
                 ? `Movement ${currentMovement.roman} of ${movements.length} · ~${currentMovement.estimatedMinutes} min read`
@@ -251,7 +251,7 @@ export function AccentFolioReader({
                     type="button"
                     data-testid={`folio-movement-${idx + 1}`}
                     onClick={() => selectMovement(idx, false)}
-                    className={`relative min-h-[44px] px-3.5 py-2 text-left font-mono text-xs cursor-pointer t-color flex items-center justify-between gap-2 ${spanFullOnOddLast} ${
+                    className={`relative min-h-[44px] px-3.5 py-2 text-left font-sans text-xs cursor-pointer t-color flex items-center justify-between gap-2 ${spanFullOnOddLast} ${
                       active
                         ? 'bg-[var(--a-bg)] font-semibold text-[var(--a-ink)]'
                         : 'bg-[var(--a-surface)]/85 text-[var(--a-muted)] hover:bg-[var(--a-bg)] hover:text-[var(--a-ink)]'
@@ -294,7 +294,7 @@ export function AccentFolioReader({
             transition={{ duration: isReduced ? 0.14 : 0.28, ease: EASE_EDITORIAL }}
           >
             {onSeekTimestamp && (
-              <div className="mb-3 flex items-center justify-between text-xs font-mono text-[var(--a-muted)]">
+              <div className="mb-3 flex items-center justify-between text-xs font-sans text-[var(--a-muted)]">
                 <span>Movement {currentMovement.roman}</span>
                 <button
                   type="button"
@@ -319,7 +319,7 @@ export function AccentFolioReader({
                   onClick={() => selectMovement(activeMovementIdx - 1, true)}
                   className="text-left min-h-[60px] px-4 py-3 border border-[var(--a-rule)] hover:border-[var(--a-ink)] t-color cursor-pointer"
                 >
-                  <span className="block font-mono text-xs text-[var(--a-muted)]">
+                  <span className="block font-sans text-xs text-[var(--a-muted)]">
                     ← Previous Movement ({movements[activeMovementIdx - 1].roman})
                   </span>
                   <span className="block font-serif text-base font-semibold mt-0.5 truncate">
@@ -332,7 +332,7 @@ export function AccentFolioReader({
                   onClick={onRequestPrevEpisode}
                   className="text-left min-h-[60px] px-4 py-3 border border-[var(--a-rule)] hover:border-[var(--a-ink)] t-color cursor-pointer"
                 >
-                  <span className="block font-mono text-xs text-[var(--a-muted)]">
+                  <span className="block font-sans text-xs text-[var(--a-muted)]">
                     ← Previous Episode
                   </span>
                   <span className="block font-serif text-base font-semibold mt-0.5 truncate">
@@ -350,7 +350,7 @@ export function AccentFolioReader({
                   onClick={() => selectMovement(activeMovementIdx + 1, true)}
                   className="text-right min-h-[60px] px-4 py-3 border border-[var(--a-accent)]/50 bg-[var(--a-surface)]/70 hover:border-[var(--a-accent)] t-color cursor-pointer"
                 >
-                  <span className="block font-mono text-xs text-[var(--a-accent-text)] font-semibold">
+                  <span className="block font-sans text-xs text-[var(--a-accent-text)] font-semibold">
                     Turn to Movement {movements[activeMovementIdx + 1].roman} ({activeMovementIdx + 2}/{movements.length}) →
                   </span>
                   <span className="block font-serif text-base font-semibold mt-0.5 truncate">
@@ -363,7 +363,7 @@ export function AccentFolioReader({
                   onClick={onRequestNextEpisode}
                   className="text-right min-h-[60px] px-4 py-3 border border-[var(--a-accent)]/50 bg-[var(--a-surface)]/70 hover:border-[var(--a-accent)] t-color cursor-pointer"
                 >
-                  <span className="block font-mono text-xs text-[var(--a-accent-text)] font-semibold">
+                  <span className="block font-sans text-xs text-[var(--a-accent-text)] font-semibold">
                     End of Essay · Continue Audio Journey →
                   </span>
                   <span className="block font-serif text-base font-semibold mt-0.5 truncate">

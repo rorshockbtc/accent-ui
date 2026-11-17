@@ -73,7 +73,7 @@ export function ExhibitionStageDemo() {
         <AccentShaderBackdrop palette={palette} paused={!live} className="opacity-35" />
         <div className="relative z-10 grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
           <div className="md:col-span-6 space-y-3">
-            <p className="font-mono text-xs uppercase tracking-[0.12em] text-[var(--a-accent-text)] font-semibold">
+            <p className="font-sans text-xs uppercase tracking-[0.12em] text-[var(--a-accent-text)] font-semibold">
               Domain Wash · pipe\{domain}
             </p>
             <h4 className="font-serif text-2xl font-semibold text-[var(--a-ink)]">
@@ -248,7 +248,7 @@ export function ExhibitionA11yMotionDemo() {
     >
       <div className="flex flex-wrap items-center justify-between gap-4 border border-[var(--a-rule)] p-4 bg-[var(--a-surface)]">
         <div>
-          <p className="font-mono text-xs uppercase tracking-[0.12em] text-[var(--a-accent-text)] font-semibold">
+          <p className="font-sans text-xs uppercase tracking-[0.12em] text-[var(--a-accent-text)] font-semibold">
             Atmosphere State: {paused ? 'Still (Paused)' : 'Live Reactive'}
           </p>
           <p className="text-sm text-[var(--a-muted)] mt-1">
@@ -258,7 +258,7 @@ export function ExhibitionA11yMotionDemo() {
         <button
           type="button"
           onClick={() => setPaused((p) => !p)}
-          className="min-h-[44px] px-4 border border-[var(--a-rule)] bg-[var(--a-bg)] font-mono text-xs font-semibold cursor-pointer hover:border-[var(--a-ink)]"
+          className="min-h-[44px] px-4 border border-[var(--a-rule)] bg-[var(--a-bg)] font-sans text-xs font-semibold cursor-pointer hover:border-[var(--a-ink)]"
         >
           {paused ? 'Resume Atmosphere' : 'Pause Atmosphere'}
         </button>

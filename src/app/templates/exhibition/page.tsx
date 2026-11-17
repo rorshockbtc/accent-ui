@@ -451,7 +451,7 @@ export default function AccentExhibitionTemplatePage() {
     <div className="min-h-screen bg-[var(--a-bg)] text-[var(--a-ink)]">
       {/* Top Workbench Bar */}
       <div className="border-b border-[var(--a-rule)] bg-[var(--a-surface)]/80 px-4 sm:px-6 lg:px-8 py-3">
-        <div className="mx-auto max-w-[1440px] flex flex-wrap items-center justify-between gap-3 text-xs font-mono">
+        <div className="mx-auto max-w-[1440px] flex flex-wrap items-center justify-between gap-3 text-xs font-sans">
           <div className="flex flex-wrap items-center gap-3">
             <Link
               href="/design-system/templates"
